@@ -1,5 +1,5 @@
 // Indomark Firebase client configuration.
-// Firebase is DATA ONLY in Indomark. Authentication and sessions are handled by IndoVerification.
+// Firebase owns user accounts and authentication. IndoVerification is OTP service only.
 
 const firebaseConfig = Object.freeze({
   apiKey: "AIzaSyAXQHLuhGrPRjsPhI0hlG5ZGdf1BbRhqK8",
@@ -19,6 +19,7 @@ if (!window.firebase) {
 
 window.IndomarkFirebase = {
   app: firebase.app(),
+  auth: firebase.auth(),
   database: firebase.database(),
   config: firebaseConfig
 };
