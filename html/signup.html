@@ -6,7 +6,21 @@
   <meta name="theme-color" content="#050914">
   <meta name="description" content="Indomark account creation and email verification">
   <title>Indomark — Create Account</title>
-  <link rel="stylesheet" href="../css/signup.css?v=12">
+  <script>
+    (async () => {
+      try {
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(registrations.map(r => r.unregister()));
+        }
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map(k => caches.delete(k)));
+        }
+      } catch (_) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../css/signup.css?v=13">
 </head>
 <body class="entry-signup">
   <main class="signup-page">
@@ -32,7 +46,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-  <script src="../js/firebase-config.js?v=12"></script>
-  <script src="../js/signup.js?v=12"></script>
+  <script src="../js/firebase-config.js?v=13"></script>
+  <script src="../js/signup.js?v=13"></script>
 </body>
 </html>
