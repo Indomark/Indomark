@@ -4,11 +4,12 @@
 const firebaseConfig = Object.freeze({
   apiKey: "AIzaSyAXQHLuhGrPRjsPhI0hlG5ZGdf1BbRhqK8",
   authDomain: "indomark-f4d55.firebaseapp.com",
+  databaseURL: "https://indomark-f4d55-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "indomark-f4d55",
   storageBucket: "indomark-f4d55.firebasestorage.app",
   messagingSenderId: "563704316553",
-  appId: "1:563704316553:web:59bdbb1f6a241e25f4bc58",
-  measurementId: "G-ZSZ4PYD5E0"
+  appId: "1:563704316553:web:05566e268db653f4f4bc58",
+  measurementId: "G-SK3CY5WYT8"
 });
 
 if (!window.firebase) {
