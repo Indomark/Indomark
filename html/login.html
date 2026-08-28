@@ -1,1 +1,33 @@
-xnnxmxx
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+  <meta name="theme-color" content="#050914">
+  <meta name="description" content="IndoSpeed login">
+  <title>IndoSpeed — Login</title>
+  <link rel="stylesheet" href="../css/login.css?v=5">
+</head>
+<body class="entry-login">
+  <main class="login-page">
+    <section class="login-shell" aria-label="Login to IndoSpeed">
+      <header class="login-header">
+        <div class="login-brand" aria-label="IndoSpeed">
+          <span class="brand-bolt" aria-hidden="true"></span>
+          <span class="brand-wordmark"><span class="brand-indo">Indo</span><span class="brand-speed">Speed</span></span>
+        </div>
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Login to continue your smart investing journey</p>
+      </header>
+      <form id="loginForm" class="login-form" novalidate>
+        <label for="email">Email<input id="email" name="email" type="email" autocomplete="email" placeholder="rahul@gmail.com" required></label>
+        <label for="password">Password<span class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required><button type="button" id="togglePassword" class="icon-button" aria-label="Show password" aria-pressed="false">◉</button></span></label>
+        <button class="primary-button" type="submit">Login</button>
+      </form>
+      <p class="signup-copy">Don't have an account? <a href="./signup.html" id="signupLink">Sign Up</a></p>
+      <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+  <script src="../js/login.js?v=3"></script>
+</body>
+</html>

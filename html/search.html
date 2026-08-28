@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=5"><link rel="stylesheet" href="../css/entry-dark.css?v=1"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=5"><link rel="stylesheet" href="../css/entry-dark.css?v=1"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=5"><link rel="stylesheet" href="../css/entry-dark.css?v=1"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indospeed_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=6"></script><link rel="stylesheet" href="../css/app-theme.css?v=8"><link rel="stylesheet" href="../css/global-theme.css?v=3">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>IndoSpeed — Search Stocks</title>
+  
+  <link rel="stylesheet" href="../css/search.css">
+</head>
+<body>
+  <main class="search-page">
+    <header class="search-topbar">
+      <button class="back-btn" type="button" aria-label="Back" onclick="history.back()">←</button>
+      <div class="brand"><span class="bolt" aria-hidden="true"></span><strong>Indo<span>Speed</span></strong></div>
+      <button class="clear-btn" type="button" aria-label="Clear search">×</button>
+    </header>
+
+    <section class="search-hero">
+      <p class="eyebrow">EXPLORE THE MARKET</p>
+      <h1>Search Stocks</h1>
+      <p>Find a stock and open its complete market details.</p>
+    </section>
+
+    <section class="search-box-wrap">
+      <label class="search-box" for="stockSearch">
+        <span class="search-icon">⌕</span>
+        <input id="stockSearch" type="search" autocomplete="off" placeholder="Search Reliance, TCS, Infosys...">
+        <kbd>⌘ K</kbd>
+      </label>
+    </section>
+
+    <div class="tabs" role="tablist" aria-label="Search filters">
+      <button class="tab active" data-filter="all">All</button>
+      <button class="tab" data-filter="stocks">Stocks</button>
+      <button class="tab" data-filter="news">News</button>
+      <button class="tab" data-filter="indices">Indices</button>
+    </div>
+
+    <section class="results-section">
+      <div class="section-head"><h2>Top Results</h2><span id="resultCount">0 results</span></div>
+      <div id="results" class="results-list"></div>
+      <div id="empty" class="empty-state" hidden>
+        <div class="empty-icon">⌕</div>
+        <h3>No matching results</h3>
+        <p>Try a stock name, symbol, or company name.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/search.js"></script>
+</body>
+</html>
