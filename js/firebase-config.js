@@ -18,9 +18,16 @@ if (!window.firebase) {
   firebase.initializeApp(firebaseConfig);
 }
 
+let database = null;
+try {
+  database = firebase.database();
+} catch (error) {
+  console.warn('Firebase Realtime Database is not configured yet; authentication can still work.', error);
+}
+
 window.IndomarkFirebase = {
   app: firebase.app(),
   auth: firebase.auth(),
-  database: firebase.database(),
+  database,
   config: firebaseConfig
 };
