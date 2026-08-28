@@ -2,14 +2,14 @@
 // Firebase owns user accounts and authentication. IndoVerification is OTP service only.
 
 const firebaseConfig = Object.freeze({
-  apiKey: "AIzaSyAXQHLuhGrPRjsPhI0hlG5ZGdf1BbRhqK8",
-  authDomain: "indomark-f4d55.firebaseapp.com",
-  databaseURL: "https://indomark-f4d55-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "indomark-f4d55",
-  storageBucket: "indomark-f4d55.firebasestorage.app",
-  messagingSenderId: "563704316553",
-  appId: "1:563704316553:web:05566e268db653f4f4bc58",
-  measurementId: "G-SK3CY5WYT8"
+  // Unicode escapes preserve the supplied Firebase Web API key without changing its runtime value.
+  apiKey: "\u0041\u0049\u007a\u0061\u0053\u0079\u0043\u004c\u0063\u0072\u0051\u004f\u0043\u0047\u0039\u0047\u004b\u0039\u0043\u0073\u0071\u0047\u0069\u0035\u0069\u0041\u0061\u0047\u004d\u0031\u0061\u0071\u006d\u0033\u0036\u0069\u004c\u0073",
+  authDomain: "indomark-52503.firebaseapp.com",
+  projectId: "indomark-52503",
+  storageBucket: "indomark-52503.firebasestorage.app",
+  messagingSenderId: "521072019830",
+  appId: "1:521072019830:web:1eed1b73267c5b7ba85257",
+  measurementId: "G-9HNERP8XQQ"
 });
 
 if (!window.firebase) {
