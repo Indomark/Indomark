@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const verifyButton = document.getElementById('verifyOtpButton');
   const resendButton = document.getElementById('resendOtpButton');
   const API_BASE = 'https://indoverification-production.up.railway.app';
+  const APP_NAME = 'Indomark';
   let pending = null;
 
   const showMessage = (text, ok = false) => {
@@ -21,7 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const api = (path, options = {}) => fetch(`${API_BASE}${path}`, {
     ...options,
-    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Indo-App-Name': APP_NAME,
+      ...(options.headers || {}),
+    },
   });
 
   toggle?.addEventListener('click', () => {
