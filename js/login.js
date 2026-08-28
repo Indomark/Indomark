@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const normalizeOtp = (value) => String(value || '')
+    .normalize('NFKC')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[^0-9]/g, '')
+    .slice(0, 6);
+
   const withTimeout = (promise, ms, label) => Promise.race([
     promise,
     new Promise((_, reject) => window.setTimeout(() => reject(new Error(`${label} timed out. Please try again.`)), ms)),
@@ -63,6 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.textContent = visible ? '◉' : '◌';
   });
 
+  otpInput?.addEventListener('input', () => {
+    const clean = normalizeOtp(otpInput.value);
+    if (otpInput.value !== clean) otpInput.value = clean;
+  });
+
   async function beginLogin() {
     const data = new FormData(form);
     const email = String(data.get('email') || '').trim().toLowerCase();
@@ -70,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!firebaseAuth) return showMessage('Firebase Authentication is unavailable.');
     if (!/^\S+@\S+\.\S+$/.test(email)) return showMessage('Enter a valid email.');
     if (!passwordValue) return showMessage('Enter your password.');
-    if (loginButton) loginButton.disabled = true;
+    loginButton.disabled = true;
     showMessage('Checking account…', true);
     try {
       const credential = await firebaseAuth.signInWithEmailAndPassword(email, passwordValue);
@@ -84,10 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || 'Unable to send OTP.');
 
-      if (otpEmail) otpEmail.textContent = email;
-      if (otpPanel) otpPanel.hidden = false;
+      otpEmail.textContent = email;
+      otpPanel.hidden = false;
+      otpInput.value = '';
       showMessage('OTP sent. Check your email to finish login.', true);
-      otpInput?.focus();
+      otpInput.focus();
     } catch (error) {
       const code = String(error?.code || '');
       if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
@@ -96,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showMessage(error?.message || 'Login failed.');
       }
     } finally {
-      if (loginButton) loginButton.disabled = false;
+      loginButton.disabled = false;
     }
   }
 
@@ -107,15 +119,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   verifyButton?.addEventListener('click', async () => {
     if (!pending) return showMessage('Please login first.');
-    const otp = String(otpInput?.value || '').trim();
+    const otp = normalizeOtp(otpInput?.value);
     if (!/^\d{6}$/.test(otp)) return showMessage('Enter the 6-digit OTP.');
+    otpInput.value = otp;
     verifyButton.disabled = true;
-    if (resendButton) resendButton.disabled = true;
+    resendButton.disabled = true;
     showMessage('Verifying OTP…', true);
     try {
       const response = await api('/api/auth/login/verify-otp', {
         method: 'POST',
-        body: JSON.stringify({ email: pending.email, otp }),
+        body: JSON.stringify({ email: pending.email, otp, name: pending.name }),
       });
       const result = await response.json();
       if (!response.ok || !result.ok || !result.verified) throw new Error(result.error || 'OTP verification failed.');
@@ -128,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
         email: user.email || pending.email,
         active: true,
       };
-
       setSession(profile);
       syncProfile(profile);
       showMessage('Login successful.', true);
@@ -138,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showMessage(error?.message || 'Login failed.', false);
     } finally {
       verifyButton.disabled = false;
-      if (resendButton) resendButton.disabled = false;
+      resendButton.disabled = false;
     }
   });
 
@@ -152,8 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || 'Unable to resend OTP.');
+      otpInput.value = '';
       showMessage('New OTP sent to your email.', true);
-      otpInput?.focus();
+      otpInput.focus();
     } catch (error) {
       showMessage(error?.message || 'Unable to resend OTP.', false);
     } finally {
