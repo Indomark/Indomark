@@ -16,14 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let pending = null;
 
   const showMessage = (text, ok = false) => {
-    if (message) { message.textContent = text; message.style.color = ok ? '#69e7aa' : '#ff8297'; }
+    if (message) {
+      message.textContent = text;
+      message.style.color = ok ? '#69e7aa' : '#ff8297';
+    }
   };
-
-  const normalizeOtp = (value) => String(value || '')
-    .normalize('NFKC')
-    .replace(/[\u200B-\u200D\uFEFF]/g, '')
-    .replace(/[^0-9]/g, '')
-    .slice(0, 6);
 
   const withTimeout = (promise, ms, label) => Promise.race([
     promise,
@@ -32,7 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const api = (path, options = {}) => withTimeout(fetch(`${API_BASE}${path}`, {
     ...options,
-    headers: { 'Content-Type': 'application/json', 'X-Indo-App-Name': APP_NAME, ...(options.headers || {}) },
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Indo-App-Name': APP_NAME,
+      ...(options.headers || {}),
+    },
   }), 15000, 'Server request');
 
   const setSession = (profile) => {
@@ -49,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!database || !profile?.id) return;
       withTimeout(database.ref(`users/${profile.id}/profile`).set(profile), 5000, 'Profile sync')
         .catch((error) => console.warn('Firebase profile sync failed:', error));
-    } catch (error) { console.warn('Firebase profile sync setup failed:', error); }
+    } catch (error) {
+      console.warn('Firebase profile sync setup failed:', error);
+    }
   };
 
   toggle?.addEventListener('click', () => {
@@ -60,11 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.textContent = visible ? '◉' : '◌';
   });
 
-  otpInput?.addEventListener('input', () => {
-    const normalized = normalizeOtp(otpInput.value);
-    if (otpInput.value !== normalized) otpInput.value = normalized;
-  });
-
   async function beginLogin() {
     const data = new FormData(form);
     const email = String(data.get('email') || '').trim().toLowerCase();
@@ -72,66 +70,99 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!firebaseAuth) return showMessage('Firebase Authentication is unavailable.');
     if (!/^\S+@\S+\.\S+$/.test(email)) return showMessage('Enter a valid email.');
     if (!passwordValue) return showMessage('Enter your password.');
-    loginButton.disabled = true;
+    if (loginButton) loginButton.disabled = true;
     showMessage('Checking account…', true);
     try {
       const credential = await firebaseAuth.signInWithEmailAndPassword(email, passwordValue);
-      pending = { email, name: credential.user.displayName || 'Investor', user: credential.user };
-      const response = await api('/api/auth/login/request-otp', { method: 'POST', body: JSON.stringify({ email }) });
+      const displayName = credential.user.displayName || 'Investor';
+      pending = { email, name: displayName, user: credential.user };
+
+      const response = await api('/api/auth/login/request-otp', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+      });
       const result = await response.json();
-      if (!response.ok || !result.ok || !result.challengeId) throw new Error(result.error || 'Unable to start OTP verification.');
-      pending.challengeId = result.challengeId;
-      otpEmail.textContent = email;
-      otpPanel.hidden = false;
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Unable to send OTP.');
+
+      if (otpEmail) otpEmail.textContent = email;
+      if (otpPanel) otpPanel.hidden = false;
       showMessage('OTP sent. Check your email to finish login.', true);
-      otpInput.focus();
+      otpInput?.focus();
     } catch (error) {
       const code = String(error?.code || '');
-      if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') showMessage('Invalid email or password.');
-      else showMessage(error?.message || 'Login failed.');
-    } finally { loginButton.disabled = false; }
+      if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
+        showMessage('Invalid email or password.');
+      } else {
+        showMessage(error?.message || 'Login failed.');
+      }
+    } finally {
+      if (loginButton) loginButton.disabled = false;
+    }
   }
 
-  form?.addEventListener('submit', async (event) => { event.preventDefault(); await beginLogin(); });
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    await beginLogin();
+  });
 
   verifyButton?.addEventListener('click', async () => {
-    if (!pending?.challengeId) return showMessage('Please request a new OTP.', false);
-    const otp = normalizeOtp(otpInput?.value);
-    if (!/^\d{6}$/.test(otp)) return showMessage('Enter the 6-digit OTP.', false);
-    otpInput.value = otp;
-    verifyButton.disabled = true; resendButton.disabled = true;
+    if (!pending) return showMessage('Please login first.');
+    const otp = String(otpInput?.value || '').trim();
+    if (!/^\d{6}$/.test(otp)) return showMessage('Enter the 6-digit OTP.');
+    verifyButton.disabled = true;
+    if (resendButton) resendButton.disabled = true;
     showMessage('Verifying OTP…', true);
     try {
-      const response = await api('/api/auth/login/verify-otp', { method: 'POST', body: JSON.stringify({ challengeId: pending.challengeId, email: pending.email, otp, name: pending.name }) });
+      const response = await api('/api/auth/login/verify-otp', {
+        method: 'POST',
+        body: JSON.stringify({ email: pending.email, otp }),
+      });
       const result = await response.json();
       if (!response.ok || !result.ok || !result.verified) throw new Error(result.error || 'OTP verification failed.');
+
       const user = pending.user;
       if (!user) throw new Error('Login session expired. Please login again.');
-      const profile = { id: user.uid, fullName: user.displayName || pending.name || 'Investor', email: user.email || pending.email, active: true };
+      const profile = {
+        id: user.uid,
+        fullName: user.displayName || pending.name || 'Investor',
+        email: user.email || pending.email,
+        active: true,
+      };
+
       setSession(profile);
       syncProfile(profile);
       showMessage('Login successful.', true);
-      window.setTimeout(() => window.location.assign('./home.html'), 250);
+      window.setTimeout(() => window.location.assign('./home.html'), 300);
     } catch (error) {
       console.error('Login verification flow failed:', error);
       showMessage(error?.message || 'Login failed.', false);
-    } finally { verifyButton.disabled = false; resendButton.disabled = false; }
+    } finally {
+      verifyButton.disabled = false;
+      if (resendButton) resendButton.disabled = false;
+    }
   });
 
   resendButton?.addEventListener('click', async () => {
-    if (!pending) return showMessage('Please login first.', false);
+    if (!pending) return;
     resendButton.disabled = true;
     try {
-      const response = await api('/api/auth/resend-otp', { method: 'POST', body: JSON.stringify({ email: pending.email, purpose: 'login' }) });
+      const response = await api('/api/auth/resend-otp', {
+        method: 'POST',
+        body: JSON.stringify({ email: pending.email, purpose: 'login' }),
+      });
       const result = await response.json();
-      if (!response.ok || !result.ok || !result.challengeId) throw new Error(result.error || 'Unable to resend OTP.');
-      pending.challengeId = result.challengeId;
-      otpInput.value = '';
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Unable to resend OTP.');
       showMessage('New OTP sent to your email.', true);
-      otpInput.focus();
-    } catch (error) { showMessage(error?.message || 'Unable to resend OTP.', false); }
-    finally { resendButton.disabled = false; }
+      otpInput?.focus();
+    } catch (error) {
+      showMessage(error?.message || 'Unable to resend OTP.', false);
+    } finally {
+      resendButton.disabled = false;
+    }
   });
 
-  signupLink?.addEventListener('click', (event) => { event.preventDefault(); window.location.assign('./signup.html'); });
+  signupLink?.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.location.assign('./signup.html');
+  });
 });
