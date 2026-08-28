@@ -19,6 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (message) { message.textContent = text; message.style.color = ok ? '#69e7aa' : '#ff8297'; }
   };
 
+  const normalizeOtp = (value) => String(value || '')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[^0-9]/g, '')
+    .slice(0, 6);
+
   const api = async (path, options = {}, timeoutMs = 15000) => {
     const controller = new AbortController();
     const timer = window.setTimeout(() => controller.abort(), timeoutMs);
@@ -37,6 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const visible = password.type === 'text'; password.type = visible ? 'password' : 'text';
     toggle.setAttribute('aria-label', visible ? 'Show password' : 'Hide password');
     toggle.setAttribute('aria-pressed', String(!visible)); toggle.textContent = visible ? '◉' : '◌';
+  });
+
+  otpInput?.addEventListener('input', () => {
+    const normalized = normalizeOtp(otpInput.value);
+    if (otpInput.value !== normalized) otpInput.value = normalized;
   });
 
   async function sendOtp() {
@@ -67,8 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   verifyButton?.addEventListener('click', async () => {
     if (!pending) return showMessage('Please request an OTP first.', false);
-    const otp = String(otpInput?.value || '').trim();
+    const otp = normalizeOtp(otpInput?.value);
     if (!/^\d{6}$/.test(otp)) return showMessage('Enter the 6-digit OTP.', false);
+    if (otpInput) otpInput.value = otp;
     verifyButton.disabled = true; if (resendButton) resendButton.disabled = true; showMessage('Verifying OTP…', true);
     try {
       const response = await api('/api/auth/signup/verify-otp', { method: 'POST', body: JSON.stringify({ name: pending.fullName, email: pending.email, otp }) }, 15000);
@@ -91,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (dbError) { console.warn('Firebase profile write failed:', dbError); }
 
       localStorage.setItem('indomark.firebaseUser', JSON.stringify(profile));
+      localStorage.setItem('indomark.user', JSON.stringify(profile));
       localStorage.setItem('indomark.session', 'signed-in');
       localStorage.setItem('indomark.loginEmail', profile.email);
       localStorage.removeItem('indomark.pendingName');
@@ -111,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await api('/api/auth/resend-otp', { method: 'POST', body: JSON.stringify({ email: pending.email, purpose: 'signup' }) });
       const result = await response.json(); if (!response.ok || !result.ok) throw new Error(result.error || 'Unable to resend OTP.');
+      if (otpInput) otpInput.value = '';
       showMessage('New OTP sent to your email.', true); otpInput?.focus();
     } catch (error) { showMessage(error?.name === 'AbortError' ? 'OTP service timed out. Please try again.' : (error?.message || 'Unable to resend OTP.'), false); }
     finally { resendButton.disabled = false; }
