@@ -79,9 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
         'Firebase login'
       );
       const displayName = credential.user.displayName || 'Investor';
-
-      // Keep the verified Firebase session alive while the second-step OTP is completed.
-      // This avoids a second sign-in call after OTP, which could leave the UI stuck.
       pending = { email, passwordValue, name: displayName, user: credential.user };
 
       const response = await api('/api/auth/login/request-otp', {
@@ -96,7 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
       otpInput?.focus();
     } catch (error) {
       const code = String(error?.code || '');
-      if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
+      if (error?.name === 'AbortError') {
+        showMessage('Login request timed out. Please try again.');
+      } else if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
         showMessage('Invalid email or password.');
       } else {
         showMessage(error?.message || 'Login failed.');
@@ -121,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await api('/api/auth/login/verify-otp', {
         method: 'POST',
-        body: JSON.stringify({ email: pending.email, otp }),
+        body: JSON.stringify({ email: pending.email, otp, name: pending.name }),
       });
       const result = await response.json();
       if (!response.ok || !result.ok || !result.verified) {
@@ -141,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       setSession(profile);
       syncProfile(profile);
-      showMessage('Login successful.', true);
+      showMessage('Login successful. Welcome email sent.', true);
       window.setTimeout(() => window.location.assign('./home.html'), 300);
     } catch (error) {
       console.error('Login verification flow failed:', error);
