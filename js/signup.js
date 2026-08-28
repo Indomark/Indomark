@@ -18,10 +18,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const showMessage = (text, ok = true) => {
     if (message) { message.textContent = text; message.style.color = ok ? '#69e7aa' : '#ff8297'; }
   };
-  const api = (path, options = {}) => fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers: { 'Content-Type': 'application/json', 'X-Indo-App-Name': APP_NAME, ...(options.headers || {}) },
-  });
+
+  const api = async (path, options = {}, timeoutMs = 15000) => {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(`${API_BASE}${path}`, {
+        ...options,
+        signal: controller.signal,
+        headers: { 'Content-Type': 'application/json', 'X-Indo-App-Name': APP_NAME, ...(options.headers || {}) },
+      });
+    } finally {
+      window.clearTimeout(timer);
+    }
+  };
 
   toggle?.addEventListener('click', () => {
     const visible = password.type === 'text'; password.type = visible ? 'password' : 'text';
@@ -48,8 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (otpEmail) otpEmail.textContent = email;
       if (otpPanel) otpPanel.hidden = false;
       showMessage('OTP sent. Check your email.', true); otpInput?.focus();
-    } catch (error) { showMessage(error?.message || 'Unable to send OTP.', false); }
-    finally { if (signupButton) signupButton.disabled = false; }
+    } catch (error) {
+      showMessage(error?.name === 'AbortError' ? 'OTP service timed out. Please try again.' : (error?.message || 'Unable to send OTP.'), false);
+    } finally { if (signupButton) signupButton.disabled = false; }
   }
 
   form?.addEventListener('submit', async (event) => { event.preventDefault(); await sendOtp(); });
@@ -60,24 +71,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!/^\d{6}$/.test(otp)) return showMessage('Enter the 6-digit OTP.', false);
     verifyButton.disabled = true; if (resendButton) resendButton.disabled = true; showMessage('Verifying OTP…', true);
     try {
-      const response = await api('/api/auth/signup/verify-otp', { method: 'POST', body: JSON.stringify({ name: pending.fullName, email: pending.email, otp }) });
+      const response = await api('/api/auth/signup/verify-otp', { method: 'POST', body: JSON.stringify({ name: pending.fullName, email: pending.email, otp }) }, 15000);
       const result = await response.json();
       if (!response.ok || !result.ok || !result.verified) throw new Error(result.error || 'OTP verification failed.');
-      let userCredential;
-      try { userCredential = await firebaseAuth.createUserWithEmailAndPassword(pending.email, pending.passwordValue); }
-      catch (firebaseError) {
-        if (String(firebaseError?.code || '') === 'auth/email-already-in-use') throw new Error('Account already exists in Firebase. Please login.');
-        throw new Error(firebaseError?.message || 'Firebase account creation failed.');
-      }
+
+      showMessage('OTP verified. Creating your account…', true);
+      const userCredential = await firebaseAuth.createUserWithEmailAndPassword(pending.email, pending.passwordValue);
       const user = userCredential.user;
       await user.updateProfile({ displayName: pending.fullName });
       const profile = { id: user.uid, fullName: pending.fullName, email: user.email || pending.email, active: true, createdAt: new Date().toISOString() };
-      try { if (window.IndomarkFirebase?.database && user.uid) await window.IndomarkFirebase.database.ref(`users/${user.uid}/profile`).set(profile); }
-      catch (dbError) { console.warn('Firebase profile write failed:', dbError); }
-      localStorage.setItem('indomark.firebaseUser', JSON.stringify(profile)); localStorage.setItem('indomark.session', 'signed-in'); localStorage.setItem('indomark.loginEmail', profile.email); localStorage.removeItem('indomark.pendingName');
-      showMessage('Account created successfully.', true); window.setTimeout(() => { window.location.href = './home.html'; }, 400);
-    } catch (error) { showMessage(error?.message || 'Account creation failed.', false); }
-    finally { verifyButton.disabled = false; if (resendButton) resendButton.disabled = false; }
+
+      try {
+        if (window.IndomarkFirebase?.database && user.uid) {
+          await Promise.race([
+            window.IndomarkFirebase.database.ref(`users/${user.uid}/profile`).set(profile),
+            new Promise((_, reject) => window.setTimeout(() => reject(new Error('Database write timeout')), 8000)),
+          ]);
+        }
+      } catch (dbError) { console.warn('Firebase profile write failed:', dbError); }
+
+      localStorage.setItem('indomark.firebaseUser', JSON.stringify(profile));
+      localStorage.setItem('indomark.session', 'signed-in');
+      localStorage.setItem('indomark.loginEmail', profile.email);
+      localStorage.removeItem('indomark.pendingName');
+      showMessage('Account created successfully.', true);
+      window.setTimeout(() => { window.location.href = './home.html'; }, 400);
+    } catch (error) {
+      if (error?.name === 'AbortError') showMessage('OTP verification timed out. Please try again.', false);
+      else if (String(error?.code || '') === 'auth/email-already-in-use') showMessage('Account already exists in Firebase. Please login.', false);
+      else showMessage(error?.message || 'Account creation failed.', false);
+    } finally {
+      verifyButton.disabled = false;
+      if (resendButton) resendButton.disabled = false;
+    }
   });
 
   resendButton?.addEventListener('click', async () => {
@@ -86,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const response = await api('/api/auth/resend-otp', { method: 'POST', body: JSON.stringify({ email: pending.email, purpose: 'signup' }) });
       const result = await response.json(); if (!response.ok || !result.ok) throw new Error(result.error || 'Unable to resend OTP.');
       showMessage('New OTP sent to your email.', true); otpInput?.focus();
-    } catch (error) { showMessage(error?.message || 'Unable to resend OTP.', false); }
+    } catch (error) { showMessage(error?.name === 'AbortError' ? 'OTP service timed out. Please try again.' : (error?.message || 'Unable to resend OTP.'), false); }
     finally { resendButton.disabled = false; }
   });
 
