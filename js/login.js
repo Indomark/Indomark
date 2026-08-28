@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const resendButton = document.getElementById('resendOtpButton');
   const API_BASE = 'https://indoverification-production.up.railway.app';
   const APP_NAME = 'Indomark';
+  const firebaseAuth = window.IndomarkFirebase?.auth;
   let pending = null;
 
   const showMessage = (text, ok = false) => {
@@ -41,23 +42,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = new FormData(form);
     const email = String(data.get('email') || '').trim().toLowerCase();
     const passwordValue = String(data.get('password') || '');
-    if (!email || !passwordValue) return showMessage('Enter email and password.');
+    if (!firebaseAuth) return showMessage('Firebase Authentication is unavailable.');
+    if (!/^\S+@\S+\.\S+$/.test(email)) return showMessage('Enter a valid email.');
+    if (!passwordValue) return showMessage('Enter your password.');
     if (loginButton) loginButton.disabled = true;
     showMessage('Checking account…', true);
     try {
+      const credential = await firebaseAuth.signInWithEmailAndPassword(email, passwordValue);
+      const displayName = credential.user.displayName || 'Investor';
+      await firebaseAuth.signOut();
+
       const response = await api('/api/auth/login/request-otp', {
         method: 'POST',
-        body: JSON.stringify({ email, password: passwordValue }),
+        body: JSON.stringify({ email }),
       });
       const result = await response.json();
-      if (!response.ok || !result.ok) throw new Error(result.error || 'Invalid email or password.');
-      pending = { email };
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Unable to send OTP.');
+      pending = { email, passwordValue, name: displayName };
       if (otpEmail) otpEmail.textContent = email;
       if (otpPanel) otpPanel.hidden = false;
       showMessage('OTP sent. Check your email to finish login.', true);
       otpInput?.focus();
     } catch (error) {
-      showMessage(error?.message || 'Login failed.');
+      const code = String(error?.code || '');
+      if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
+        showMessage('Invalid email or password.');
+      } else {
+        showMessage(error?.message || 'Login failed.');
+      }
     } finally {
       if (loginButton) loginButton.disabled = false;
     }
@@ -81,36 +93,33 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({ email: pending.email, otp }),
       });
       const result = await response.json();
-      if (!response.ok || !result.ok || !result.token || !result.user) {
-        throw new Error(result.error || 'OTP verification failed.');
-      }
+      if (!response.ok || !result.ok || !result.verified) throw new Error(result.error || 'OTP verification failed.');
 
-      const user = result.user;
+      const credential = await firebaseAuth.signInWithEmailAndPassword(pending.email, pending.passwordValue);
+      const user = credential.user;
       const profile = {
-        id: user.id,
-        fullName: user.name || 'Investor',
+        id: user.uid,
+        fullName: user.displayName || pending.name || 'Investor',
         email: user.email || pending.email,
-        active: user.active !== false,
+        active: true,
       };
 
-      // Firebase is DATA ONLY. IndoVerification owns authentication/session.
       try {
-        if (window.IndomarkFirebase?.database && user.id) {
-          await window.IndomarkFirebase.database.ref(`users/${user.id}/profile`).set(profile);
+        if (window.IndomarkFirebase?.database && user.uid) {
+          await window.IndomarkFirebase.database.ref(`users/${user.uid}/profile`).set(profile);
         }
       } catch (dbError) {
         console.warn('Firebase profile sync failed:', dbError);
       }
 
-      localStorage.setItem('indomark.token', result.token);
+      localStorage.setItem('indomark.firebaseUser', JSON.stringify(profile));
       localStorage.setItem('indomark.session', 'signed-in');
       localStorage.setItem('indomark.loginEmail', profile.email);
-      localStorage.setItem('indomark.user', JSON.stringify(profile));
       localStorage.removeItem('indomark.pendingName');
-      showMessage('Login verified successfully.', true);
+      showMessage('Login successful.', true);
       window.location.assign('./home.html');
     } catch (error) {
-      showMessage(error?.message || 'OTP verification failed.');
+      showMessage(error?.message || 'OTP verification failed.', false);
     } finally {
       verifyButton.disabled = false;
       if (resendButton) resendButton.disabled = false;
@@ -130,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showMessage('New OTP sent to your email.', true);
       otpInput?.focus();
     } catch (error) {
-      showMessage(error?.message || 'Unable to resend OTP.');
+      showMessage(error?.message || 'Unable to resend OTP.', false);
     } finally {
       resendButton.disabled = false;
     }
