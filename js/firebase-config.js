@@ -2,14 +2,13 @@
 // Firebase is DATA ONLY in Indomark. Authentication and sessions are handled by IndoVerification.
 
 const firebaseConfig = Object.freeze({
-  apiKey: "AIzaSyDj5T2zj5GUc4hhkAgbYimLa6ZKlZwnpss",
-  authDomain: "trigger-aa214.firebaseapp.com",
-  databaseURL: "https://trigger-aa214-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "trigger-aa214",
-  storageBucket: "trigger-aa214.firebasestorage.app",
-  messagingSenderId: "633598033396",
-  appId: "1:633598033396:web:2e45b99a6b584f5ba78da1",
-  measurementId: "G-540WDMJTQ4"
+  apiKey: "AIzaSyAXQHLuhGrPRjsPhI0hlG5ZGdf1BbRhqK8",
+  authDomain: "indomark-f4d55.firebaseapp.com",
+  projectId: "indomark-f4d55",
+  storageBucket: "indomark-f4d55.firebasestorage.app",
+  messagingSenderId: "563704316553",
+  appId: "1:563704316553:web:59bdbb1f6a241e25f4bc58",
+  measurementId: "G-ZSZ4PYD5E0"
 });
 
 if (!window.firebase) {
