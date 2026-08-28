@@ -2,7 +2,7 @@
 html,body{width:100%;min-width:320px;min-height:100%;margin:0;padding:0}
 html{background:#050914}
 body{font-family:Arial,Helvetica,sans-serif;background:#050914;color:#f7fbff;isolation:isolate}
-.signup-page{min-height:100dvh;width:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow:hidden;background:#050914;color:#f7fbff}
+.signup-page{min-height:100dvh;width:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto;background:#050914;color:#f7fbff}
 .signup-shell{width:min(430px,100%);padding:30px 27px 24px;background:#0b1220;border:1px solid #26344a;border-radius:9px;box-shadow:0 20px 60px rgba(0,0,0,.35);color:#f7fbff}
 .signup-header{text-align:center}
 .signup-brand{display:flex;align-items:center;justify-content:center;gap:8px;font-size:34px;font-weight:800;line-height:1;color:#f7fbff}
@@ -21,8 +21,18 @@ body{font-family:Arial,Helvetica,sans-serif;background:#050914;color:#f7fbff;iso
 .password-wrap input{padding-right:48px}
 .icon-button{position:absolute;right:5px;top:5px;width:40px;height:40px;border:1px solid #2a3b54;border-radius:6px;background:#101b2c;color:#c3cedd;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 .primary-button{width:100%;height:50px;margin-top:3px;border:0;border-radius:8px;background:linear-gradient(90deg,#5532ce,#7847eb);color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+.primary-button:disabled,.secondary-button:disabled{opacity:.6;cursor:not-allowed}
+.otp-panel{margin-top:14px;padding:16px;border:1px solid rgba(112,71,232,.35);border-radius:14px;background:rgba(112,71,232,.08)}
+.otp-panel[hidden]{display:none}
+.otp-title{font-weight:900;font-size:13px;margin-bottom:5px;color:#f7fbff}
+.otp-help{font-size:11px;color:#aeb9c8;line-height:1.45;margin:0 0 12px}
+.otp-input{display:block;width:100%;height:48px;box-sizing:border-box;text-align:center;letter-spacing:8px;font-size:22px;font-weight:800;border:1px solid #2a3b54;border-radius:8px;background:#0b1626;color:#f7fbff;outline:none}
+.otp-input:focus{border-color:#58e7a5;box-shadow:0 0 0 2px rgba(88,231,165,.12)}
+.otp-actions{display:flex;gap:8px;margin-top:10px}
+.otp-actions button{flex:1;min-width:0}
+.secondary-button{height:42px;border:1px solid #2a3b54;border-radius:8px;background:#101827;color:#f7fbff;font-size:13px;font-weight:700;cursor:pointer;padding:0 12px}
 .login-copy{text-align:center;margin:18px 0 0;color:#8f9db0;font-size:11px}
 .login-copy a{color:#58e7a5;text-decoration:none}
 .form-message{text-align:center;min-height:17px;margin:8px 0 0;font-size:10px;color:#58e7a5}
-@media(max-width:640px){.signup-page{padding:14px 10px}.signup-shell{width:100%;max-width:560px;padding:34px 24px 25px}.signup-brand{font-size:38px}.signup-header h1{font-size:31px}.subtitle{font-size:14px;max-width:340px}.signup-form{gap:15px}.signup-form label{font-size:13px}.signup-form input{height:58px;font-size:16px}.primary-button{height:58px;font-size:16px}.login-copy{font-size:13px}}
-@media(max-width:420px) and (max-height:760px){.signup-shell{padding:26px 20px 20px}.signup-brand{font-size:34px}.signup-header h1{font-size:28px;margin-top:20px}.subtitle{font-size:12px;margin-bottom:18px}.signup-form{gap:11px}.signup-form input{height:51px;font-size:15px}.primary-button{height:51px;font-size:15px}.login-copy{margin-top:13px;font-size:12px}}
+@media(max-width:640px){.signup-page{padding:14px 10px;align-items:flex-start}.signup-shell{width:100%;max-width:560px;padding:34px 24px 25px;margin:14px 0}.signup-brand{font-size:38px}.signup-header h1{font-size:31px}.subtitle{font-size:14px;max-width:340px}.signup-form{gap:15px}.signup-form label{font-size:13px}.signup-form input{height:58px;font-size:16px}.primary-button{height:58px;font-size:16px}.otp-panel{padding:16px}.otp-input{height:52px;font-size:22px}.secondary-button{height:46px;font-size:14px}.login-copy{font-size:13px}}
+@media(max-width:420px) and (max-height:760px){.signup-shell{padding:26px 20px 20px}.signup-brand{font-size:34px}.signup-header h1{font-size:28px;margin-top:20px}.subtitle{font-size:12px;margin-bottom:18px}.signup-form{gap:11px}.signup-form input{height:51px;font-size:15px}.primary-button{height:51px;font-size:15px}.otp-input{height:48px}.secondary-button{height:42px;font-size:13px}.login-copy{margin-top:13px;font-size:12px}}
