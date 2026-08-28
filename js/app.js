@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Remove stale service workers/caches created by the earlier theme rollout.
+  // Remove stale service workers/caches created by older deployments.
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations()
       .then((registrations) => registrations.forEach((registration) => registration.unregister()))
@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if ('caches' in window) {
     caches.keys()
-      .then((keys) => Promise.all(
-        keys.filter((key) => key.startsWith('indospeed-theme-')).map((key) => caches.delete(key))
-      ))
+      .then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
       .catch(() => {});
   }
 
@@ -28,6 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const timer = window.setInterval(tick, 70);
   window.setTimeout(() => {
     window.clearInterval(timer);
-    window.location.href = 'signup.html';
+    window.location.href = 'signup.html?v=13';
   }, 2200);
 });
