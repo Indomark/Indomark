@@ -1,10 +1,8 @@
 // Indomark Firebase client configuration.
-// This file contains public web-app configuration only.
-// Keep Firebase Authentication and Realtime Database security rules configured in Firebase Console.
+// Firebase is DATA ONLY in Indomark. Authentication and sessions are handled by IndoVerification.
 
 const firebaseConfig = Object.freeze({
   apiKey: "AIzaSyDj5T2zj5GUc4hhkAgbYimLa6ZKlZwnpss",
-  authDomain: "trigger-aa214.firebaseapp.com",
   databaseURL: "https://trigger-aa214-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "trigger-aa214",
   storageBucket: "trigger-aa214.firebasestorage.app",
@@ -21,7 +19,6 @@ if (!window.firebase) {
 
 window.IndomarkFirebase = {
   app: firebase.app(),
-  auth: firebase.auth(),
   database: firebase.database(),
   config: firebaseConfig
 };
