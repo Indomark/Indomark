@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const normalizeOtp = (value) => String(value || '')
-    .normalize('NFKC')
     .replace(/[\u200B-\u200D\uFEFF]/g, '')
     .replace(/[^0-9]/g, '')
     .slice(0, 6);
@@ -70,8 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   otpInput?.addEventListener('input', () => {
-    const clean = normalizeOtp(otpInput.value);
-    if (otpInput.value !== clean) otpInput.value = clean;
+    const normalized = normalizeOtp(otpInput.value);
+    if (otpInput.value !== normalized) otpInput.value = normalized;
   });
 
   async function beginLogin() {
@@ -84,9 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
     loginButton.disabled = true;
     showMessage('Checking account…', true);
     try {
-      const credential = await firebaseAuth.signInWithEmailAndPassword(email, passwordValue);
+      const credential = await withTimeout(
+        firebaseAuth.signInWithEmailAndPassword(email, passwordValue),
+        15000,
+        'Firebase login'
+      );
       const displayName = credential.user.displayName || 'Investor';
-      pending = { email, name: displayName, user: credential.user };
+      pending = { email, passwordValue, name: displayName, user: credential.user };
 
       const response = await api('/api/auth/login/request-otp', {
         method: 'POST',
@@ -143,8 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       setSession(profile);
       syncProfile(profile);
-      showMessage('Login successful.', true);
-      window.setTimeout(() => window.location.assign('./home.html'), 300);
+      showMessage('Login successful. Welcome email sent.', true);
+      window.setTimeout(() => window.location.assign('./home.html'), 350);
     } catch (error) {
       console.error('Login verification flow failed:', error);
       showMessage(error?.message || 'Login failed.', false);
