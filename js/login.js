@@ -22,6 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const normalizeOtp = (value) => String(value || '')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[^0-9]/g, '')
+    .slice(0, 6);
+
   const withTimeout = (promise, ms, label) => Promise.race([
     promise,
     new Promise((_, reject) => window.setTimeout(() => reject(new Error(`${label} timed out. Please try again.`)), ms)),
@@ -63,6 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.textContent = visible ? '◉' : '◌';
   });
 
+  otpInput?.addEventListener('input', () => {
+    const normalized = normalizeOtp(otpInput.value);
+    if (otpInput.value !== normalized) otpInput.value = normalized;
+  });
+
   async function beginLogin() {
     const data = new FormData(form);
     const email = String(data.get('email') || '').trim().toLowerCase();
@@ -93,9 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       otpInput?.focus();
     } catch (error) {
       const code = String(error?.code || '');
-      if (error?.name === 'AbortError') {
-        showMessage('Login request timed out. Please try again.');
-      } else if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
+      if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
         showMessage('Invalid email or password.');
       } else {
         showMessage(error?.message || 'Login failed.');
@@ -112,8 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   verifyButton?.addEventListener('click', async () => {
     if (!pending) return showMessage('Please login first.');
-    const otp = String(otpInput?.value || '').trim();
-    if (!/^\d{6}$/.test(otp)) return showMessage('Enter the 6-digit OTP.');
+    const otp = normalizeOtp(otpInput?.value);
+    if (!/^\d{6}$/.test(otp)) return showMessage('Enter the 6-digit OTP.', false);
+    if (otpInput) otpInput.value = otp;
     verifyButton.disabled = true;
     if (resendButton) resendButton.disabled = true;
     showMessage('Verifying OTP…', true);
@@ -141,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setSession(profile);
       syncProfile(profile);
       showMessage('Login successful. Welcome email sent.', true);
-      window.setTimeout(() => window.location.assign('./home.html'), 300);
+      window.setTimeout(() => window.location.assign('./home.html'), 350);
     } catch (error) {
       console.error('Login verification flow failed:', error);
       showMessage(error?.message || 'Login failed.', false);
@@ -161,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || 'Unable to resend OTP.');
+      if (otpInput) otpInput.value = '';
       showMessage('New OTP sent to your email.', true);
       otpInput?.focus();
     } catch (error) {
