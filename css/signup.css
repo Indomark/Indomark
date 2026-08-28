@@ -1,0 +1,28 @@
+*{box-sizing:border-box}
+html,body{width:100%;min-width:320px;min-height:100%;margin:0;padding:0}
+html{background:#050914}
+body{font-family:Arial,Helvetica,sans-serif;background:#050914;color:#f7fbff;isolation:isolate}
+.signup-page{min-height:100dvh;width:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow:hidden;background:#050914;color:#f7fbff}
+.signup-shell{width:min(430px,100%);padding:30px 27px 24px;background:#0b1220;border:1px solid #26344a;border-radius:9px;box-shadow:0 20px 60px rgba(0,0,0,.35);color:#f7fbff}
+.signup-header{text-align:center}
+.signup-brand{display:flex;align-items:center;justify-content:center;gap:8px;font-size:34px;font-weight:800;line-height:1;color:#f7fbff}
+.brand-wordmark{display:inline-flex;align-items:center;white-space:nowrap;color:#f7fbff}
+.brand-indo{color:#f7fbff!important}
+.brand-speed{color:#58e7a5!important}
+.brand-bolt{width:22px;height:28px;display:inline-block;flex:0 0 auto;background:linear-gradient(150deg,#79f2b0,#39d7a0);clip-path:polygon(58% 0,100% 0,61% 42%,92% 42%,21% 100%,40% 55%,4% 55%)}
+.signup-header h1{margin:25px 0 7px;font-size:28px;letter-spacing:-1px;color:#f7fbff}
+.subtitle{margin:0 auto 25px;max-width:300px;text-align:center;color:#9daabd;font-size:12px;line-height:1.5}
+.signup-form{display:grid;gap:13px}
+.signup-form label{display:block;font-size:11px;color:#c0cad8;font-weight:700}
+.signup-form input{display:block;width:100%;height:50px;margin-top:6px;padding:0 14px;border:1px solid #2a3b54;border-radius:8px;background:#0b1626;color:#f7fbff;outline:none;font-size:13px;box-shadow:none}
+.signup-form input:focus{border-color:#58e7a5;box-shadow:0 0 0 2px rgba(88,231,165,.12)}
+.signup-form input::placeholder{color:#74839a}
+.password-wrap{position:relative;display:block}
+.password-wrap input{padding-right:48px}
+.icon-button{position:absolute;right:5px;top:5px;width:40px;height:40px;border:1px solid #2a3b54;border-radius:6px;background:#101b2c;color:#c3cedd;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.primary-button{width:100%;height:50px;margin-top:3px;border:0;border-radius:8px;background:linear-gradient(90deg,#5532ce,#7847eb);color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+.login-copy{text-align:center;margin:18px 0 0;color:#8f9db0;font-size:11px}
+.login-copy a{color:#58e7a5;text-decoration:none}
+.form-message{text-align:center;min-height:17px;margin:8px 0 0;font-size:10px;color:#58e7a5}
+@media(max-width:640px){.signup-page{padding:14px 10px}.signup-shell{width:100%;max-width:560px;padding:34px 24px 25px}.signup-brand{font-size:38px}.signup-header h1{font-size:31px}.subtitle{font-size:14px;max-width:340px}.signup-form{gap:15px}.signup-form label{font-size:13px}.signup-form input{height:58px;font-size:16px}.primary-button{height:58px;font-size:16px}.login-copy{font-size:13px}}
+@media(max-width:420px) and (max-height:760px){.signup-shell{padding:26px 20px 20px}.signup-brand{font-size:34px}.signup-header h1{font-size:28px;margin-top:20px}.subtitle{font-size:12px;margin-bottom:18px}.signup-form{gap:11px}.signup-form input{height:51px;font-size:15px}.primary-button{height:51px;font-size:15px}.login-copy{margin-top:13px;font-size:12px}}
