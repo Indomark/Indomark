@@ -79,7 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
         'Firebase login'
       );
       const displayName = credential.user.displayName || 'Investor';
-      await firebaseAuth.signOut();
+
+      // Keep the verified Firebase session alive while the second-step OTP is completed.
+      // This avoids a second sign-in call after OTP, which could leave the UI stuck.
+      pending = { email, passwordValue, name: displayName, user: credential.user };
 
       const response = await api('/api/auth/login/request-otp', {
         method: 'POST',
@@ -87,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || 'Unable to send OTP.');
-      pending = { email, passwordValue, name: displayName };
       if (otpEmail) otpEmail.textContent = email;
       if (otpPanel) otpPanel.hidden = false;
       showMessage('OTP sent. Check your email to finish login.', true);
@@ -126,14 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error(result.error || 'OTP verification failed.');
       }
 
-      showMessage('OTP verified. Signing you in…', true);
+      showMessage('OTP verified. Completing login…', true);
+      const user = pending.user;
+      if (!user) throw new Error('Login session expired. Please login again.');
 
-      const credential = await withTimeout(
-        firebaseAuth.signInWithEmailAndPassword(pending.email, pending.passwordValue),
-        15000,
-        'Firebase sign-in'
-      );
-      const user = credential.user;
       const profile = {
         id: user.uid,
         fullName: user.displayName || pending.name || 'Investor',
@@ -144,14 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
       setSession(profile);
       syncProfile(profile);
       showMessage('Login successful.', true);
-      window.setTimeout(() => window.location.assign('./home.html'), 250);
+      window.setTimeout(() => window.location.assign('./home.html'), 300);
     } catch (error) {
       console.error('Login verification flow failed:', error);
-      if (error?.name === 'AbortError') {
-        showMessage('Server request timed out. Please try again.');
-      } else {
-        showMessage(error?.message || 'Login failed.', false);
-      }
+      showMessage(error?.message || 'Login failed.', false);
     } finally {
       verifyButton.disabled = false;
       if (resendButton) resendButton.disabled = false;
