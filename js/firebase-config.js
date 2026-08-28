@@ -1,6 +1,6 @@
-// IndoSpeed Firebase client configuration.
-// This file contains the public web-app configuration only.
-// Keep Firebase Authentication and Realtime Database security rules configured in the Firebase console.
+// Indomark Firebase client configuration.
+// This file contains public web-app configuration only.
+// Keep Firebase Authentication and Realtime Database security rules configured in Firebase Console.
 
 const firebaseConfig = Object.freeze({
   apiKey: "AIzaSyDj5T2zj5GUc4hhkAgbYimLa6ZKlZwnpss",
@@ -19,7 +19,7 @@ if (!window.firebase) {
   firebase.initializeApp(firebaseConfig);
 }
 
-window.IndoSpeedFirebase = {
+window.IndomarkFirebase = {
   app: firebase.app(),
   auth: firebase.auth(),
   database: firebase.database(),
