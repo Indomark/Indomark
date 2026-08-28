@@ -1,25 +1,27 @@
 // IndoSpeed Firebase client configuration.
 // This file contains the public web-app configuration only.
-// Keep Firebase Authentication and Realtime Database security rules configured
-// in the Firebase console; do not put service-account/private keys here.
-
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js';
-import { getDatabase } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';
+// Keep Firebase Authentication and Realtime Database security rules configured in the Firebase console.
 
 const firebaseConfig = Object.freeze({
-  apiKey: 'AIzaSyCjRlWU2AU14BvUp4oEUpfUHuGkl8uuo_c',
-  authDomain: 'indospeed.firebaseapp.com',
-  databaseURL: 'https://indospeed-default-rtdb.asia-southeast1.firebasedatabase.app',
-  projectId: 'indospeed',
-  storageBucket: 'indospeed.firebasestorage.app',
-  messagingSenderId: '33060314147',
-  appId: '1:33060314147:web:cab227dae93455db9fe596',
-  measurementId: 'G-CTCRH4VMB7'
+  apiKey: "AIzaSyDj5T2zj5GUc4hhkAgbYimLa6ZKlZwnpss",
+  authDomain: "trigger-aa214.firebaseapp.com",
+  databaseURL: "https://trigger-aa214-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "trigger-aa214",
+  storageBucket: "trigger-aa214.firebasestorage.app",
+  messagingSenderId: "633598033396",
+  appId: "1:633598033396:web:0141ccdffee99772a78da1",
+  measurementId: "G-1LZ4V6FT0B"
 });
 
-const firebaseApp = initializeApp(firebaseConfig);
-const firebaseAuth = getAuth(firebaseApp);
-const firebaseDatabase = getDatabase(firebaseApp);
+if (!window.firebase) {
+  console.error('Firebase SDK failed to load.');
+} else if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-export { firebaseApp, firebaseAuth, firebaseDatabase, firebaseConfig };
+window.IndoSpeedFirebase = {
+  app: firebase.app(),
+  auth: firebase.auth(),
+  database: firebase.database(),
+  config: firebaseConfig
+};
