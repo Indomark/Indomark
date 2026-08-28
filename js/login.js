@@ -22,24 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const fetchWithTimeout = async (url, options = {}, timeoutMs = 15000) => {
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), timeoutMs);
-    try {
-      return await fetch(url, { ...options, signal: controller.signal });
-    } finally {
-      window.clearTimeout(timer);
-    }
-  };
+  const withTimeout = (promise, ms, label) => Promise.race([
+    promise,
+    new Promise((_, reject) => window.setTimeout(() => reject(new Error(`${label} timed out. Please try again.`)), ms)),
+  ]);
 
-  const api = (path, options = {}) => fetchWithTimeout(`${API_BASE}${path}`, {
+  const api = (path, options = {}) => withTimeout(fetch(`${API_BASE}${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
       'X-Indo-App-Name': APP_NAME,
       ...(options.headers || {}),
     },
-  });
+  }), 15000, 'Server request');
 
   const setSession = (profile) => {
     localStorage.setItem('indomark.firebaseUser', JSON.stringify(profile));
@@ -53,11 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const database = window.IndomarkFirebase?.database;
       if (!database || !profile?.id) return;
-      const write = database.ref(`users/${profile.id}/profile`).set(profile);
-      Promise.race([
-        write,
-        new Promise((_, reject) => window.setTimeout(() => reject(new Error('profile write timeout')), 5000)),
-      ]).catch((error) => console.warn('Firebase profile sync failed:', error));
+      withTimeout(database.ref(`users/${profile.id}/profile`).set(profile), 5000, 'Profile sync')
+        .catch((error) => console.warn('Firebase profile sync failed:', error));
     } catch (error) {
       console.warn('Firebase profile sync setup failed:', error);
     }
@@ -81,7 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginButton) loginButton.disabled = true;
     showMessage('Checking account…', true);
     try {
-      const credential = await firebaseAuth.signInWithEmailAndPassword(email, passwordValue);
+      const credential = await withTimeout(
+        firebaseAuth.signInWithEmailAndPassword(email, passwordValue),
+        15000,
+        'Firebase login'
+      );
       const displayName = credential.user.displayName || 'Investor';
       await firebaseAuth.signOut();
 
@@ -98,9 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
       otpInput?.focus();
     } catch (error) {
       const code = String(error?.code || '');
-      if (error?.name === 'AbortError') {
-        showMessage('Login request timed out. Please try again.');
-      } else if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
+      if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
         showMessage('Invalid email or password.');
       } else {
         showMessage(error?.message || 'Login failed.');
@@ -128,10 +122,17 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({ email: pending.email, otp }),
       });
       const result = await response.json();
-      if (!response.ok || !result.ok || !result.verified) throw new Error(result.error || 'OTP verification failed.');
+      if (!response.ok || !result.ok || !result.verified) {
+        throw new Error(result.error || 'OTP verification failed.');
+      }
 
       showMessage('OTP verified. Signing you in…', true);
-      const credential = await firebaseAuth.signInWithEmailAndPassword(pending.email, pending.passwordValue);
+
+      const credential = await withTimeout(
+        firebaseAuth.signInWithEmailAndPassword(pending.email, pending.passwordValue),
+        15000,
+        'Firebase sign-in'
+      );
       const user = credential.user;
       const profile = {
         id: user.uid,
@@ -140,14 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
         active: true,
       };
 
-      // Do not block login on an optional database/profile write.
       setSession(profile);
       syncProfile(profile);
       showMessage('Login successful.', true);
-      window.location.replace('./home.html');
+      window.setTimeout(() => window.location.assign('./home.html'), 250);
     } catch (error) {
+      console.error('Login verification flow failed:', error);
       if (error?.name === 'AbortError') {
-        showMessage('Verification request timed out. Please try again.');
+        showMessage('Server request timed out. Please try again.');
       } else {
         showMessage(error?.message || 'Login failed.', false);
       }
