@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const resendButton = document.getElementById('resendOtpButton');
   const API_BASE = 'https://indoverification-production.up.railway.app';
   const APP_NAME = 'Indomark';
+  const firebaseAuth = window.IndomarkFirebase?.auth;
   let pending = null;
 
   const showMessage = (text, ok = true) => {
@@ -42,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fullName = String(data.get('fullName') || '').trim();
     const email = String(data.get('email') || '').trim().toLowerCase();
     const passwordValue = String(data.get('password') || '');
+    if (!firebaseAuth) return showMessage('Firebase Authentication is unavailable.', false);
     if (fullName.length < 2) return showMessage('Enter your full name.', false);
     if (!/^\S+@\S+\.\S+$/.test(email)) return showMessage('Enter a valid email.', false);
     if (passwordValue.length < 8) return showMessage('Password must be at least 8 characters.', false);
@@ -50,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await api('/api/auth/signup/request-otp', {
         method: 'POST',
-        body: JSON.stringify({ name: fullName, email, password: passwordValue }),
+        body: JSON.stringify({ name: fullName, email }),
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || 'Unable to send OTP.');
@@ -77,41 +79,45 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!/^\d{6}$/.test(otp)) return showMessage('Enter the 6-digit OTP.', false);
     verifyButton.disabled = true;
     if (resendButton) resendButton.disabled = true;
-    showMessage('Verifying OTP and creating your account…', true);
+    showMessage('Verifying OTP…', true);
     try {
       const response = await api('/api/auth/signup/verify-otp', {
         method: 'POST',
-        body: JSON.stringify({
-          name: pending.fullName,
-          email: pending.email,
-          password: pending.passwordValue,
-          otp,
-        }),
+        body: JSON.stringify({ name: pending.fullName, email: pending.email, otp }),
       });
       const result = await response.json();
-      if (!response.ok || !result.ok || !result.token || !result.user) {
-        throw new Error(result.error || 'Account creation failed.');
+      if (!response.ok || !result.ok || !result.verified) throw new Error(result.error || 'OTP verification failed.');
+
+      let userCredential;
+      try {
+        userCredential = await firebaseAuth.createUserWithEmailAndPassword(pending.email, pending.passwordValue);
+      } catch (firebaseError) {
+        const code = String(firebaseError?.code || '');
+        if (code === 'auth/email-already-in-use') {
+          throw new Error('Account already exists in Firebase. Please login.');
+        }
+        throw new Error(firebaseError?.message || 'Firebase account creation failed.');
       }
-      const user = result.user;
+
+      const user = userCredential.user;
+      await user.updateProfile({ displayName: pending.fullName });
       const profile = {
-        id: user.id,
-        fullName: user.name || pending.fullName,
+        id: user.uid,
+        fullName: pending.fullName,
         email: user.email || pending.email,
-        active: user.active !== false,
+        active: true,
         createdAt: new Date().toISOString(),
       };
 
-      // Firebase is DATA ONLY. IndoVerification owns authentication/session.
       try {
-        if (window.IndomarkFirebase?.database && user.id) {
-          await window.IndomarkFirebase.database.ref(`users/${user.id}/profile`).set(profile);
+        if (window.IndomarkFirebase?.database && user.uid) {
+          await window.IndomarkFirebase.database.ref(`users/${user.uid}/profile`).set(profile);
         }
       } catch (dbError) {
         console.warn('Firebase profile write failed:', dbError);
       }
 
-      localStorage.setItem('indomark.token', result.token);
-      localStorage.setItem('indomark.user', JSON.stringify(profile));
+      localStorage.setItem('indomark.firebaseUser', JSON.stringify(profile));
       localStorage.setItem('indomark.session', 'signed-in');
       localStorage.setItem('indomark.loginEmail', profile.email);
       localStorage.removeItem('indomark.pendingName');
