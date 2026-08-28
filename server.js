@@ -1,8 +1,11 @@
 import http from 'node:http';
-import { URL } from 'node:url';
+import { URL, fileURLToPath } from 'node:url';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 
 const PORT=Number(process.env.PORT||10000);
 const HOST='0.0.0.0';
+const ROOT=path.dirname(fileURLToPath(import.meta.url));
 const INDIAN_API_KEY=String(process.env.INDIAN_API_KEY||'').trim();
 const INDIAN_API_BASE='https://stock.indianapi.in';
 const NSE_HOME='https://www.nseindia.com/';
@@ -59,11 +62,21 @@ async function fetchNseQuote(symbol){const key=String(symbol||'').trim().toUpper
 
 async function fetchQuotes(symbols){const unique=[...new Set(symbols.map(s=>String(s).trim().toUpperCase()).filter(Boolean))];const results=[];for(const symbol of unique){try{results.push(await fetchNseQuote(symbol));}catch(e){console.warn(`Batch quote failed for ${symbol}: ${e.message}`);}if(unique.indexOf(symbol)<unique.length-1)await new Promise(r=>setTimeout(r,1100));}return results;}
 
+const MIME={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.svg':'image/svg+xml'};
+async function serveStatic(pathname,res){
+ const relative=pathname==='/'?'index.html':pathname.replace(/^\/+/, '');
+ const file=path.resolve(ROOT,relative);
+ if(file!==ROOT&&!file.startsWith(ROOT+path.sep)){res.statusCode=403;return res.end('Forbidden');}
+ try{const stat=await fs.stat(file);if(!stat.isFile())throw new Error('not a file');const body=await fs.readFile(file);res.statusCode=200;res.setHeader('Content-Type',MIME[path.extname(file).toLowerCase()]||'application/octet-stream');res.setHeader('Cache-Control','no-cache');return res.end(body);}catch{}
+ res.statusCode=404;res.setHeader('Content-Type','text/plain; charset=utf-8');return res.end('Not found');
+}
+
 const server=http.createServer(async(req,res)=>{setCors(res);if(req.method==='OPTIONS'){res.statusCode=204;return res.end();}try{const url=new URL(req.url||'/',`http://${req.headers.host||'localhost'}`);
  if(url.pathname==='/health'){res.setHeader('Content-Type','application/json');return res.end(JSON.stringify({ok:true,service:'indospeed-market-backend',source:INDIAN_API_KEY?'IndianAPI-enabled':'fallback-only'}));}
  if(url.pathname==='/api/trending'){const data=await fetchIndianApiTrending();res.setHeader('Content-Type','application/json');return res.end(JSON.stringify(data));}
  if(url.pathname==='/api/quote'){const data=await fetchNseQuote(url.searchParams.get('symbol'));res.setHeader('Content-Type','application/json');return res.end(JSON.stringify(data));}
  if(url.pathname==='/api/quotes'){const symbols=(url.searchParams.get('symbols')||'').split(',');const quotes=await fetchQuotes(symbols);res.setHeader('Content-Type','application/json');return res.end(JSON.stringify({quotes,updatedAt:Date.now()}));}
- res.statusCode=404;res.setHeader('Content-Type','application/json');res.end(JSON.stringify({error:'Not found'}));
+ if(req.method==='GET')return serveStatic(url.pathname,res);
+ res.statusCode=405;res.setHeader('Content-Type','application/json');res.end(JSON.stringify({error:'Method not allowed'}));
  }catch(error){console.error(`REQUEST ERROR ${req.url}:`,error);res.statusCode=502;res.setHeader('Content-Type','application/json');res.end(JSON.stringify({error:error instanceof Error?error.message:'Market data unavailable'}));}});
 server.listen(PORT,HOST,()=>console.log(`IndoSpeed market backend listening on ${HOST}:${PORT}`));
