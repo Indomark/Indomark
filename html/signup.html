@@ -7,46 +7,17 @@
   <meta name="description" content="Indomark account creation and email verification">
   <title>Indomark — Create Account</title>
   <script>
-    (async () => {
-      try {
-        if ('serviceWorker' in navigator) {
-          const registrations = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(registrations.map(r => r.unregister()));
-        }
-        if ('caches' in window) {
-          const keys = await caches.keys();
-          await Promise.all(keys.map(k => caches.delete(k)));
-        }
-      } catch (_) {}
-    })();
+    (async () => { try { if ('serviceWorker' in navigator) { const rs = await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r => r.unregister())); } if ('caches' in window) { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } } catch (_) {} })();
   </script>
-  <link rel="stylesheet" href="../css/signup.css?v=14">
+  <link rel="stylesheet" href="../css/signup.css?v=21">
 </head>
 <body class="entry-signup">
-  <main class="signup-page">
-    <section class="signup-shell" aria-label="Create Indomark account">
-      <header class="signup-header">
-        <div class="signup-brand" aria-label="Indomark"><span class="brand-bolt" aria-hidden="true"></span><span class="brand-wordmark"><span class="brand-indo">Indo</span><span class="brand-speed">mark</span></span></div>
-        <h1>Create Account</h1><p class="subtitle">Verify your email with OTP before creating your account</p>
-      </header>
-      <form id="signupForm" class="signup-form" novalidate>
-        <label for="fullName">Full Name<input id="fullName" name="fullName" type="text" autocomplete="name" placeholder="Rahul Kumar" required></label>
-        <label for="email">Email<input id="email" name="email" type="email" autocomplete="email" placeholder="rahul@gmail.com" required></label>
-        <label for="password">Password<span class="password-wrap"><input id="password" name="password" type="password" autocomplete="new-password" placeholder="•••••" minlength="5" required><button type="button" id="togglePassword" class="icon-button" aria-label="Show password" aria-pressed="false">◉</button></span></label>
-        <button id="signupButton" class="primary-button" type="submit">Send OTP</button>
-      </form>
-      <section id="otpPanel" class="otp-panel" hidden>
-        <div class="otp-title">Verify your email</div><p class="otp-help">We sent a 6-digit OTP to <strong id="otpEmail"></strong>. It expires in 10 minutes.</p>
-        <input id="signupOtp" class="otp-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" aria-label="Email verification OTP">
-        <div class="otp-actions"><button id="verifyOtpButton" class="primary-button" type="button">Verify &amp; Create Account</button><button id="resendOtpButton" class="secondary-button" type="button">Resend OTP</button></div>
-      </section>
-      <p class="login-copy">Already have an account? <a href="./login.html" id="loginLink">Login</a></p><p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
-    </section>
-  </main>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-  <script src="../js/firebase-config.js?v=18"></script>
-  <script src="../js/signup.js?v=18"></script>
+  <main class="signup-page"><section class="signup-shell" aria-label="Create Indomark account">
+    <header class="signup-header"><div class="signup-brand" aria-label="Indomark"><span class="brand-bolt" aria-hidden="true"></span><span class="brand-wordmark"><span class="brand-indo">Indo</span><span class="brand-speed">mark</span></span></div><h1>Create Account</h1><p class="subtitle">Verify your email with OTP before creating your account</p></header>
+    <form id="signupForm" class="signup-form" novalidate><label for="fullName">Full Name<input id="fullName" name="fullName" type="text" autocomplete="name" placeholder="Rahul Kumar" required></label><label for="email">Email<input id="email" name="email" type="email" autocomplete="email" placeholder="rahul@gmail.com" required></label><label for="password">Password<span class="password-wrap"><input id="password" name="password" type="password" autocomplete="new-password" placeholder="•••••" minlength="5" required><button type="button" id="togglePassword" class="icon-button" aria-label="Show password" aria-pressed="false">◉</button></span></label><button id="signupButton" class="primary-button" type="submit">Send OTP</button></form>
+    <section id="otpPanel" class="otp-panel" hidden><div class="otp-title">Verify your email</div><p class="otp-help">We sent a 6-digit OTP to <strong id="otpEmail"></strong>. It expires in 10 minutes.</p><input id="signupOtp" class="otp-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" aria-label="Email verification OTP"><div class="otp-actions"><button id="verifyOtpButton" class="primary-button" type="button">Verify &amp; Create Account</button><button id="resendOtpButton" class="secondary-button" type="button">Resend OTP</button></div></section>
+    <p class="login-copy">Already have an account? <a href="./login.html" id="loginLink">Login</a></p><p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
+  </section></main>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script><script src="../js/firebase-config.js?v=21"></script><script src="../js/signup.js?v=21"></script>
 </body>
 </html>
