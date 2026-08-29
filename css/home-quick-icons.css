@@ -1,0 +1,7 @@
+/* Clear SVG icons for Home Quick Access */
+.feature-card .quick-icon{display:grid!important;place-items:center!important;font-size:0!important;color:inherit!important}
+.feature-card .quick-icon svg{width:28px!important;height:28px!important;display:block!important;fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.feature-card .quick-icon.search{color:#58e7dd!important}
+.feature-card .quick-icon.ai{color:#b79aff!important}
+.feature-card .quick-icon.practice{color:#5797ff!important}
+.feature-card .quick-icon.course{color:#ffb52f!important}
