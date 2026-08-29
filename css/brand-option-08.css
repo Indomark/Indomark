@@ -6,6 +6,8 @@ html body .brand:not(.logo-text),html body .signup-brand,html body .login-brand,
 html body .brand-wordmark{font-size:inherit!important;line-height:1!important;white-space:nowrap!important}
 html body .brand>strong{font-size:0!important;color:transparent!important}
 html body .brand>strong::after{content:'Indomark';display:inline-block;font-size:inherit;line-height:1;color:#F7F8FA!important;letter-spacing:-.8px!important}
+html body .brand-speed,html body .logo-speed{font-size:0!important}
+html body .brand-speed::after,html body .logo-speed::after{content:'mark';font-size:inherit;line-height:1;color:inherit;display:inline-block}
 html body .bolt,html body .brand-bolt{width:24px!important;height:24px!important;display:inline-block!important;flex:0 0 24px!important;background:transparent url('../assets/indomark-compass-dark.svg?v=1') center/contain no-repeat!important;clip-path:none!important;filter:none!important}
 html body .logo-text{font-size:clamp(30px,5vw,56px)!important;line-height:1!important;letter-spacing:-2px!important}
 html body .logo-text .bolt{width:clamp(25px,3vw,38px)!important;height:clamp(25px,4vw,42px)!important;flex-basis:clamp(25px,3vw,38px)!important}
@@ -24,6 +26,7 @@ html body .page-wrap:not(:has(.brand,.learn-brand,.analysis-topbar,.login-brand,
 html[data-theme='light'] body .brand,html[data-theme='light'] body .signup-brand,html[data-theme='light'] body .login-brand,html[data-theme='light'] body .learn-brand,html[data-theme='light'] body .brand-wordmark,html[data-theme='light'] body .logo-text{color:#0B1020!important}
 html[data-theme='light'] body .brand>span:not(.bolt),html[data-theme='light'] body .signup-brand>span:not(.bolt),html[data-theme='light'] body .login-brand>span:not(.bolt),html[data-theme='light'] body .learn-brand strong,html[data-theme='light'] body .brand strong,html[data-theme='light'] body .signup-brand strong,html[data-theme='light'] body .login-brand strong,html[data-theme='light'] body .brand>span>strong,html[data-theme='light'] body .signup-brand>span>strong,html[data-theme='light'] body .login-brand>span>strong,html[data-theme='light'] body .brand-indo,html[data-theme='light'] body .brand-speed,html[data-theme='light'] body .logo-indo,html[data-theme='light'] body .logo-speed{color:#0B1020!important}
 html[data-theme='light'] body .brand>strong::after,html[data-theme='light'] body .learn-brand strong::after{color:#0B1020!important}
+html[data-theme='light'] body .brand-speed::after,html[data-theme='light'] body .logo-speed::after{color:#0B1020!important}
 html[data-theme='light'] body .bolt,html[data-theme='light'] body .brand-bolt{background-image:url('../assets/indomark-compass-light.svg?v=1')!important}
 html[data-theme='light'] body .page-wrap:not(:has(.brand,.learn-brand,.analysis-topbar,.login-brand,.signup-brand))::before{color:#0B1020!important;background-image:url('../assets/indomark-compass-light.svg?v=1')!important}
 html[data-theme='light'] body .eyebrow,html[data-theme='light'] body .section-head a,html[data-theme='light'] body .section-head>span,html[data-theme='light'] body .section-head span,html[data-theme='light'] body .signup-copy a,html[data-theme='light'] body .login-copy a,html[data-theme='light'] body .form-message,html[data-theme='light'] body .learn-top .learn-icon{color:#4B5563!important}
