@@ -1,19 +1,17 @@
-/* Indomark Option 08 — single-colour orange brand layer.
-   Loaded from app-theme.css so it does not change global-theme.css. */
+/* Indomark Option 10 — premium monogram identity.
+   Loaded from app-theme.css so global-theme.css remains untouched. */
 :root{
-  --brand-orange:#F97316;
-  --brand-orange-light:#FB923C;
-  --brand-orange-dark:#EA580C;
+  --brand-rose:#F43F5E;
+  --brand-pink:#EC4899;
+  --brand-purple:#A855F7;
 }
 
-/* Wordmark: the whole Indomark name uses one colour. */
+/* Wordmark: clean white Indomark everywhere. */
 html body .brand,
 html body .signup-brand,
 html body .login-brand,
 html body .brand-wordmark,
-html body .logo-text{
-  color:var(--brand-orange)!important;
-}
+html body .logo-text,
 html body .brand>span:not(.bolt),
 html body .signup-brand>span:not(.bolt),
 html body .login-brand>span:not(.bolt),
@@ -27,16 +25,26 @@ html body .brand-indo,
 html body .brand-speed,
 html body .logo-indo,
 html body .logo-speed{
-  color:var(--brand-orange)!important;
+  color:#F7FBFF!important;
 }
 
-/* Bolt / logo mark. */
+/* Option 10 monogram mark replaces the old lightning bolt. */
 html body .bolt,
 html body .brand-bolt{
-  background:linear-gradient(150deg,var(--brand-orange-light),var(--brand-orange-dark))!important;
+  width:28px!important;
+  height:28px!important;
+  display:inline-block!important;
+  flex:0 0 28px!important;
+  background-color:transparent!important;
+  background-image:url('../assets/indomark-option10-mark.svg')!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  background-size:contain!important;
+  clip-path:none!important;
+  filter:none!important;
 }
 
-/* Brand-facing accents and actions. */
+/* Brand-facing accents. Keep semantic market green/red unchanged. */
 html body .eyebrow,
 html body .section-head a,
 html body .section-head>span,
@@ -44,38 +52,36 @@ html body .section-head span,
 html body .signup-copy a,
 html body .login-copy a,
 html body .form-message{
-  color:var(--brand-orange)!important;
+  color:var(--brand-pink)!important;
 }
+
 html body .accent-btn,
 html body .cta,
 html body .primary-btn,
 html body .primary-button,
 html body .open-source{
   color:#fff!important;
-  background:linear-gradient(90deg,var(--brand-orange-dark),var(--brand-orange-light))!important;
+  background:linear-gradient(90deg,var(--brand-rose),var(--brand-purple))!important;
   border-color:transparent!important;
-  box-shadow:0 10px 26px rgba(249,115,22,.24)!important;
+  box-shadow:0 10px 26px rgba(236,72,153,.22)!important;
 }
+
 html body input:focus,
 html body select:focus,
 html body textarea:focus,
 html body .field input:focus,
 html body .field select:focus,
 html body .otp-input:focus{
-  border-color:var(--brand-orange)!important;
-  box-shadow:0 0 0 3px rgba(249,115,22,.12)!important;
+  border-color:var(--brand-pink)!important;
+  box-shadow:0 0 0 3px rgba(236,72,153,.12)!important;
 }
-html body input[type="checkbox"]{accent-color:var(--brand-orange)!important}
-html body .bottom-nav .active{background:rgba(249,115,22,.16)!important;color:var(--brand-orange)!important}
+html body input[type="checkbox"]{accent-color:var(--brand-pink)!important}
+html body .bottom-nav .active{background:rgba(236,72,153,.14)!important;color:var(--brand-pink)!important}
 
-/* Splash trend/loading accents. */
+/* Splash / auth branding. */
 html body .loading-bar{
-  background:linear-gradient(90deg,var(--brand-orange-light),var(--brand-orange),#fbbf24)!important;
+  background:linear-gradient(90deg,var(--brand-rose),var(--brand-pink),var(--brand-purple))!important;
 }
-html body .logo-text .logo-indo,
-html body .logo-text .logo-speed{color:var(--brand-orange)!important}
-
-/* Login/signup OTP accents. */
-html body .otp-panel{border-color:rgba(249,115,22,.35)!important;background:rgba(249,115,22,.08)!important}
-html body .otp-input{caret-color:var(--brand-orange)!important}
-html body .otp-panel .otp-title{color:var(--brand-orange)!important}
+html body .otp-panel{border-color:rgba(236,72,153,.30)!important;background:rgba(236,72,153,.07)!important}
+html body .otp-input{caret-color:var(--brand-pink)!important}
+html body .otp-panel .otp-title{color:var(--brand-pink)!important}
