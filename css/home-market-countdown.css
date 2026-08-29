@@ -1,10 +1,11 @@
-/* Market status: desktop typography only; preserve mobile layout. */
+/* Final compact market-status + mobile overrides. */
 .home-page .notification-button .bell-icon{transform:none!important;display:block!important;line-height:1!important}
 .home-page .notification-button .bell-icon svg{display:block!important;width:19px!important;height:19px!important;transform:none!important}
 .market-status .status-right{display:grid!important;grid-template-columns:auto auto!important;align-items:baseline!important;justify-content:end!important;column-gap:10px!important;row-gap:4px!important;min-width:0!important;width:auto!important}
-.market-status .status-right span{display:block!important;color:#fff!important;font-size:18px!important;line-height:1.2!important;font-weight:800!important;white-space:nowrap!important}
-.market-status .status-right strong{display:block!important;color:#58e7a5!important;font-size:28px!important;line-height:1.1!important;font-weight:800!important;letter-spacing:.3px!important;white-space:nowrap!important}
+.market-status .status-right span{display:block!important;color:#fff!important;font-size:28px!important;line-height:1.05!important;font-weight:800!important;white-space:nowrap!important}
+.market-status .status-right strong{display:block!important;color:#58e7a5!important;font-size:28px!important;line-height:1.05!important;font-weight:800!important;letter-spacing:.3px!important;white-space:nowrap!important}
 .market-status .status-right small{grid-column:1 / -1!important;justify-self:end!important;color:#fff!important;font-size:10px!important;line-height:1.2!important;white-space:nowrap!important}
+.market-status .status-left strong{font-size:28px!important;line-height:1.05!important;white-space:nowrap!important}
 @media(max-width:700px){
  .market-status{display:grid!important;grid-template-columns:minmax(0,40%) minmax(0,60%)!important;align-items:center!important;gap:0!important;padding:14px 12px!important;overflow:hidden!important}
  .market-status .status-left{min-width:0!important;width:auto!important;display:grid!important;gap:3px!important;padding-right:6px!important}
