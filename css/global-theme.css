@@ -1,170 +1,32 @@
-html[data-theme="light"] body,
-html[data-theme="light"] body>main,
-html[data-theme="light"] main,
-html[data-theme="light"] header,
-html[data-theme="light"] section,
-html[data-theme="light"] article,
-html[data-theme="light"] footer{color:var(--text)!important}
-html[data-theme="light"] body{background:var(--bg)!important}
-html[data-theme="light"] body>main{background:var(--bg)!important}
-html[data-theme="light"] .home-page,html[data-theme="light"] .watchlist-page,html[data-theme="light"] .markets-page,html[data-theme="light"] .analysis-page,html[data-theme="light"] .login-page,html[data-theme="light"] .signup-page,html[data-theme="light"] .learn-view,html[data-theme="light"] .splash-screen{background:var(--bg)!important}
-html[data-theme="light"] .glass,html[data-theme="light"] .card,html[data-theme="light"] .list-card,html[data-theme="light"] .info-card,html[data-theme="light"] .signal-card,html[data-theme="light"] .index-card,html[data-theme="light"] .watchlist-card,html[data-theme="light"] .lesson-panel,html[data-theme="light"] .source-note,html[data-theme="light"] .login-shell,html[data-theme="light"] .signup-shell,html[data-theme="light"] .stock-list,html[data-theme="light"] .market-status,html[data-theme="light"] .feature-card,html[data-theme="light"] .summary-grid>article,html[data-theme="light"] .portfolio-summary>span{background:var(--panel)!important;color:var(--text)!important;border-color:var(--line)!important;box-shadow:var(--shadow)!important}
-html[data-theme="light"] .lesson-card{background:var(--panel-3)!important;color:var(--text)!important;border-color:var(--line)!important}
-html[data-theme="light"] .lesson-card h3,html[data-theme="light"] .lesson-card p,html[data-theme="light"] .lesson-card ul,html[data-theme="light"] .stock-row,html[data-theme="light"] .watch-row,html[data-theme="light"] .feature-card b,html[data-theme="light"] .feature-card small,html[data-theme="light"] .row,html[data-theme="light"] .row-link,html[data-theme="light"] .big-number,html[data-theme="light"] h1,html[data-theme="light"] h2,html[data-theme="light"] h3,html[data-theme="light"] h4,html[data-theme="light"] h5,html[data-theme="light"] h6,html[data-theme="light"] strong,html[data-theme="light"] b{color:var(--text)!important}
-html[data-theme="light"] p,html[data-theme="light"] small,html[data-theme="light"] label,html[data-theme="light"] .page-header p,html[data-theme="light"] .market-message,html[data-theme="light"] .subtitle,html[data-theme="light"] .muted,html[data-theme="light"] .disclaimer,html[data-theme="light"] .learn-title p,html[data-theme="light"] .source-note p,html[data-theme="light"] .source-cta,html[data-theme="light"] .internal-msg{color:var(--muted)!important}
-html[data-theme="light"] .stock-row,html[data-theme="light"] .watch-row{border-bottom-color:var(--line-soft)!important;background:transparent!important}
-html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea,html[data-theme="light"] .field input,html[data-theme="light"] .field select{background:var(--panel)!important;color:var(--text)!important;border-color:var(--line)!important;color-scheme:light}
-html[data-theme="light"] select option{background:#fff!important;color:#152033!important}
-html[data-theme="light"] button:not(.cta):not(.primary-btn):not(.primary-button):not(.accent-btn):not(.open-source),html[data-theme="light"] .next-btn,html[data-theme="light"] .row-button{color:var(--text)!important;background:var(--panel-3)!important;border-color:var(--line)!important}
-html[data-theme="light"] .mini-btn,html[data-theme="light"] .back-btn,html[data-theme="light"] .add-btn,html[data-theme="light"] .refresh,html[data-theme="light"] .icon-btn{background:var(--panel-3)!important;color:var(--text)!important;border-color:var(--line)!important}
-html[data-theme="light"] .bottom-nav{background:rgba(255,255,255,.97)!important;border-color:var(--line)!important}
-html[data-theme="light"] .bottom-nav .active{background:#e7ecf6!important;color:#152033!important}
-html[data-theme="light"] .bottom-nav a,html[data-theme="light"] .bottom-nav button{color:#637286!important}
-html[data-theme="light"] .cta,html[data-theme="light"] .primary-btn,html[data-theme="light"] .primary-button,html[data-theme="light"] .accent-btn,html[data-theme="light"] .open-source{color:#fff!important;background:linear-gradient(90deg,#5532ce,#7847eb)!important;border-color:transparent!important}
-html[data-theme="light"] .positive,html[data-theme="light"] .green,html[data-theme="light"] .eyebrow,html[data-theme="light"] .value{color:var(--green)!important}
-html[data-theme="light"] .negative{color:var(--red)!important}
-html[data-theme="light"] .section-head a,html[data-theme="light"] .section-head>span,html[data-theme="light"] .section-head span{color:#6247d9!important}
-html[data-theme="light"] .status-dot{box-shadow:0 0 12px rgba(246,189,59,.35)}
-html[data-theme="light"] .bolt{filter:none}
-html[data-theme="light"] .settings-page select option{background:#fff!important;color:#152033!important}
-
-/* Indomark final brand identity — Compass Star. */
-.brand,.signup-brand,.login-brand,.learn-brand{color:#F7F8FA!important}
-.brand>span,.signup-brand>span,.login-brand>span,.learn-brand strong{color:#F7F8FA!important}
-.brand>strong,.signup-brand>strong,.login-brand>strong{color:#F7F8FA!important}
-.brand>span>strong,.signup-brand>span>strong,.login-brand>span>strong{color:#F7F8FA!important}
-.brand strong,.signup-brand strong,.login-brand strong{color:#F7F8FA!important}
-.brand>strong::after{content:'Indomark';display:inline-block;color:#F7F8FA!important;font-size:inherit;line-height:1}
-.learn-brand strong{font-size:0!important;color:transparent!important}
-.learn-brand strong::after{content:'Indomark';font-size:inherit;line-height:1;color:#F7F8FA!important;display:inline-block}
-.bolt,.brand-bolt{display:inline-block!important;background:transparent url('../assets/indomark-compass-dark.svg?v=1') center/contain no-repeat!important;clip-path:none!important;filter:none!important}
-html[data-theme="light"] .brand,html[data-theme="light"] .signup-brand,html[data-theme="light"] .login-brand,html[data-theme="light"] .learn-brand{color:#0B1020!important}
-html[data-theme="light"] .brand>span,html[data-theme="light"] .signup-brand>span,html[data-theme="light"] .login-brand>span,html[data-theme="light"] .learn-brand strong{color:#0B1020!important}
-html[data-theme="light"] .brand>strong,html[data-theme="light"] .signup-brand>strong,html[data-theme="light"] .login-brand>strong{color:#0B1020!important}
-html[data-theme="light"] .brand>span>strong,html[data-theme="light"] .signup-brand>span>strong,html[data-theme="light"] .login-brand>span>strong{color:#0B1020!important}
-html[data-theme="light"] .brand strong,html[data-theme="light"] .signup-brand strong,html[data-theme="light"] .login-brand strong{color:#0B1020!important}
-html[data-theme="light"] .brand>strong::after{color:#0B1020!important}
-html[data-theme="light"] .learn-brand strong::after{color:#0B1020!important}
+/* Indomark shared visual system. Theme is controlled by html[data-theme]. */
+.page,.home-page,.markets-page,.analysis-page,.watchlist-page,.login-page,.signup-page,.splash-screen,.learn-view{color:var(--text)}
+.page{min-height:100dvh;background:radial-gradient(circle at 80% 0%,rgba(124,58,237,.10),transparent 28%),linear-gradient(180deg,var(--bg),var(--panel-3) 70%,var(--bg));}
+.page-wrap{width:min(1180px,calc(100% - 32px));margin:0 auto}
+.page-header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.page-header .brand{margin-bottom:10px}
+.page-header h1{margin:0;color:var(--text)}
+.page-header p{color:var(--muted)}
+.card,.list-card,.info-card,.signal-card,.index-card,.watchlist-card,.lesson-panel,.source-note,.stock-list,.market-status,.feature-card{color:var(--text)}
+.row,.row-link,.stock-row,.watch-row{color:var(--text);border-color:var(--line-soft)}
+.row small,.row-link small,.page-header p,.market-message,.muted,.disclaimer,.source-note p,.internal-msg{color:var(--muted)}
+.row-link{background:transparent}
+.row-link:hover{background:rgba(124,58,237,.06)}
+.bottom-nav{background:rgba(7,14,25,.96)}
+.bottom-nav .active{background:rgba(124,58,237,.16);color:#c7bbff!important}
+.section-head a,.section-head>span{color:#a99cff}
+.value,.positive{color:var(--green)!important}
+.negative{color:var(--red)!important}
+.bolt,.brand-bolt{background-image:url('../assets/indomark-compass-dark.svg?v=1')!important}
+html[data-theme="light"] body,html[data-theme="light"] body>main,html[data-theme="light"] main{background:var(--bg);color:var(--text)}
+html[data-theme="light"] .page{background:radial-gradient(circle at 80% 0%,rgba(124,58,237,.07),transparent 28%),linear-gradient(180deg,#f7f9fc,#edf2f7 70%,#f7f9fc)}
+html[data-theme="light"] .card,html[data-theme="light"] .list-card,html[data-theme="light"] .info-card,html[data-theme="light"] .signal-card,html[data-theme="light"] .index-card,html[data-theme="light"] .watchlist-card,html[data-theme="light"] .lesson-panel,html[data-theme="light"] .source-note,html[data-theme="light"] .stock-list,html[data-theme="light"] .market-status,html[data-theme="light"] .feature-card{background:var(--panel);color:var(--text);border-color:var(--line);box-shadow:var(--shadow)}
+html[data-theme="light"] .row,html[data-theme="light"] .row-link,html[data-theme="light"] .stock-row,html[data-theme="light"] .watch-row{color:var(--text);border-color:var(--line-soft)}
+html[data-theme="light"] .row-link:hover{background:rgba(124,58,237,.06)}
+html[data-theme="light"] .bottom-nav{background:rgba(255,255,255,.97);border-color:var(--line)}
+html[data-theme="light"] .bottom-nav .active{background:#e8ecf5!important;color:#172033!important}
+html[data-theme="light"] .bottom-nav a,html[data-theme="light"] .bottom-nav button{color:#64748b}
+html[data-theme="light"] .section-head a,html[data-theme="light"] .section-head>span{color:#6247d9}
 html[data-theme="light"] .bolt,html[data-theme="light"] .brand-bolt{background-image:url('../assets/indomark-compass-light.svg?v=1')!important}
-
-/* Entry screens stay dark even when the rest of the app is in Light mode. */
-html[data-theme="light"] .splash-screen,
-html[data-theme="light"] .splash-screen * ,
-html[data-theme="light"] .login-page,
-html[data-theme="light"] .login-page *,
-html[data-theme="light"] .signup-page,
-html[data-theme="light"] .signup-page *{
-  color-scheme:dark!important;
-}
-html[data-theme="light"] .splash-screen,
-html[data-theme="light"] .login-page,
-html[data-theme="light"] .signup-page{
-  background:#050914!important;
-  color:#f4f7fb!important;
-}
-html[data-theme="light"] .login-shell,
-html[data-theme="light"] .signup-shell{
-  background:rgba(11,18,32,.96)!important;
-  color:#f4f7fb!important;
-  border-color:rgba(255,255,255,.10)!important;
-  box-shadow:0 20px 60px rgba(0,0,0,.35)!important;
-}
-html[data-theme="light"] .login-page h1,
-html[data-theme="light"] .signup-page h1,
-html[data-theme="light"] .login-page label,
-html[data-theme="light"] .signup-page label,
-html[data-theme="light"] .login-page .subtitle,
-html[data-theme="light"] .signup-page .subtitle,
-html[data-theme="light"] .login-page .signup-copy,
-html[data-theme="light"] .signup-page .login-copy,
-html[data-theme="light"] .login-page .form-message,
-html[data-theme="light"] .signup-page .form-message{
-  color:#f4f7fb!important;
-}
-html[data-theme="light"] .login-page input,
-html[data-theme="light"] .signup-page input{
-  background:#0b1220!important;
-  color:#f4f7fb!important;
-  border-color:#26344a!important;
-  color-scheme:dark!important;
-}
-html[data-theme="light"] .login-page input::placeholder,
-html[data-theme="light"] .signup-page input::placeholder{
-  color:#74839a!important;
-}
-html[data-theme="light"] .login-page .icon-button,
-html[data-theme="light"] .signup-page .icon-button{
-  background:#111b2c!important;
-  color:#b9c5d6!important;
-  border-color:#26344a!important;
-}
-html[data-theme="light"] .login-page .signup-copy a,
-html[data-theme="light"] .signup-page .login-copy a{
-  color:#f7f8fa!important;
-}
-html[data-theme="light"] .splash-screen .logo-indo,
-html[data-theme="light"] .splash-screen .tagline,
-html[data-theme="light"] .splash-screen .intro-block,
-html[data-theme="light"] .splash-screen #loading-text{
-  color:#f4f7fb!important;
-}
-html[data-theme="light"] .splash-screen .logo-speed{color:#f4f7fb!important}
-
-/* Final logo system. */
-html body .bolt,html body .brand-bolt{background-image:url('../assets/indomark-compass-dark.svg?v=1')!important;background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important}
-html[data-theme="light"] body .bolt,html[data-theme="light"] body .brand-bolt{background-image:url('../assets/indomark-compass-light.svg?v=1')!important}
-
-/* Shared app-header brand contract: Home's brand is the source of truth. */
-html body .brand,
-html body .signup-brand,
-html body .login-brand,
-html body .learn-brand{
-  display:flex!important;
-  align-items:center!important;
-  gap:10px!important;
-  font-size:36px!important;
-  line-height:1!important;
-  font-weight:800!important;
-  letter-spacing:-1.2px!important;
-  white-space:nowrap!important;
-}
-html body .brand .bolt,
-html body .signup-brand .bolt,
-html body .login-brand .bolt,
-html body .learn-brand .bolt,
-html body .brand .brand-bolt,
-html body .signup-brand .brand-bolt,
-html body .login-brand .brand-bolt,
-html body .learn-brand .brand-bolt{
-  width:30px!important;
-  height:30px!important;
-  flex:0 0 30px!important;
-}
-@media(max-width:640px){
-  html body .brand,
-  html body .signup-brand,
-  html body .login-brand,
-  html body .learn-brand{font-size:36px!important;gap:10px!important}
-  html body .brand .bolt,
-  html body .signup-brand .bolt,
-  html body .login-brand .bolt,
-  html body .learn-brand .bolt,
-  html body .brand .brand-bolt,
-  html body .signup-brand .brand-bolt,
-  html body .login-brand .brand-bolt,
-  html body .learn-brand .brand-bolt{width:30px!important;height:30px!important;flex-basis:30px!important}
-}
-@media(max-width:360px){
-  html body .brand,
-  html body .signup-brand,
-  html body .login-brand,
-  html body .learn-brand{font-size:36px!important;gap:9px!important}
-  html body .brand .bolt,
-  html body .signup-brand .bolt,
-  html body .login-brand .bolt,
-  html body .learn-brand .bolt,
-  html body .brand .brand-bolt,
-  html body .signup-brand .brand-bolt,
-  html body .login-brand .brand-bolt,
-  html body .learn-brand .brand-bolt{width:28px!important;height:28px!important;flex-basis:28px!important}
-}
+html[data-theme="light"] .positive,html[data-theme="light"] .value{color:#159b62!important}
+html[data-theme="light"] .negative{color:#dc3f59!important}
+@media(max-width:640px){.page-wrap{width:calc(100% - 24px)}}
