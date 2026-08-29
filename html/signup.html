@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-  <meta name="theme-color" content="#050914">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0B1125">
+  <link rel="icon" type="image/svg+xml" href="../assets/indomark-favicon.svg?v=8">
+  <link rel="shortcut icon" type="image/svg+xml" href="../assets/indomark-favicon.svg?v=8">
+  <link rel="apple-touch-icon" href="../assets/indomark-favicon.svg?v=8">
   <meta name="description" content="Indomark account creation and email verification">
   <title>Indomark — Create Account</title>
-  <script>
-    (async () => { try { if ('serviceWorker' in navigator) { const rs = await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r => r.unregister())); } if ('caches' in window) { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } } catch (_) {} })();
-  </script>
-  <link rel="stylesheet" href="../css/signup.css?v=25">
+  <script>(async()=>{try{if('serviceWorker' in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()))}if('caches' in window){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)))}}catch(_){}})();</script>
+  <link rel="stylesheet" href="../css/signup.css?v=26">
 </head>
 <body class="entry-signup">
   <main class="signup-page"><section class="signup-shell" aria-label="Create Indomark account">
@@ -18,6 +19,6 @@
     <section id="otpPanel" class="otp-panel" hidden><div class="otp-title">Verify your email</div><p class="otp-help">We sent a 6-digit OTP to <strong id="otpEmail"></strong>. It expires in 10 minutes.</p><input id="signupOtp" class="otp-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" aria-label="Email verification OTP"><div class="otp-actions"><button id="verifyOtpButton" class="primary-button" type="button">Verify &amp; Create Account</button><button id="resendOtpButton" class="secondary-button" type="button">Resend OTP</button></div></section>
     <p class="login-copy">Already have an account? <a href="./login.html" id="loginLink">Login</a></p><p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
   </section></main>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script><script src="../js/firebase-config.js?v=25"></script><script src="../js/signup.js?v=26"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script><script src="../js/firebase-config.js?v=26"></script><script src="../js/signup.js?v=27"></script>
 </body>
 </html>
