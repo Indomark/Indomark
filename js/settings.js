@@ -5,7 +5,16 @@
   const BRAND_CSS='../css/brand-option-08.css?v=20';
   const FAVICON='../assets/indomark-favicon.svg?v=9';
   const ALLOWED_WHEN_INACTIVE=new Set(['profile.html','login.html','signup.html','index.html','']);
-  function getStoredTheme(){const current=localStorage.getItem(KEY);return current==='light'?'light':'dark'}
+  function getStoredTheme(){
+    const current=localStorage.getItem(KEY);
+    return current==='light'||current==='system'?' '+current:'dark';
+  }
+  function normalizeThemePreference(value){return value==='light'||value==='system'?' '+value:'dark'}
+  function resolveTheme(preference){
+    const pref=preference==='light'||preference==='system'?preference:'dark';
+    if(pref==='system')return window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    return pref;
+  }
   function ensureGlobalCss(){if(document.querySelector('link[data-indomark-theme]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href=GLOBAL_CSS;link.dataset.indomarkTheme='true';document.head.appendChild(link)}
   function ensureBrandCss(){if(document.querySelector('link[data-indomark-brand]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href=BRAND_CSS;link.dataset.indomarkBrand='true';document.head.appendChild(link)}
   function ensureBrandIcon(){const head=document.head;if(!head)return;let icon=head.querySelector('link[data-indomark-favicon]');if(!icon){icon=document.createElement('link');icon.rel='icon';icon.type='image/svg+xml';icon.dataset.indomarkFavicon='true';head.appendChild(icon)}icon.href=FAVICON;let shortcut=head.querySelector('link[data-indomark-shortcut-icon]');if(!shortcut){shortcut=document.createElement('link');shortcut.rel='shortcut icon';shortcut.type='image/svg+xml';shortcut.dataset.indomarkShortcutIcon='true';head.appendChild(shortcut)}shortcut.href=FAVICON;let apple=head.querySelector('link[data-indomark-apple-icon]');if(!apple){apple=document.createElement('link');apple.rel='apple-touch-icon';apple.dataset.indomarkAppleIcon='true';head.appendChild(apple)}apple.href=FAVICON}
@@ -18,7 +27,16 @@
     if(document.body)replaceInNode(document.body);
     if(document.title)document.title=document.title.replace(/Indomark/g,'Indomark');
   }
-  function applyTheme(theme){const next=theme==='light'?'light':'dark';ensureGlobalCss();ensureBrandCss();ensureBrandIcon();normalizeBrandText();const root=document.documentElement;root.dataset.theme=next;root.style.colorScheme=next;localStorage.setItem(KEY,next)}
+  function applyTheme(theme){
+    const preference=normalizeThemePreference(theme);
+    const resolved=resolveTheme(preference);
+    ensureGlobalCss();ensureBrandCss();ensureBrandIcon();normalizeBrandText();
+    const root=document.documentElement;
+    root.dataset.theme=resolved;
+    root.dataset.themePreference=preference;
+    root.style.colorScheme=resolved;
+    localStorage.setItem(KEY,preference);
+  }
   function getAccountStatus(){return localStorage.getItem(ACCOUNT_STATUS_KEY)==='inactive'?'inactive':'active'}
   function currentPage(){return(location.pathname.split('/').pop()||'').toLowerCase()}
   function isAllowedPage(){return ALLOWED_WHEN_INACTIVE.has(currentPage())}
@@ -26,7 +44,11 @@
   function removeInactiveLock(){document.documentElement.classList.remove('account-inactive');document.getElementById('accountInactiveOverlay')?.remove()}
   function lockInactivePage(){if(isAllowedPage()){removeInactiveLock();return}installInactiveStyles();document.documentElement.classList.add('account-inactive');if(document.getElementById('accountInactiveOverlay'))return;const overlay=document.createElement('div');overlay.id='accountInactiveOverlay';overlay.setAttribute('role','alertdialog');overlay.setAttribute('aria-modal','true');overlay.innerHTML='<div class="account-inactive-box"><h2>Account inactive</h2><p>Your account is currently inactive. App features are unavailable until you activate your account again.</p><a href="profile.html" class="account-inactive-link">Go to Profile</a></div>';const mount=()=>{if(!document.body)return false;document.body.appendChild(overlay);return true};if(!mount())document.addEventListener('DOMContentLoaded',mount,{once:true})}
   function updateAccountStatus(status){const next=status==='inactive'?'inactive':'active';localStorage.setItem(ACCOUNT_STATUS_KEY,next);if(next==='inactive')lockInactivePage();else removeInactiveLock();window.dispatchEvent(new CustomEvent('indomark-account-status-change',{detail:{status:next}}));return next}
-  applyTheme(getStoredTheme());
-  window.IndomarkSettings={getTheme:getStoredTheme,setTheme:theme=>{const next=theme==='light'?'light':'dark';applyTheme(next);return next},applyTheme,getAccountStatus,setAccountStatus:updateAccountStatus,isAccountActive:()=>getAccountStatus()==='active'};
-  const check=()=>{applyTheme(getStoredTheme());if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();window.addEventListener('storage',event=>{if(event.key===ACCOUNT_STATUS_KEY||event.key===KEY)check()});
+  const initial=localStorage.getItem(KEY);applyTheme(initial==='light'||initial==='system'?initial:'dark');
+  window.IndomarkSettings={getTheme:()=>normalizeThemePreference(localStorage.getItem(KEY)),getResolvedTheme:()=>resolveTheme(normalizeThemePreference(localStorage.getItem(KEY))),setTheme:theme=>{const next=normalizeThemePreference(theme);applyTheme(next);return next},applyTheme,resolveTheme,getAccountStatus,setAccountStatus:updateAccountStatus,isAccountActive:()=>getAccountStatus()==='active'};
+  const check=()=>{applyTheme(normalizeThemePreference(localStorage.getItem(KEY)));if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();
+  const media=window.matchMedia?window.matchMedia('(prefers-color-scheme: light)'):null;
+  if(media){const onSystemChange=()=>{if(normalizeThemePreference(localStorage.getItem(KEY))==='system')applyTheme('system')};media.addEventListener?media.addEventListener('change',onSystemChange):media.addListener&&media.addListener(onSystemChange)}
+  window.addEventListener('storage',event=>{if(event.key===ACCOUNT_STATUS_KEY||event.key===KEY)check()});
 })();
