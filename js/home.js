@@ -66,6 +66,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   const isOpen=isWeekday&&minutes>=openMinutes&&minutes<closeMinutes;
   const dot=document.getElementById('statusDot');
 
+  dot?.classList.remove('open','closed');
+
   if(isOpen){
    const close=targetFor(p,15,30);
    const diff=wallMs(close)-wallMs(p);
@@ -73,7 +75,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    set('marketGreeting','Market is open · Live NSE session');
    set('marketNext','NSE regular session: 9:15 AM–3:30 PM IST');
    set('marketCountdown',formatDuration(diff));
-   set('marketCloseLabel',`Closes at ${clockLabel(close)} IST`);
+   set('marketCloseLabel','Closes at 3:30 PM IST');
    dot?.classList.add('open');
    return;
   }
@@ -91,7 +93,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   set('marketNext','NSE regular session: 9:15 AM–3:30 PM IST');
   set('marketCountdown',formatDuration(diff));
   set('marketCloseLabel',`Opens at 9:15 AM IST${isWeekday&&minutes<openMinutes?' today': ' on the next trading day'}`);
-  dot?.classList.remove('open');
+  dot?.classList.add('closed');
  }
 
  updateCountdown();
