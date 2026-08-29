@@ -1,8 +1,8 @@
 (function(){
   const KEY='indomark_settings_theme';
   const ACCOUNT_STATUS_KEY='indomark_account_status_v1';
-  const GLOBAL_CSS='../css/global-theme.css?v=8';
-  const FAVICON='../assets/indomark-favicon.svg?v=5';
+  const GLOBAL_CSS='../css/global-theme.css?v=10';
+  const FAVICON='../assets/indomark-favicon.svg?v=7';
   const ALLOWED_WHEN_INACTIVE=new Set(['profile.html','login.html','signup.html','index.html','']);
   function ensureGlobalCss(){if(document.querySelector('link[data-indomark-theme]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href=GLOBAL_CSS;link.dataset.indomarkTheme='true';document.head.appendChild(link)}
   function ensureBrandIcon(){
