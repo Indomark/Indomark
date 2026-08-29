@@ -24,5 +24,5 @@
     'en:investopedia:varsity': { courseTitle: 'Stock Market Basics — Course 1', sourceCourse: 'Verified beginner stock-market lesson', verifiedSource: 'One exact lesson currently verified; more course parts must be identified before adding them.', parts: [{ n: 1, title: 'Stock Market Basics — Verified Lesson', videoId: 'BgEZn-HJNb4' }] }
   };
   function getCatalog(language, teacher, course = 'varsity') { return CATALOG[`${language}:${teacher}:${course}`] || null; }
-  window.INDOSPEED_LEARN_CATALOG = { CATALOG, getCatalog };
+  window.INDOMARK_LEARN_CATALOG = { CATALOG, getCatalog };
 })();
