@@ -1,4 +1,4 @@
-@import url("./brand-option-08.css");
+@import url("./brand-option-08.css?v=18");
 
 *{box-sizing:border-box}
 html,body{width:100%;min-width:320px;min-height:100%;margin:0;padding:0}
@@ -25,7 +25,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#050914;color:#f7fbff;iso
 .primary-button{width:100%;height:50px;margin-top:3px;border:0;border-radius:8px;background:linear-gradient(90deg,#5b21b6,#a855f7);color:#fff;font-size:14px;font-weight:700;cursor:pointer}
 .otp-panel{margin-top:14px;padding:16px;border:1px solid rgba(168,85,247,.30);border-radius:14px;background:rgba(124,58,237,.07)}
 .otp-panel[hidden]{display:none}
-.otp-title{font-weight:900;font-size:13px;margin-bottom:5px}
+.otp-title{font-weight:900;font-size:13px;margin-bottom:5px;color:#a855f7}
 .otp-help{font-size:11px;color:#aeb9c8;line-height:1.45;margin:0 0 12px}
 .otp-input{display:block!important;width:100%!important;height:48px!important;box-sizing:border-box!important;margin:0!important;padding:0 14px!important;text-align:center!important;letter-spacing:6px!important;font-size:21px!important;font-weight:800!important;border:1px solid #33445e!important;border-radius:8px!important;background:#0b1626!important;color:#f7fbff!important;outline:none!important;box-shadow:none!important;caret-color:#a855f7!important}
 .otp-input:focus{border-color:#a855f7!important;box-shadow:0 0 0 2px rgba(168,85,247,.12)!important}
