@@ -75,7 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await api('/api/auth/signup/verify-otp', { method: 'POST', body: JSON.stringify({ challengeId: pending.challengeId, email: pending.email, otp, name: pending.fullName }) });
       const result = await response.json();
-      if (!response.ok || !result.ok || !result.verified) throw new Error(result.error || 'OTP verification failed.');
+      if (!response.ok || !result.ok || !result.verified || !result.welcomeToken) throw new Error(result.error || 'OTP verification failed.');
+      pending.welcomeToken = result.welcomeToken;
+
       showMessage('OTP verified. Creating your account…', true);
       const userCredential = await firebaseAuth.createUserWithEmailAndPassword(pending.email, pending.passwordValue);
       const user = userCredential.user;
@@ -89,12 +91,26 @@ document.addEventListener('DOMContentLoaded', () => {
           ]);
         }
       } catch (dbError) { console.warn('Firebase profile write failed:', dbError); }
+
+      let welcomeSent = false;
+      try {
+        const welcomeResponse = await api('/api/auth/signup/welcome', {
+          method: 'POST',
+          body: JSON.stringify({ welcomeToken: pending.welcomeToken, email: profile.email, name: profile.fullName }),
+        }, 15000);
+        const welcomeResult = await welcomeResponse.json();
+        welcomeSent = Boolean(welcomeResponse.ok && welcomeResult.ok && welcomeResult.welcomeSent);
+      } catch (welcomeError) {
+        console.warn('New-account welcome email failed:', welcomeError);
+      }
+
       localStorage.setItem('indomark.firebaseUser', JSON.stringify(profile));
       localStorage.setItem('indomark.user', JSON.stringify(profile));
       localStorage.setItem('indomark.session', 'signed-in');
       localStorage.setItem('indomark.loginEmail', profile.email);
       localStorage.removeItem('indomark.pendingName');
-      showMessage('Account created successfully.', true); window.setTimeout(() => { window.location.href = './home.html'; }, 400);
+      showMessage(welcomeSent ? 'Account created successfully. Welcome email sent.' : 'Account created successfully. Welcome email could not be sent.', true);
+      window.setTimeout(() => { window.location.href = './home.html'; }, 500);
     } catch (error) {
       if (error?.name === 'AbortError') showMessage('OTP verification timed out. Please try again.', false);
       else if (String(error?.code || '') === 'auth/email-already-in-use') showMessage('Account already exists in Firebase. Please login.', false);
@@ -109,7 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const response = await api('/api/auth/resend-otp', { method: 'POST', body: JSON.stringify({ email: pending.email, purpose: 'signup' }) });
       const result = await response.json();
       if (!response.ok || !result.ok || !result.challengeId) throw new Error(result.error || 'Unable to resend OTP.');
-      pending.challengeId = result.challengeId; otpInput.value = ''; showMessage('New OTP sent to your email.', true); otpInput.focus();
+      pending.challengeId = result.challengeId;
+      pending.welcomeToken = null;
+      otpInput.value = '';
+      showMessage('New OTP sent to your email.', true);
+      otpInput.focus();
     } catch (error) { showMessage(error?.message || 'Unable to resend OTP.', false); }
     finally { resendButton.disabled = false; }
   });
