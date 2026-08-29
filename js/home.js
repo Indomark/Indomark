@@ -1,5 +1,5 @@
 (function(){
- const BUILD='20260829-8';
+ const BUILD='20260829-9';
  const url=new URL(window.location.href);
  if(!url.searchParams.has('v')){
   url.searchParams.set('v',BUILD);
@@ -71,7 +71,10 @@ document.addEventListener('DOMContentLoaded',()=>{
  }
 
  function tradingLabel(p,prefix){
-  return `${prefix}: ${p.weekday || new Intl.DateTimeFormat('en-IN',{timeZone:tz,weekday:'long'}).format(new Date(Date.UTC(p.year,p.month-1,p.day)))} · ${pad(p.day)} ${new Intl.DateTimeFormat('en-IN',{timeZone:tz,month:'short'}).format(new Date(Date.UTC(p.year,p.month-1,p.day)))} ${p.year} · 9:15 AM IST`;
+  const date=new Date(Date.UTC(p.year,p.month-1,p.day));
+  const weekday=new Intl.DateTimeFormat('en-IN',{timeZone:tz,weekday:'long'}).format(date);
+  const month=new Intl.DateTimeFormat('en-IN',{timeZone:tz,month:'short'}).format(date);
+  return `${prefix}: ${weekday} · ${pad(p.day)} ${month} ${p.year} · 9:15 AM IST`;
  }
 
  function updateCountdown(now=new Date()){
@@ -82,6 +85,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const openMinutes=9*60+15,closeMinutes=15*60+30;
   const isOpen=isTrading&&minutes>=openMinutes&&minutes<closeMinutes;
   const dot=document.getElementById('statusDot');
+  const label=document.getElementById('marketCountdownLabel');
   dot?.classList.remove('open','closed');
 
   if(isOpen){
@@ -89,6 +93,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    set('marketStatus','Market Open');
    set('marketGreeting','Market is open · Live NSE session');
    set('marketNext','NSE regular session: 9:15 AM–3:30 PM IST');
+   label && (label.textContent='Market closes in');
    set('marketCountdown',formatDuration(wallMs(close)-wallMs(p)));
    set('marketCloseLabel','Closes at 3:30 PM IST');
    dot?.classList.add('open');
@@ -107,6 +112,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   set('marketStatus','Market Closed');
   set('marketGreeting','Next NSE session countdown is live');
   set('marketNext','NSE regular session: 9:15 AM–3:30 PM IST');
+  label && (label.textContent='Market opens in');
   set('marketCountdown',formatDuration(wallMs(next)-wallMs(p)));
   set('marketCloseLabel',tradingLabel(next,beforeOpen?'Trading today':'Next trading day'));
   dot?.classList.add('closed');
