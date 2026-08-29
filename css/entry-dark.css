@@ -1,91 +1,11 @@
-/* Indomark entry screens: hard dark theme, last in cascade. */
-.login-page,
-.signup-page,
-.splash-screen {
-  background:#050914!important;
-  color:#f4f7fb!important;
-  min-width:0!important;
-  width:100%!important;
-  overflow-x:hidden!important;
-}
-
-html[data-theme="light"] .login-page,
-html[data-theme="light"] .signup-page,
-html[data-theme="light"] .splash-screen {
-  background:#050914!important;
-  color:#f4f7fb!important;
-}
-
-.login-shell,
-.signup-shell {
-  background:#0b1220!important;
-  color:#f4f7fb!important;
-  border-color:#26344a!important;
-}
-
-.login-brand,
-.signup-brand {
-  color:#f4f7fb!important;
-}
-
-.login-brand > span:not(.bolt),
-.signup-brand > span:not(.bolt) {
-  color:#f4f7fb!important;
-}
-
-.login-brand > span > strong,
-.signup-brand > span > strong {
-  color:#58e7a5!important;
-}
-
-.login-page h1,
-.login-page label,
-.login-page .subtitle,
-.login-page .signup-copy,
-.login-page .form-message,
-.signup-page h1,
-.signup-page label,
-.signup-page .subtitle,
-.signup-page .login-copy,
-.signup-page .form-message {
-  color:#f4f7fb!important;
-}
-
-.login-page input,
-.signup-page input {
-  background:#0b1626!important;
-  color:#f4f7fb!important;
-  border-color:#2a3b54!important;
-  color-scheme:dark!important;
-}
-
-.login-page input::placeholder,
-.signup-page input::placeholder {
-  color:#7e8da3!important;
-}
-
-.login-page .icon-button,
-.signup-page .icon-button {
-  background:#101b2c!important;
-  color:#c3cedd!important;
-  border-color:#2a3b54!important;
-}
-
-.login-page .signup-copy a,
-.signup-page .login-copy a {
-  color:#58e7a5!important;
-}
-
-.splash-screen .logo-indo {
-  color:#f4f7fb!important;
-}
-
-.splash-screen .logo-speed {
-  color:#58e7a5!important;
-}
-
-.splash-screen .tagline,
-.splash-screen .intro-block,
-.splash-screen #loading-text {
-  color:#f4f7fb!important;
-}
+/* Entry screens use the same selectable theme as the rest of the app. */
+.login-page,.signup-page,.splash-screen{min-width:0!important;width:100%!important;overflow-x:hidden!important;background:var(--bg)!important;color:var(--text)!important}
+.login-shell,.signup-shell{background:var(--panel)!important;color:var(--text)!important;border:1px solid var(--line)!important;box-shadow:var(--shadow)!important}
+.login-brand,.signup-brand{color:var(--text)!important}.login-brand>span:not(.bolt),.signup-brand>span:not(.bolt),.login-brand>span>strong,.signup-brand>span>strong{color:var(--text)!important}
+.login-page h1,.login-page label,.login-page .subtitle,.login-page .signup-copy,.login-page .form-message,.signup-page h1,.signup-page label,.signup-page .subtitle,.signup-page .login-copy,.signup-page .form-message{color:var(--text)!important}
+.login-page input,.signup-page input{background:var(--panel-2)!important;color:var(--text)!important;border:1px solid var(--line)!important;color-scheme:inherit!important}
+.login-page input::placeholder,.signup-page input::placeholder{color:var(--muted)!important}
+.login-page .icon-button,.signup-page .icon-button{background:var(--panel-3)!important;color:var(--text)!important;border-color:var(--line)!important}
+.login-page .signup-copy a,.signup-page .login-copy a{color:var(--purple-2)!important}
+.splash-screen .logo-indo,.splash-screen .logo-speed,.splash-screen .tagline,.splash-screen .intro-block,.splash-screen #loading-text{color:var(--text)!important}
+@media(max-width:640px){.login-shell,.signup-shell{width:calc(100% - 24px);margin-inline:auto}.login-page input,.signup-page input{min-height:48px}}
