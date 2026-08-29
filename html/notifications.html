@@ -1,1 +1,61 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#050914"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=14"></script><link rel="icon" type="image/svg+xml" href="../assets/indomark-favicon.svg?v=8"><link rel="stylesheet" href="../css/app-theme.css?v=19"><link rel="stylesheet" href="../css/global-theme.css?v=12"><link rel="stylesheet" href="../css/secondary.css?v=8"><link rel="stylesheet" href="../css/indomark-page-brand.css?v=3"><title>Indomark — Notifications</title></head><body><main class="notifications-page"><div class="notifications-wrap"><header class="notification-head"><div><div class="brand"><span class="bolt" aria-hidden="true"></span><strong>Indo<span>mark</span></strong></div><div class="notification-title-row"><span class="notification-title-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.5a6 6 0 0 0-12 0c0 7-3 7.5-3 9h18c0-1.5-3-2-3-9Z"></path><path d="M10 20h4"></path></svg></span><div><h1>Notifications</h1><p>Market updates and app activity</p></div></div></div><div style="display:flex;gap:8px"><a class="back-btn" href="home.html" aria-label="Home">⌂</a><button id="clearBtn" class="clear-btn" type="button">Clear</button></div></header><section id="notificationList" class="notification-list"></section></div><nav class="bottom-nav" aria-label="Main navigation"><a href="home.html"><span class="icon">⌂</span>Home</a><a href="watchlist.html"><span class="icon">☆</span>Watchlist</a><a href="portfolio.html"><span class="icon">▣</span>Portfolio</a><a href="learn.html"><span class="icon">◫</span>Learn</a><a href="profile.html"><span class="icon">◉</span>Profile</a></nav></main><script>const defaults=[{title:'Welcome to Indomark',text:'Your market alerts, app updates and reminders will appear here.',time:'Just now'},{title:'Market updates',text:'Use the Alerts page to create stock-price notifications.',time:'Today'}];const key='indomark_notifications';function getItems(){try{return JSON.parse(localStorage.getItem(key)||'null')||defaults}catch{return defaults}}function render(){const list=document.getElementById('notificationList');const items=getItems();if(!items.length){list.innerHTML='<div class="empty-state glass"><strong>No notifications</strong><span>You are all caught up.</span></div>';return}list.innerHTML=items.map(x=>`<article class="notification-card glass"><h2>${escapeHtml(x.title||'Notification')}</h2><p>${escapeHtml(x.text||'')}</p><small>${escapeHtml(x.time||'')}</small></article>`).join('')}function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}document.getElementById('clearBtn').addEventListener('click',()=>{localStorage.setItem(key,'[]');render()});render();</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050914">
+<script>(function(){const t=localStorage.getItem("indomark_settings_theme")||"dark";const r=t==='system'&&(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches)?'light':t==='light'?'light':'dark';document.documentElement.dataset.theme=r;document.documentElement.style.colorScheme=r;})();</script>
+<script src="../js/settings.js?v=24"></script>
+<link rel="manifest" href="../manifest.json?v=20260829-6">
+<link rel="icon" type="image/svg+xml" href="../assets/indomark-mobile-icon.svg?v=6">
+<link rel="shortcut icon" type="image/svg+xml" href="../assets/indomark-mobile-icon.svg?v=6">
+<link rel="apple-touch-icon" href="../assets/indomark-mobile-icon.svg?v=6">
+<link rel="stylesheet" href="../css/app-theme.css?v=26">
+<link rel="stylesheet" href="../css/global-theme.css?v=17">
+<link rel="stylesheet" href="../css/secondary.css?v=8">
+<link rel="stylesheet" href="../css/indomark-page-brand.css?v=8">
+<link rel="stylesheet" href="../css/notifications.css?v=1">
+<title>Indomark — Notifications</title>
+</head>
+<body>
+<main class="notifications-page">
+  <div class="notifications-wrap">
+    <header class="notification-head">
+      <div>
+        <div class="notification-brand"><span class="bolt" aria-hidden="true"></span><strong>Indo<span>mark</span></strong></div>
+        <div class="notification-title-row">
+          <span class="notification-title-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.5a6 6 0 0 0-12 0c0 7-3 7.5-3 9h18c0-1.5-3-2-3-9Z"></path><path d="M10 20h4"></path></svg>
+          </span>
+          <div><h1>Notifications</h1><p>Market updates and app activity</p></div>
+        </div>
+      </div>
+      <div class="notification-actions">
+        <a class="notification-btn notification-back" href="home.html" aria-label="Home" title="Home">⌂</a>
+        <button id="markAllRead" class="notification-btn" type="button">Mark all as read</button>
+        <button id="clearBtn" class="notification-btn" type="button">Clear</button>
+      </div>
+    </header>
+
+    <nav class="notification-filters" aria-label="Notification filters">
+      <button class="filter-chip active" type="button" data-filter="all">All</button>
+      <button class="filter-chip" type="button" data-filter="alerts">Alerts</button>
+      <button class="filter-chip" type="button" data-filter="updates">Updates</button>
+      <button class="filter-chip" type="button" data-filter="system">System</button>
+    </nav>
+
+    <section id="notificationList" class="notification-list" aria-live="polite"></section>
+    <p class="notification-sample-note">Demo notifications for the current app flow. Backend-driven notifications can be connected later without changing this UI.</p>
+  </div>
+
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <a href="home.html"><span class="icon">⌂</span>Home</a>
+    <a href="watchlist.html"><span class="icon">☆</span>Watchlist</a>
+    <a href="portfolio.html"><span class="icon">▣</span>Portfolio</a>
+    <a href="learn.html"><span class="icon">◫</span>Learn</a>
+    <a href="profile.html"><span class="icon">◉</span>Profile</a>
+  </nav>
+</main>
+<script src="../js/notifications.js?v=1"></script>
+</body>
+</html>
