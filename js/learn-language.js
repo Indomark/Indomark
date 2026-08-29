@@ -1,6 +1,6 @@
 (() => {
-  const KEY = 'indospeed_learn_language_v2';
-  const STATE_KEY = 'indospeed_learn_course_v9';
+  const KEY = 'indomark_learn_language_v2';
+  const STATE_KEY = 'indomark_learn_course_v9';
   const LANGS = [['en','English'],['kn','ಕನ್ನಡ'],['hi','हिन्दी'],['ta','தமிழ்'],['mr','मराठी'],['te','తెలుగు'],['ml','മലയാളം'],['gu','ગુજરાતી'],['bn','বাংলা'],['or','ଓଡ଼ିଆ']];
   const supported = new Set(LANGS.map(x => x[0]));
   const defaultTeacher = {en:'investopedia',kn:'wavetrader',hi:'pranjal',ta:'businessman',mr:'growwmr',te:'growwte',ml:'growwml',gu:'growwgu',bn:'growwbn',or:'searchor'};
@@ -29,9 +29,9 @@
     select.innerHTML = LANGS.map(([code, label]) => `<option value="${code}">${label}</option>`).join(''); select.dataset.languageBound = '1';
     const urlLang = new URLSearchParams(location.search).get('lang'); const saved = localStorage.getItem(KEY) || 'en'; const initial = supported.has(urlLang) ? urlLang : (supported.has(saved) ? saved : 'en');
     select.value = initial; localStorage.setItem(KEY, initial);
-    select.addEventListener('change', () => { const next = supported.has(select.value) ? select.value : 'en'; localStorage.setItem(KEY, next); localStorage.setItem(`indospeed_teacher_${next}`, defaultTeacher[next] || ''); const target = new URL(window.location.href); target.searchParams.set('lang', next); target.searchParams.delete('teacher'); target.searchParams.delete('part'); target.searchParams.delete('course'); target.searchParams.set('_lang', String(Date.now())); window.location.assign(target.toString()); });
+    select.addEventListener('change', () => { const next = supported.has(select.value) ? select.value : 'en'; localStorage.setItem(KEY, next); localStorage.setItem(`indomark_teacher_${next}`, defaultTeacher[next] || ''); const target = new URL(window.location.href); target.searchParams.set('lang', next); target.searchParams.delete('teacher'); target.searchParams.delete('part'); target.searchParams.delete('course'); target.searchParams.set('_lang', String(Date.now())); window.location.assign(target.toString()); });
   }
-  function init() { loadI18n(); bindLanguageSelect(); rewriteCategoryLinks(); const lang = localStorage.getItem(KEY) || 'en'; const teacher = localStorage.getItem(`indospeed_teacher_${lang}`) || defaultTeacher[lang] || ''; const catalog = window.INDOSPEED_LEARN_CATALOG?.getCatalog(lang, teacher, 'varsity'); renderProgress(catalog, lang, teacher); }
-  function boot() { if (window.INDOSPEED_LEARN_CATALOG) { init(); return; } const s = document.createElement('script'); s.src = '../js/learn-course-catalog.js?v=4'; s.onload = init; s.onerror = init; document.head.appendChild(s); }
+  function init() { loadI18n(); bindLanguageSelect(); rewriteCategoryLinks(); const lang = localStorage.getItem(KEY) || 'en'; const teacher = localStorage.getItem(`indomark_teacher_${lang}`) || defaultTeacher[lang] || ''; const catalog = window.INDOMARK_LEARN_CATALOG?.getCatalog(lang, teacher, 'varsity'); renderProgress(catalog, lang, teacher); }
+  function boot() { if (window.INDOMARK_LEARN_CATALOG) { init(); return; } const s = document.createElement('script'); s.src = '../js/learn-course-catalog.js?v=4'; s.onload = init; s.onerror = init; document.head.appendChild(s); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true }); else boot();
 })();
