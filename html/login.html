@@ -2,45 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-  <meta name="theme-color" content="#050914">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0B1125">
+  <link rel="icon" type="image/svg+xml" href="../assets/indomark-favicon.svg?v=8">
+  <link rel="shortcut icon" type="image/svg+xml" href="../assets/indomark-favicon.svg?v=8">
+  <link rel="apple-touch-icon" href="../assets/indomark-favicon.svg?v=8">
   <meta name="description" content="Indomark login with email OTP verification">
   <title>Indomark — Login</title>
-  <script>
-    (async () => { try { if ('serviceWorker' in navigator) { const rs = await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r => r.unregister())); } if ('caches' in window) { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } } catch (_) {} })();
-  </script>
-  <link rel="stylesheet" href="../css/login.css?v=25">
+  <script>(async()=>{try{if('serviceWorker' in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()))}if('caches' in window){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)))}}catch(_){}})();</script>
+  <link rel="stylesheet" href="../css/login.css?v=26">
 </head>
 <body class="entry-login">
   <main class="login-page">
     <section class="login-shell" aria-label="Login to Indomark">
       <header class="login-header">
-        <div class="login-brand" aria-label="Indomark">
-          <span class="brand-bolt" aria-hidden="true"></span>
-          <span class="brand-wordmark"><span class="brand-indo">Indo</span><span class="brand-speed">mark</span></span>
-        </div>
+        <div class="login-brand" aria-label="Indomark"><span class="brand-bolt" aria-hidden="true"></span><span class="brand-wordmark"><span class="brand-indo">Indo</span><span class="brand-speed">mark</span></span></div>
         <h1>Welcome Back</h1>
         <p class="subtitle">Enter your password, then verify your email with OTP</p>
       </header>
-      <form id="loginForm" class="login-form" novalidate>
-        <label for="email">Email<input id="email" name="email" type="email" autocomplete="email" placeholder="rahul@gmail.com" required></label>
-        <label for="password">Password<span class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required><button type="button" id="togglePassword" class="icon-button" aria-label="Show password" aria-pressed="false">◉</button></span></label>
-        <button id="loginButton" class="primary-button" type="submit">Login &amp; Send OTP</button>
-      </form>
-      <section id="otpPanel" class="otp-panel" hidden>
-        <div class="otp-title">Two-step verification</div>
-        <p class="otp-help">We sent a 6-digit OTP to <strong id="otpEmail"></strong>. Enter it to finish signing in.</p>
-        <input id="loginOtp" class="otp-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" aria-label="Login verification OTP">
-        <div class="otp-actions"><button id="verifyOtpButton" class="primary-button" type="button">Verify &amp; Login</button><button id="resendOtpButton" class="secondary-button" type="button">Resend OTP</button></div>
-      </section>
-      <p class="signup-copy">Don't have an account? <a href="./signup.html" id="signupLink">Sign Up</a></p>
-      <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
+      <form id="loginForm" class="login-form" novalidate><label for="email">Email<input id="email" name="email" type="email" autocomplete="email" placeholder="rahul@gmail.com" required></label><label for="password">Password<span class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required><button type="button" id="togglePassword" class="icon-button" aria-label="Show password" aria-pressed="false">◉</button></span></label><button id="loginButton" class="primary-button" type="submit">Login &amp; Send OTP</button></form>
+      <section id="otpPanel" class="otp-panel" hidden><div class="otp-title">Two-step verification</div><p class="otp-help">We sent a 6-digit OTP to <strong id="otpEmail"></strong>. Enter it to finish signing in.</p><input id="loginOtp" class="otp-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" aria-label="Login verification OTP"><div class="otp-actions"><button id="verifyOtpButton" class="primary-button" type="button">Verify &amp; Login</button><button id="resendOtpButton" class="secondary-button" type="button">Resend OTP</button></div></section>
+      <p class="signup-copy">Don't have an account? <a href="./signup.html" id="signupLink">Sign Up</a></p><p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
     </section>
   </main>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-  <script src="../js/firebase-config.js?v=25"></script>
-  <script src="../js/login.js?v=25"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script><script src="../js/firebase-config.js?v=26"></script><script src="../js/login.js?v=26"></script>
 </body>
 </html>
