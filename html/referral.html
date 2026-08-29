@@ -1,32 +1,39 @@
 <!doctype html>
 <html lang="en">
-<head><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=5"><link rel="stylesheet" href="../css/entry-dark.css?v=1"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=5"><link rel="stylesheet" href="../css/entry-dark.css?v=1"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=5"><link rel="stylesheet" href="../css/entry-dark.css?v=1"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=7"></script><link rel="stylesheet" href="../css/app-theme.css?v=9"><link rel="stylesheet" href="../css/global-theme.css?v=4"><script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?"light":"dark";</script><script src="../js/settings.js?v=6"></script><link rel="stylesheet" href="../css/app-theme.css?v=8"><link rel="stylesheet" href="../css/global-theme.css?v=3">
+<head>
+<script>document.documentElement.dataset.theme=localStorage.getItem("indomark_settings_theme")==="light"?'light':localStorage.getItem("indomark_settings_theme")==="system"?(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):'dark';</script>
+<script src="../js/settings.js?v=16"></script>
+<link rel="stylesheet" href="../css/app-theme.css?v=21">
+<link rel="stylesheet" href="../css/global-theme.css?v=13">
+<link rel="stylesheet" href="../css/entry-dark.css?v=5">
+<link rel="stylesheet" href="../css/indomark-page-brand.css?v=4">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050914">
 <title>Indomark — Referral & Rewards</title>
-
-<link rel="stylesheet" href="../css/secondary.css?v=6">
+<link rel="stylesheet" href="../css/secondary.css?v=10">
 <style>
 .ref-page{min-height:100dvh;padding:16px 12px calc(108px + env(safe-area-inset-bottom));background:var(--bg)}
 .ref-wrap{width:min(920px,100%);margin:auto}
+.ref-brand{margin:2px 0 16px}
 .ref-hero{padding:18px;margin-bottom:12px;text-align:center}
 .ref-hero h1{margin:6px 0;font-size:28px;line-height:1.1}
 .ref-hero p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
 .ref-code{margin:14px 0 0;padding:12px;border:1px dashed var(--line);border-radius:12px;background:rgba(112,71,232,.08);display:flex;align-items:center;justify-content:space-between;gap:10px}
 .ref-code strong{font-size:16px;letter-spacing:1px}
-.ref-code button{border:1px solid var(--line);background:var(--panel-2);color:#fff;border-radius:9px;padding:8px 11px;font-weight:800;cursor:pointer}
+.ref-code button{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:9px;padding:8px 11px;font-weight:800;cursor:pointer}
 .ref-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
 .stat{padding:14px}.stat span{display:block;color:var(--muted);font-size:10px}.stat strong{display:block;margin-top:6px;font-size:20px}
-.ref-card{padding:14px;margin-bottom:12px}.ref-card h2{margin:0 0 7px;font-size:17px}.ref-card p{margin:0;color:#cbd5e1;font-size:11px;line-height:1.55}
+.ref-card{padding:14px;margin-bottom:12px}.ref-card h2{margin:0 0 7px;font-size:17px}.ref-card p{margin:0;color:var(--text);opacity:.86;font-size:11px;line-height:1.55}
 .steps{display:grid;gap:9px;margin-top:12px}.step{display:flex;gap:10px;align-items:flex-start}.step b{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border-radius:9px;background:rgba(112,71,232,.18);color:#c5b8ff;font-size:11px}.step strong{display:block;font-size:12px;margin-bottom:2px}.step small{color:var(--muted);font-size:10px;line-height:1.4}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.actions button,.actions a{border:0;border-radius:11px;padding:11px;text-align:center;text-decoration:none;font-weight:800;cursor:pointer}.share{background:linear-gradient(90deg,#5532ce,#7847eb);color:#fff}.copy{background:var(--panel-2);border:1px solid var(--line)!important;color:#fff}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.actions button,.actions a{border:0;border-radius:11px;padding:11px;text-align:center;text-decoration:none;font-weight:800;cursor:pointer}.share{background:linear-gradient(90deg,#5532ce,#7847eb);color:#fff}.copy{background:var(--panel-2);border:1px solid var(--line)!important;color:var(--text)}
 .notice{margin-top:10px;color:var(--muted);font-size:10px;text-align:center}
 @media(max-width:640px){.ref-grid{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.ref-hero h1{font-size:25px}}
 </style>
 </head>
 <body>
 <main class="ref-page"><div class="ref-wrap">
+<div class="ref-brand"><div class="brand"><span class="bolt" aria-hidden="true"></span><strong>Indo<span>mark</span></strong></div></div>
 <header class="page-header"><div><h1>Referral &amp; Rewards</h1><p>Invite friends and track your rewards</p></div><a class="mini-btn" href="profile.html" aria-label="Profile">◉</a></header>
 <section class="card glass ref-hero">
 <p class="eyebrow">REFER &amp; EARN</p>
