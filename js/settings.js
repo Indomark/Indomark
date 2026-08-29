@@ -7,11 +7,11 @@
   const ALLOWED_WHEN_INACTIVE=new Set(['profile.html','login.html','signup.html','index.html','']);
   function getStoredTheme(){
     const current=localStorage.getItem(KEY);
-    return current==='light'||current==='system'?' '+current:'dark';
+    return current==='light'||current==='system'?current:'dark';
   }
-  function normalizeThemePreference(value){return value==='light'||value==='system'?' '+value:'dark'}
+  function normalizeThemePreference(value){return value==='light'||value==='system'?value:'dark'}
   function resolveTheme(preference){
-    const pref=preference==='light'||preference==='system'?preference:'dark';
+    const pref=normalizeThemePreference(preference);
     if(pref==='system')return window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
     return pref;
   }
@@ -44,11 +44,10 @@
   function removeInactiveLock(){document.documentElement.classList.remove('account-inactive');document.getElementById('accountInactiveOverlay')?.remove()}
   function lockInactivePage(){if(isAllowedPage()){removeInactiveLock();return}installInactiveStyles();document.documentElement.classList.add('account-inactive');if(document.getElementById('accountInactiveOverlay'))return;const overlay=document.createElement('div');overlay.id='accountInactiveOverlay';overlay.setAttribute('role','alertdialog');overlay.setAttribute('aria-modal','true');overlay.innerHTML='<div class="account-inactive-box"><h2>Account inactive</h2><p>Your account is currently inactive. App features are unavailable until you activate your account again.</p><a href="profile.html" class="account-inactive-link">Go to Profile</a></div>';const mount=()=>{if(!document.body)return false;document.body.appendChild(overlay);return true};if(!mount())document.addEventListener('DOMContentLoaded',mount,{once:true})}
   function updateAccountStatus(status){const next=status==='inactive'?'inactive':'active';localStorage.setItem(ACCOUNT_STATUS_KEY,next);if(next==='inactive')lockInactivePage();else removeInactiveLock();window.dispatchEvent(new CustomEvent('indomark-account-status-change',{detail:{status:next}}));return next}
-  const initial=localStorage.getItem(KEY);applyTheme(initial==='light'||initial==='system'?initial:'dark');
-  window.IndomarkSettings={getTheme:()=>normalizeThemePreference(localStorage.getItem(KEY)),getResolvedTheme:()=>resolveTheme(normalizeThemePreference(localStorage.getItem(KEY))),setTheme:theme=>{const next=normalizeThemePreference(theme);applyTheme(next);return next},applyTheme,resolveTheme,getAccountStatus,setAccountStatus:updateAccountStatus,isAccountActive:()=>getAccountStatus()==='active'};
-  const check=()=>{applyTheme(normalizeThemePreference(localStorage.getItem(KEY)));if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();
+  applyTheme(getStoredTheme());
+  window.IndomarkSettings={getTheme:getStoredTheme,getResolvedTheme:()=>resolveTheme(getStoredTheme()),setTheme:theme=>{const next=normalizeThemePreference(theme);applyTheme(next);return next},applyTheme,resolveTheme,getAccountStatus,setAccountStatus:updateAccountStatus,isAccountActive:()=>getAccountStatus()==='active'};
+  const check=()=>{applyTheme(getStoredTheme());if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();
   const media=window.matchMedia?window.matchMedia('(prefers-color-scheme: light)'):null;
-  if(media){const onSystemChange=()=>{if(normalizeThemePreference(localStorage.getItem(KEY))==='system')applyTheme('system')};media.addEventListener?media.addEventListener('change',onSystemChange):media.addListener&&media.addListener(onSystemChange)}
+  if(media){const onSystemChange=()=>{if(getStoredTheme()==='system')applyTheme('system')};media.addEventListener?media.addEventListener('change',onSystemChange):media.addListener&&media.addListener(onSystemChange)}
   window.addEventListener('storage',event=>{if(event.key===ACCOUNT_STATUS_KEY||event.key===KEY)check()});
 })();
