@@ -27,23 +27,24 @@ html[data-theme="light"] .section-head a,html[data-theme="light"] .section-head>
 html[data-theme="light"] .status-dot{box-shadow:0 0 12px rgba(246,189,59,.35)}
 html[data-theme="light"] .bolt{filter:none}
 html[data-theme="light"] .settings-page select option{background:#fff!important;color:#152033!important}
-/* Indomark final brand identity — minimal im logo. */
-.brand,.signup-brand,.login-brand,.learn-brand{color:#F7FBFF!important}
-.brand>span,.signup-brand>span,.login-brand>span,.learn-brand strong{color:#F7FBFF!important}
-.brand>strong,.signup-brand>strong,.login-brand>strong{color:#F7FBFF!important}
-.brand>span>strong,.signup-brand>span>strong,.login-brand>span>strong{color:#A855F7!important}
-.brand strong,.signup-brand strong,.login-brand strong{color:#A855F7!important}
-.brand>strong::after{content:'Indomark';display:inline-block;color:#F7FBFF!important;font-size:inherit;line-height:1}
+/* Indomark final brand identity — Compass Star. */
+.brand,.signup-brand,.login-brand,.learn-brand{color:#F7F8FA!important}
+.brand>span,.signup-brand>span,.login-brand>span,.learn-brand strong{color:#F7F8FA!important}
+.brand>strong,.signup-brand>strong,.login-brand>strong{color:#F7F8FA!important}
+.brand>span>strong,.signup-brand>span>strong,.login-brand>span>strong{color:#F7F8FA!important}
+.brand strong,.signup-brand strong,.login-brand strong{color:#F7F8FA!important}
+.brand>strong::after{content:'Indomark';display:inline-block;color:#F7F8FA!important;font-size:inherit;line-height:1}
 .learn-brand strong{font-size:0!important;color:transparent!important}
-.learn-brand strong::after{content:'Indomark';font-size:inherit;line-height:1;color:#F7FBFF!important;display:inline-block}
-.bolt,.brand-bolt{display:inline-block!important;background:transparent url('../assets/indomark-final-mark.svg?v=6') center/contain no-repeat!important;clip-path:none!important;filter:none!important}
-html[data-theme="light"] .brand,html[data-theme="light"] .signup-brand,html[data-theme="light"] .login-brand,html[data-theme="light"] .learn-brand{color:#0F1B38!important}
-html[data-theme="light"] .brand>span,html[data-theme="light"] .signup-brand>span,html[data-theme="light"] .login-brand>span,html[data-theme="light"] .learn-brand strong{color:#0F1B38!important}
-html[data-theme="light"] .brand>strong,html[data-theme="light"] .signup-brand>strong,html[data-theme="light"] .login-brand>strong{color:#0F1B38!important}
-html[data-theme="light"] .brand>span>strong,html[data-theme="light"] .signup-brand>span>strong,html[data-theme="light"] .login-brand>span>strong{color:#6D28D9!important}
-html[data-theme="light"] .brand strong,html[data-theme="light"] .signup-brand strong,html[data-theme="light"] .login-brand strong{color:#6D28D9!important}
-html[data-theme="light"] .brand>strong::after{color:#0F1B38!important}
-html[data-theme="light"] .learn-brand strong::after{color:#0F1B38!important}
+.learn-brand strong::after{content:'Indomark';font-size:inherit;line-height:1;color:#F7F8FA!important;display:inline-block}
+.bolt,.brand-bolt{display:inline-block!important;background:transparent url('../assets/indomark-compass-dark.svg?v=1') center/contain no-repeat!important;clip-path:none!important;filter:none!important}
+html[data-theme="light"] .brand,html[data-theme="light"] .signup-brand,html[data-theme="light"] .login-brand,html[data-theme="light"] .learn-brand{color:#0B1020!important}
+html[data-theme="light"] .brand>span,html[data-theme="light"] .signup-brand>span,html[data-theme="light"] .login-brand>span,html[data-theme="light"] .learn-brand strong{color:#0B1020!important}
+html[data-theme="light"] .brand>strong,html[data-theme="light"] .signup-brand>strong,html[data-theme="light"] .login-brand>strong{color:#0B1020!important}
+html[data-theme="light"] .brand>span>strong,html[data-theme="light"] .signup-brand>span>strong,html[data-theme="light"] .login-brand>span>strong{color:#0B1020!important}
+html[data-theme="light"] .brand strong,html[data-theme="light"] .signup-brand strong,html[data-theme="light"] .login-brand strong{color:#0B1020!important}
+html[data-theme="light"] .brand>strong::after{color:#0B1020!important}
+html[data-theme="light"] .learn-brand strong::after{color:#0B1020!important}
+html[data-theme="light"] .bolt,html[data-theme="light"] .brand-bolt{background-image:url('../assets/indomark-compass-light.svg?v=1')!important}
 
 /* Entry screens stay dark even when the rest of the app is in Light mode. */
 html[data-theme="light"] .splash-screen,
@@ -97,10 +98,8 @@ html[data-theme="light"] .signup-page .icon-button{
   border-color:#26344a!important;
 }
 html[data-theme="light"] .login-page .signup-copy a,
-html[data-theme="light"] .signup-page .login-copy a,
-html[data-theme="light"] .login-brand strong,
-html[data-theme="light"] .signup-brand strong{
-  color:#A855F7!important;
+html[data-theme="light"] .signup-page .login-copy a{
+  color:#f7f8fa!important;
 }
 html[data-theme="light"] .splash-screen .logo-indo,
 html[data-theme="light"] .splash-screen .tagline,
@@ -108,4 +107,8 @@ html[data-theme="light"] .splash-screen .intro-block,
 html[data-theme="light"] .splash-screen #loading-text{
   color:#f4f7fb!important;
 }
-html[data-theme="light"] .splash-screen .logo-speed{color:#A855F7!important}
+html[data-theme="light"] .splash-screen .logo-speed{color:#f4f7fb!important}
+
+/* Final logo system. */
+html body .bolt,html body .brand-bolt{background-image:url('../assets/indomark-compass-dark.svg?v=1')!important;background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important}
+html[data-theme="light"] body .bolt,html[data-theme="light"] body .brand-bolt{background-image:url('../assets/indomark-compass-light.svg?v=1')!important}
