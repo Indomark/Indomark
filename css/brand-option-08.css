@@ -1,9 +1,9 @@
-/* Indomark Option 10 — premium monogram identity.
+/* Indomark Option 04 — simple geometric premium identity.
    Loaded from app-theme.css so global-theme.css remains untouched. */
 :root{
-  --brand-rose:#F43F5E;
-  --brand-pink:#EC4899;
-  --brand-purple:#A855F7;
+  --brand-purple:#7C3AED;
+  --brand-purple-light:#A855F7;
+  --brand-purple-dark:#5B21B6;
 }
 
 /* Wordmark: clean white Indomark everywhere. */
@@ -28,7 +28,7 @@ html body .logo-speed{
   color:#F7FBFF!important;
 }
 
-/* Option 10 monogram mark replaces the old lightning bolt. */
+/* Option 04 geometric mark replaces the old lightning mark. */
 html body .bolt,
 html body .brand-bolt{
   width:28px!important;
@@ -36,7 +36,7 @@ html body .brand-bolt{
   display:inline-block!important;
   flex:0 0 28px!important;
   background-color:transparent!important;
-  background-image:url('../assets/indomark-option10-mark.svg')!important;
+  background-image:url('../assets/indomark-option04-mark.svg')!important;
   background-position:center!important;
   background-repeat:no-repeat!important;
   background-size:contain!important;
@@ -44,7 +44,7 @@ html body .brand-bolt{
   filter:none!important;
 }
 
-/* Brand-facing accents. Keep semantic market green/red unchanged. */
+/* Brand-facing accents. Semantic market green/red remain unchanged. */
 html body .eyebrow,
 html body .section-head a,
 html body .section-head>span,
@@ -52,7 +52,7 @@ html body .section-head span,
 html body .signup-copy a,
 html body .login-copy a,
 html body .form-message{
-  color:var(--brand-pink)!important;
+  color:var(--brand-purple-light)!important;
 }
 
 html body .accent-btn,
@@ -61,9 +61,9 @@ html body .primary-btn,
 html body .primary-button,
 html body .open-source{
   color:#fff!important;
-  background:linear-gradient(90deg,var(--brand-rose),var(--brand-purple))!important;
+  background:linear-gradient(90deg,var(--brand-purple-dark),var(--brand-purple-light))!important;
   border-color:transparent!important;
-  box-shadow:0 10px 26px rgba(236,72,153,.22)!important;
+  box-shadow:0 10px 26px rgba(124,58,237,.24)!important;
 }
 
 html body input:focus,
@@ -72,16 +72,20 @@ html body textarea:focus,
 html body .field input:focus,
 html body .field select:focus,
 html body .otp-input:focus{
-  border-color:var(--brand-pink)!important;
-  box-shadow:0 0 0 3px rgba(236,72,153,.12)!important;
+  border-color:var(--brand-purple-light)!important;
+  box-shadow:0 0 0 3px rgba(168,85,247,.12)!important;
 }
-html body input[type="checkbox"]{accent-color:var(--brand-pink)!important}
-html body .bottom-nav .active{background:rgba(236,72,153,.14)!important;color:var(--brand-pink)!important}
+html body input[type="checkbox"]{accent-color:var(--brand-purple)!important}
+html body .bottom-nav .active{background:rgba(124,58,237,.14)!important;color:var(--brand-purple-light)!important}
 
-/* Splash / auth branding. */
+/* Splash / loading accents. */
 html body .loading-bar{
-  background:linear-gradient(90deg,var(--brand-rose),var(--brand-pink),var(--brand-purple))!important;
+  background:linear-gradient(90deg,var(--brand-purple-dark),var(--brand-purple-light),#C084FC)!important;
 }
-html body .otp-panel{border-color:rgba(236,72,153,.30)!important;background:rgba(236,72,153,.07)!important}
-html body .otp-input{caret-color:var(--brand-pink)!important}
-html body .otp-panel .otp-title{color:var(--brand-pink)!important}
+html body .logo-text .logo-indo,
+html body .logo-text .logo-speed{color:#F7FBFF!important}
+
+/* Login/signup OTP accents. */
+html body .otp-panel{border-color:rgba(168,85,247,.30)!important;background:rgba(124,58,237,.07)!important}
+html body .otp-input{caret-color:var(--brand-purple-light)!important}
+html body .otp-panel .otp-title{color:var(--brand-purple-light)!important}
