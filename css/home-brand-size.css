@@ -1,0 +1,9 @@
+/* Home mobile brand balance */
+@media (max-width:640px){
+  .home-page>.topbar .brand{font-size:54px!important;gap:9px!important}
+  .home-page>.topbar .brand .bolt{width:30px!important;height:30px!important;flex-basis:30px!important}
+}
+@media (max-width:360px){
+  .home-page>.topbar .brand{font-size:51px!important;gap:8px!important}
+  .home-page>.topbar .brand .bolt{width:28px!important;height:28px!important;flex-basis:28px!important}
+}
