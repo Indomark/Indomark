@@ -27,15 +27,23 @@ html[data-theme="light"] .section-head a,html[data-theme="light"] .section-head>
 html[data-theme="light"] .status-dot{box-shadow:0 0 12px rgba(246,189,59,.35)}
 html[data-theme="light"] .bolt{filter:none}
 html[data-theme="light"] .settings-page select option{background:#fff!important;color:#152033!important}
-/* Indomark final brand identity — selected #10. */
-.brand,.signup-brand,.login-brand{color:var(--text)!important}
-.brand>span,.signup-brand>span,.login-brand>span{color:var(--text)!important}
-.brand>strong,.signup-brand>strong,.login-brand>strong{color:var(--text)!important}
+/* Indomark final brand identity — minimal im logo. */
+.brand,.signup-brand,.login-brand,.learn-brand{color:#F7FBFF!important}
+.brand>span,.signup-brand>span,.login-brand>span,.learn-brand strong{color:#F7FBFF!important}
+.brand>strong,.signup-brand>strong,.login-brand>strong{color:#F7FBFF!important}
 .brand>span>strong,.signup-brand>span>strong,.login-brand>span>strong{color:#A855F7!important}
 .brand strong,.signup-brand strong,.login-brand strong{color:#A855F7!important}
-html[data-theme="light"] .brand>span,html[data-theme="light"] .signup-brand>span,html[data-theme="light"] .login-brand>span,html[data-theme="light"] .brand>strong,html[data-theme="light"] .signup-brand>strong,html[data-theme="light"] .login-brand>strong{color:var(--text)!important}
-html[data-theme="light"] .brand>span>strong,html[data-theme="light"] .signup-brand>span>strong,html[data-theme="light"] .login-brand strong{color:#A855F7!important}
-html[data-theme="light"] .bolt,html[data-theme="light"] .brand-bolt{filter:none!important;background-image:url('../assets/indomark-final-mark.svg?v=5')!important;background-size:contain!important;background-repeat:no-repeat!important;background-position:center!important}
+.brand>strong::after{content:'Indomark';display:inline-block;color:#F7FBFF!important;font-size:inherit;line-height:1}
+.learn-brand strong{font-size:0!important;color:transparent!important}
+.learn-brand strong::after{content:'Indomark';font-size:inherit;line-height:1;color:#F7FBFF!important;display:inline-block}
+.bolt,.brand-bolt{display:inline-block!important;background:transparent url('../assets/indomark-final-mark.svg?v=6') center/contain no-repeat!important;clip-path:none!important;filter:none!important}
+html[data-theme="light"] .brand,html[data-theme="light"] .signup-brand,html[data-theme="light"] .login-brand,html[data-theme="light"] .learn-brand{color:#0F1B38!important}
+html[data-theme="light"] .brand>span,html[data-theme="light"] .signup-brand>span,html[data-theme="light"] .login-brand>span,html[data-theme="light"] .learn-brand strong{color:#0F1B38!important}
+html[data-theme="light"] .brand>strong,.html[data-theme="light"] .signup-brand>strong,html[data-theme="light"] .login-brand>strong{color:#0F1B38!important}
+html[data-theme="light"] .brand>span>strong,html[data-theme="light"] .signup-brand>span>strong,html[data-theme="light"] .login-brand>span>strong{color:#6D28D9!important}
+html[data-theme="light"] .brand strong,html[data-theme="light"] .signup-brand strong,html[data-theme="light"] .login-brand strong{color:#6D28D9!important}
+html[data-theme="light"] .brand>strong::after{color:#0F1B38!important}
+html[data-theme="light"] .learn-brand strong::after{color:#0F1B38!important}
 
 /* Entry screens stay dark even when the rest of the app is in Light mode. */
 html[data-theme="light"] .splash-screen,
