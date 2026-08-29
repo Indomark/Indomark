@@ -18,7 +18,7 @@
  .market-status .status-left .status-kicker{font-size:7px!important;line-height:1!important;white-space:nowrap!important}
  .market-status .status-left strong{font-size:15px!important;line-height:1.1!important;white-space:nowrap!important}
  .market-status .status-left small{font-size:6px!important;line-height:1.15!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
- .market-status .status-right{width:100%!important;min-width:0!important;display:grid!important;grid-template-columns:max-content max-content!important;align-items:baseline!important;justify-content:end!important;column-gap:5px!important;row-gap:2px!important;text-align:right!important}
+ .market-status .status-right{width:calc(100% - 10px)!important;min-width:0!important;display:grid!important;grid-template-columns:max-content max-content!important;align-items:baseline!important;justify-content:end!important;column-gap:5px!important;row-gap:2px!important;text-align:right!important;transform:translateX(-6px)!important}
  .market-status .status-right span{font-size:12px!important;line-height:1.1!important;justify-self:end!important;white-space:nowrap!important}
  .market-status .status-right strong{font-size:18px!important;line-height:1!important;justify-self:end!important;white-space:nowrap!important;letter-spacing:.1px!important}
  .market-status .status-right small{grid-column:1 / -1!important;justify-self:end!important;font-size:5.8px!important;line-height:1.1!important;white-space:nowrap!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important}
@@ -31,7 +31,7 @@
  .market-status .status-left .status-kicker{font-size:6.5px!important}
  .market-status .status-left strong{font-size:14px!important}
  .market-status .status-left small{font-size:5.4px!important}
- .market-status .status-right{column-gap:4px!important}
+ .market-status .status-right{column-gap:4px!important;transform:translateX(-5px)!important}
  .market-status .status-right span{font-size:11px!important}
  .market-status .status-right strong{font-size:17px!important}
  .market-status .status-right small{font-size:5.1px!important}
@@ -41,7 +41,7 @@
  .market-status .status-left{padding-right:4px!important}
  .market-status .status-left strong{font-size:13px!important}
  .market-status .status-left small{font-size:4.8px!important}
- .market-status .status-right{column-gap:3px!important}
+ .market-status .status-right{column-gap:3px!important;transform:translateX(-4px)!important}
  .market-status .status-right span{font-size:10px!important}
  .market-status .status-right strong{font-size:16px!important}
  .market-status .status-right small{font-size:4.6px!important}
