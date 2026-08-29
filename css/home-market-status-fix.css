@@ -1,0 +1,55 @@
+/* Home market-status typography/layout fix. */
+.market-status .status-right {
+  min-width: 0;
+  width: min(100%, 280px);
+  justify-items: end;
+  text-align: right;
+  gap: 4px;
+}
+.market-status .status-right span,
+.market-status .status-right small {
+  color: #ffffff;
+}
+.market-status .status-right span {
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.market-status .status-right strong {
+  font-size: 22px;
+  line-height: 1.08;
+  color: #ffffff;
+  letter-spacing: .4px;
+  white-space: nowrap;
+}
+.market-status .status-right small {
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 600;
+  white-space: normal;
+  max-width: 100%;
+}
+html[data-theme="light"] .market-status .status-right span,
+html[data-theme="light"] .market-status .status-right strong,
+html[data-theme="light"] .market-status .status-right small {
+  color: #ffffff;
+}
+@media (max-width: 700px) {
+  .market-status {
+    align-items: center;
+  }
+  .market-status .status-right {
+    width: min(58%, 240px);
+    gap: 4px;
+  }
+  .market-status .status-right span {
+    font-size: 10px;
+  }
+  .market-status .status-right strong {
+    font-size: 20px;
+  }
+  .market-status .status-right small {
+    font-size: 10px;
+  }
+}
