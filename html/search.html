@@ -22,31 +22,35 @@
 <section class="search-hero">
 <p class="eyebrow">EXPLORE THE MARKET</p>
 <h1>Search Stocks</h1>
-<p>Find a stock and open its complete market details.</p>
+<p>Search stocks that are available in Indomark.</p>
 </section>
 <section class="search-box-wrap">
 <label class="search-box" for="stockSearch">
 <span class="search-icon">⌕</span>
-<input id="stockSearch" type="search" autocomplete="off" placeholder="Search Reliance, TCS, Infosys...">
+<input id="stockSearch" type="search" autocomplete="off" placeholder="Search stock or symbol...">
 <kbd>⌘ K</kbd>
 </label>
 </section>
 <div class="tabs" role="tablist" aria-label="Search filters">
 <button class="tab active" data-filter="all">All</button>
 <button class="tab" data-filter="stocks">Stocks</button>
-<button class="tab" data-filter="news">News</button>
 <button class="tab" data-filter="indices">Indices</button>
 </div>
 <section class="results-section">
-<div class="section-head"><h2>Top Results</h2><span id="resultCount">0 results</span></div>
+<div class="section-head"><h2>Available Stocks</h2><span id="resultCount">Loading...</span></div>
 <div id="results" class="results-list"></div>
 <div id="empty" class="empty-state" hidden>
 <div class="empty-icon">⌕</div>
-<h3>No matching results</h3>
-<p>Try a stock name, symbol, or company name.</p>
+<h3>No matching stocks</h3>
+<p>Try a stock name or symbol that is available in Indomark.</p>
 </div>
 </section>
 </main>
-<script src="../js/search.js?v=2"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script src="../js/firebase-config.js?v=28"></script>
+<script src="../js/stock-catalog.js?v=1"></script>
+<script src="../js/search.js?v=3"></script>
 </body>
 </html>
