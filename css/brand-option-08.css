@@ -1,0 +1,81 @@
+/* Indomark Option 08 — single-colour orange brand layer.
+   Loaded from app-theme.css so it does not change global-theme.css. */
+:root{
+  --brand-orange:#F97316;
+  --brand-orange-light:#FB923C;
+  --brand-orange-dark:#EA580C;
+}
+
+/* Wordmark: the whole Indomark name uses one colour. */
+html body .brand,
+html body .signup-brand,
+html body .login-brand,
+html body .brand-wordmark,
+html body .logo-text{
+  color:var(--brand-orange)!important;
+}
+html body .brand>span:not(.bolt),
+html body .signup-brand>span:not(.bolt),
+html body .login-brand>span:not(.bolt),
+html body .brand strong,
+html body .signup-brand strong,
+html body .login-brand strong,
+html body .brand>span>strong,
+html body .signup-brand>span>strong,
+html body .login-brand>span>strong,
+html body .brand-indo,
+html body .brand-speed,
+html body .logo-indo,
+html body .logo-speed{
+  color:var(--brand-orange)!important;
+}
+
+/* Bolt / logo mark. */
+html body .bolt,
+html body .brand-bolt{
+  background:linear-gradient(150deg,var(--brand-orange-light),var(--brand-orange-dark))!important;
+}
+
+/* Brand-facing accents and actions. */
+html body .eyebrow,
+html body .section-head a,
+html body .section-head>span,
+html body .section-head span,
+html body .signup-copy a,
+html body .login-copy a,
+html body .form-message{
+  color:var(--brand-orange)!important;
+}
+html body .accent-btn,
+html body .cta,
+html body .primary-btn,
+html body .primary-button,
+html body .open-source{
+  color:#fff!important;
+  background:linear-gradient(90deg,var(--brand-orange-dark),var(--brand-orange-light))!important;
+  border-color:transparent!important;
+  box-shadow:0 10px 26px rgba(249,115,22,.24)!important;
+}
+html body input:focus,
+html body select:focus,
+html body textarea:focus,
+html body .field input:focus,
+html body .field select:focus,
+html body .otp-input:focus{
+  border-color:var(--brand-orange)!important;
+  box-shadow:0 0 0 3px rgba(249,115,22,.12)!important;
+}
+html body input[type="checkbox"]{accent-color:var(--brand-orange)!important}
+html body .bottom-nav .active{background:rgba(249,115,22,.16)!important;color:var(--brand-orange)!important}
+
+/* Splash trend/loading accents. */
+html body .loading-bar{
+  background:linear-gradient(90deg,var(--brand-orange-light),var(--brand-orange),#fbbf24)!important;
+}
+html body .logo-text .logo-indo,
+html body .logo-text .logo-speed{color:var(--brand-orange)!important}
+
+/* Login/signup OTP accents. */
+html body .otp-panel{border-color:rgba(249,115,22,.35)!important;background:rgba(249,115,22,.08)!important}
+html body .otp-input{caret-color:var(--brand-orange)!important}
+html body .otp-panel .otp-title{color:var(--brand-orange)!important}
