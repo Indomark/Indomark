@@ -45,7 +45,7 @@
     </nav>
 
     <section id="notificationList" class="notification-list" aria-live="polite"></section>
-    <p class="notification-sample-note">Demo notifications for the current app flow. Backend-driven notifications can be connected later without changing this UI.</p>
+    <p class="notification-sample-note">Live notifications are enabled. Account, market, trading and admin notifications can appear here in real time.</p>
   </div>
 
   <nav class="bottom-nav" aria-label="Main navigation">
@@ -56,6 +56,11 @@
     <a href="profile.html"><span class="icon">◉</span>Profile</a>
   </nav>
 </main>
-<script src="../js/notifications.js?v=1"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script src="../js/firebase-config.js?v=27"></script>
+<script src="../js/notification-live.js?v=1"></script>
+<script src="../js/notifications.js?v=2"></script>
 </body>
 </html>
