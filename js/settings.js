@@ -1,9 +1,9 @@
 (function(){
   const KEY='indomark_settings_theme';
   const ACCOUNT_STATUS_KEY='indomark_account_status_v1';
-  const GLOBAL_CSS='../css/global-theme.css?v=11';
-  const BRAND_CSS='../css/brand-option-08.css?v=19';
-  const FAVICON='../assets/indomark-favicon.svg?v=8';
+  const GLOBAL_CSS='../css/global-theme.css?v=12';
+  const BRAND_CSS='../css/brand-option-08.css?v=20';
+  const FAVICON='../assets/indomark-favicon.svg?v=9';
   const ALLOWED_WHEN_INACTIVE=new Set(['profile.html','login.html','signup.html','index.html','']);
   function getStoredTheme(){const current=localStorage.getItem(KEY);return current==='light'?'light':'dark'}
   function ensureGlobalCss(){if(document.querySelector('link[data-indomark-theme]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href=GLOBAL_CSS;link.dataset.indomarkTheme='true';document.head.appendChild(link)}
@@ -18,8 +18,7 @@
     if(document.body)replaceInNode(document.body);
     if(document.title)document.title=document.title.replace(/IndoSpeed/g,'Indomark');
   }
-  function normalizeSettingsApi(){if(!window.IndomarkSettings&&window.IndoSpeedSettings){window.IndomarkSettings=window.IndoSpeedSettings;delete window.IndoSpeedSettings}}
-  function applyTheme(theme){const next=theme==='light'?'light':'dark';ensureGlobalCss();ensureBrandCss();ensureBrandIcon();normalizeBrandText();normalizeSettingsApi();const root=document.documentElement;root.dataset.theme=next;root.style.colorScheme=next;localStorage.setItem(KEY,next)}
+  function applyTheme(theme){const next=theme==='light'?'light':'dark';ensureGlobalCss();ensureBrandCss();ensureBrandIcon();normalizeBrandText();const root=document.documentElement;root.dataset.theme=next;root.style.colorScheme=next;localStorage.setItem(KEY,next)}
   function getAccountStatus(){return localStorage.getItem(ACCOUNT_STATUS_KEY)==='inactive'?'inactive':'active'}
   function currentPage(){return(location.pathname.split('/').pop()||'').toLowerCase()}
   function isAllowedPage(){return ALLOWED_WHEN_INACTIVE.has(currentPage())}
