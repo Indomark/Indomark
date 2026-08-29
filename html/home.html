@@ -2,29 +2,86 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050914">
 <script>(function(){const t=localStorage.getItem('indomark_settings_theme')||'dark';const r=t==='system'&&(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches)?'light':t==='light'?'light':'dark';document.documentElement.dataset.theme=r;document.documentElement.style.colorScheme=r==='light'?'light':'dark';})();</script>
 <script src="../js/settings.js?v=16"></script>
+<link rel="manifest" href="../manifest.json?v=20260829">
+<link rel="icon" type="image/svg+xml" href="../assets/indomark-mobile-icon.svg?v=1">
+<link rel="shortcut icon" type="image/svg+xml" href="../assets/indomark-mobile-icon.svg?v=1">
+<link rel="apple-touch-icon" href="../assets/indomark-mobile-icon.svg?v=1">
 <link rel="stylesheet" href="../css/app-theme.css?v=21">
 <link rel="stylesheet" href="../css/global-theme.css?v=13">
 <link rel="stylesheet" href="../css/entry-dark.css?v=5">
-<link rel="stylesheet" href="../css/indomark-page-brand.css?v=3">
+<link rel="stylesheet" href="../css/indomark-page-brand.css?v=4">
+<link rel="stylesheet" href="../css/home.css?v=10">
+<link rel="stylesheet" href="../css/home-brand-size.css?v=4">
 <title>Indomark — Home</title>
-<link rel="stylesheet" href="../css/home.css?v=9">
-<link rel="stylesheet" href="../css/home-brand-size.css?v=3">
 </head>
 <body>
 <main class="home-page">
-<header class="topbar"><div class="brand"><span class="bolt" aria-hidden="true"></span><span>Indo<strong>mark</strong></span></div><button id="notificationButton" class="notification-button" type="button" aria-label="Notifications" title="Notifications"><span class="badge" aria-hidden="true"></span>🔔</button></header>
-<section class="hero"><div><p class="eyebrow">SMART INVESTOR</p><h1>Hi, <span id="userName">there</span> 👋</h1><p id="marketGreeting">Learn. Analyse. Practice. Trade.</p></div><button class="icon-action search-action" id="searchButton" type="button" aria-label="Search Stocks" title="Search Stocks">⌕</button></section>
-<section class="market-status glass"><div><span>Market Status</span><strong id="marketStatus">Checking…</strong><small id="marketNext">—</small></div><span id="statusDot" class="status-dot"></span></section>
-<section class="section-head"><h2>Market Movers</h2><a href="markets.html">View All</a></section>
-<section class="movers-grid"><div class="list-card glass"><header><span>Top Gainers</span><small id="gainersUpdated">Loading…</small></header><div id="gainersList" class="market-rows"><div class="stock-row loading-row"><span><b>Loading market movers…</b><small>Fetching latest NSE data</small></span><strong>—</strong></div></div></div><div class="list-card glass"><header><span>Top Losers</span><small id="losersUpdated">Loading…</small></header><div id="losersList" class="market-rows"><div class="stock-row loading-row"><span><b>Loading market movers…</b><small>Fetching latest NSE data</small></span><strong>—</strong></div></div></div></section>
-<section class="section-head"><h2>Quick Access</h2><span>Free to start</span></section>
-<section class="quick-grid"><a class="feature-card glass" href="search.html"><span class="quick-icon">⌕</span><b>Search Stocks</b><small>Explore market data</small></a><a class="feature-card glass" href="analysis.html"><span class="quick-icon ai">AI</span><b>AI Analysis</b><small>Analyse selected stock</small></a><a class="feature-card glass" href="learn.html#practice"><span class="quick-icon">₹</span><b>Practice</b><small>Practice with virtual money</small></a><a class="feature-card glass" href="learn.html"><span class="quick-icon">▤</span><b>Free Course</b><small>Learn stock-market basics</small></a></section>
-<p id="homeMessage" class="market-message" role="status" aria-live="polite"></p>
+<header class="topbar">
+  <a class="brand" href="home.html" aria-label="Indomark Home"><span class="bolt" aria-hidden="true"></span><span>Indo<strong>mark</strong></span></a>
+  <button id="notificationButton" class="notification-button" type="button" aria-label="Notifications" title="Notifications"><span class="bell-icon" aria-hidden="true">♧</span><span class="badge" aria-hidden="true"></span></button>
+</header>
+
+<section class="hero hero-card">
+  <div class="hero-copy">
+    <p class="eyebrow">SMART INVESTOR</p>
+    <h1>Hi, <span id="userName">there</span> <span class="wave" aria-hidden="true">👋</span></h1>
+    <p id="marketGreeting">Track. Analyse. Invest Smartly.</p>
+    <p class="hero-subline">Welcome back to <strong>Indomark</strong>.</p>
+  </div>
+  <div class="hero-chart" aria-hidden="true">
+    <svg viewBox="0 0 520 180" preserveAspectRatio="none">
+      <defs><linearGradient id="heroTrend" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#58e7a5" stop-opacity="0.08"/><stop offset="0.7" stop-color="#58e7a5" stop-opacity="0.82"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0.9"/></linearGradient></defs>
+      <path d="M5 150 L48 138 L84 144 L118 123 L154 132 L188 104 L224 113 L263 82 L296 93 L332 64 L366 72 L402 46 L438 55 L477 24 L515 12" fill="none" stroke="url(#heroTrend)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5 150 L48 138 L84 144 L118 123 L154 132 L188 104 L224 113 L263 82 L296 93 L332 64 L366 72 L402 46 L438 55 L477 24 L515 12 L515 180 L5 180 Z" fill="url(#heroTrend)" opacity="0.09"/>
+    </svg>
+  </div>
+  <button class="icon-action search-action" id="searchButton" type="button" aria-label="Search Stocks" title="Search Stocks">⌕</button>
+</section>
+
+<section class="market-status glass">
+  <div class="status-left"><span class="status-kicker">Market Status</span><strong id="marketStatus">Checking…</strong><small id="marketNext">NSE regular session: 9:15 AM–3:30 PM</small></div>
+  <div class="status-right"><span>Market closes in</span><strong id="marketCountdown">—</strong><small id="marketCloseLabel">Regular session end: 3:30 PM</small></div>
+  <span id="statusDot" class="status-dot"></span>
+</section>
+
+<section class="section-head"><div><p class="section-kicker">LIVE MARKET</p><h2>Market Movers</h2></div><a href="markets.html">View All</a></section>
+<section class="movers-grid">
+  <article class="list-card glass gainers-card"><header><span>⌃ Top Gainers</span><small id="gainersUpdated">Loading…</small></header><div id="gainersList" class="market-rows"><div class="stock-row loading-row"><span><b>Loading market movers…</b><small>Fetching latest market data</small></span><strong>—</strong></div></div></article>
+  <article class="list-card glass losers-card"><header><span>⌄ Top Losers</span><small id="losersUpdated">Loading…</small></header><div id="losersList" class="market-rows"><div class="stock-row loading-row"><span><b>Loading market movers…</b><small>Fetching latest market data</small></span><strong>—</strong></div></div></article>
+</section>
+
+<section class="section-head quick-heading"><div><p class="section-kicker">TOOLS</p><h2>Quick Access</h2></div><span>Free to start</span></section>
+<section class="quick-grid">
+  <a class="feature-card glass" href="search.html"><span class="quick-icon search">⌕</span><b>Search Stocks</b><small>Find any stock in seconds</small><em>›</em></a>
+  <a class="feature-card glass" href="analysis.html"><span class="quick-icon ai">AI</span><b>AI Analysis</b><small>Get stock insights</small><em>›</em></a>
+  <a class="feature-card glass" href="learn.html#practice"><span class="quick-icon practice">◆</span><b>Practice</b><small>Virtual trading &amp; practice</small><em>›</em></a>
+  <a class="feature-card glass" href="learn.html"><span class="quick-icon course">▤</span><b>Free Course</b><small>Learn trading for free</small><em>›</em></a>
+</section>
+
+<section class="section-head overview-heading"><div><p class="section-kicker">AT A GLANCE</p><h2>Market Overview</h2></div><span>Live data</span></section>
+<section class="overview-grid">
+  <article class="overview-card glass"><span>NIFTY 50</span><strong id="indexNifty">—</strong><small id="indexNiftyChange">Index feed</small><i></i></article>
+  <article class="overview-card glass"><span>SENSEX</span><strong id="indexSensex">—</strong><small id="indexSensexChange">Index feed</small><i></i></article>
+  <article class="overview-card glass"><span>NIFTY BANK</span><strong id="indexBank">—</strong><small id="indexBankChange">Index feed</small><i></i></article>
+  <article class="overview-card glass"><span>INDIA VIX</span><strong id="indexVix">—</strong><small id="indexVixChange">Index feed</small><i></i></article>
+</section>
+
+<section class="premium-card glass">
+  <div class="premium-icon" aria-hidden="true">♛</div>
+  <div class="premium-copy"><p>LEVEL UP YOUR EDGE</p><h2>Upgrade to Premium</h2><span>Unlock advanced charts, AI insights, backtesting &amp; more.</span></div>
+  <button type="button" id="premiumButton">Explore Plans</button>
+</section>
+
+<p id="homeMessage" class="home-message" role="status" aria-live="polite"></p>
 <nav class="bottom-nav" aria-label="Main navigation"><a class="active" href="home.html"><span class="icon">⌂</span>Home</a><a href="watchlist.html"><span class="icon">☆</span>Watchlist</a><a href="portfolio.html"><span class="icon">▣</span>Portfolio</a><a href="learn.html"><span class="icon">◫</span>Learn</a><a href="profile.html"><span class="icon">◉</span>Profile</a></nav>
 </main>
-<script src="../js/market-movers.js?v=3"></script><script src="../js/market-data.js?v=11"></script><script src="../js/home.js?v=16"></script><script>document.getElementById('notificationButton')?.addEventListener('click',()=>window.location.assign('notifications.html'));document.getElementById('searchButton')?.addEventListener('click',()=>window.location.assign('search.html'));</script>
-</body></html>
+<script src="../js/market-movers.js?v=3"></script>
+<script src="../js/market-data.js?v=11"></script>
+<script src="../js/home.js?v=17"></script>
+<script>document.getElementById('notificationButton')?.addEventListener('click',()=>window.location.assign('notifications.html'));document.getElementById('searchButton')?.addEventListener('click',()=>window.location.assign('search.html'));document.getElementById('premiumButton')?.addEventListener('click',()=>window.location.assign('profile.html#plans'));</script>
+</body>
+</html>
