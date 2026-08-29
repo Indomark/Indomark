@@ -27,6 +27,7 @@ html[data-theme="light"] .section-head a,html[data-theme="light"] .section-head>
 html[data-theme="light"] .status-dot{box-shadow:0 0 12px rgba(246,189,59,.35)}
 html[data-theme="light"] .bolt{filter:none}
 html[data-theme="light"] .settings-page select option{background:#fff!important;color:#152033!important}
+/* Brand colors: keep IndoSpeed identity stable in both themes. */
 .brand,.signup-brand,.login-brand{color:var(--text)!important}
 .brand>span,.signup-brand>span,.login-brand>span{color:var(--text)!important}
 .brand>strong,.signup-brand>strong,.login-brand>strong{color:var(--text)!important}
@@ -34,28 +35,68 @@ html[data-theme="light"] .settings-page select option{background:#fff!important;
 .brand strong,.signup-brand strong,.login-brand strong{color:var(--green)!important}
 html[data-theme="light"] .brand>span,html[data-theme="light"] .signup-brand>span,html[data-theme="light"] .login-brand>span,html[data-theme="light"] .brand>strong,html[data-theme="light"] .signup-brand>strong,html[data-theme="light"] .login-brand>strong{color:var(--text)!important}
 html[data-theme="light"] .brand>span>strong,html[data-theme="light"] .signup-brand>span>strong,html[data-theme="light"] .login-brand>span>strong{color:var(--green)!important}
-html[data-theme="light"] .splash-screen,html[data-theme="light"] .splash-screen * ,html[data-theme="light"] .login-page,html[data-theme="light"] .login-page *,html[data-theme="light"] .signup-page,html[data-theme="light"] .signup-page *{color-scheme:dark!important}
-html[data-theme="light"] .splash-screen,html[data-theme="light"] .login-page,html[data-theme="light"] .signup-page{background:#050914!important;color:#f4f7fb!important}
-html[data-theme="light"] .login-shell,html[data-theme="light"] .signup-shell{background:rgba(11,18,32,.96)!important;color:#f4f7fb!important;border-color:rgba(255,255,255,.10)!important;box-shadow:0 20px 60px rgba(0,0,0,.35)!important}
-html[data-theme="light"] .login-page h1,html[data-theme="light"] .signup-page h1,html[data-theme="light"] .login-page label,html[data-theme="light"] .signup-page label,html[data-theme="light"] .login-page .subtitle,html[data-theme="light"] .signup-page .subtitle,html[data-theme="light"] .login-page .signup-copy,html[data-theme="light"] .signup-page .login-copy,html[data-theme="light"] .login-page .form-message,html[data-theme="light"] .signup-page .form-message{color:#f4f7fb!important}
-html[data-theme="light"] .login-page input,html[data-theme="light"] .signup-page input{background:#0b1220!important;color:#f4f7fb!important;border-color:#26344a!important;color-scheme:dark!important}
-html[data-theme="light"] .login-page input::placeholder,html[data-theme="light"] .signup-page input::placeholder{color:#74839a!important}
-html[data-theme="light"] .login-page .icon-button,html[data-theme="light"] .signup-page .icon-button{background:#111b2c!important;color:#b9c5d6!important;border-color:#26344a!important}
-html[data-theme="light"] .login-page .signup-copy a,html[data-theme="light"] .signup-page .login-copy a,html[data-theme="light"] .login-brand strong,html[data-theme="light"] .signup-brand strong{color:#58e7a5!important}
-html[data-theme="light"] .splash-screen .logo-indo,html[data-theme="light"] .splash-screen .tagline,html[data-theme="light"] .splash-screen .intro-block,html[data-theme="light"] .splash-screen #loading-text{color:#f4f7fb!important}
-html[data-theme="light"] .splash-screen .logo-speed{color:#58e7a5!important}
 
-/* OPTION 08 — Orange identity across the full app. Positive/negative market data stays semantic green/red. */
-:root{--orange:#F97316;--orange-light:#FB923C;--orange-dark:#EA580C}
-.brand strong,.signup-brand strong,.login-brand strong,.brand>span>strong,.signup-brand>span>strong,.login-brand>span>strong{color:var(--orange)!important}
-.brand .bolt,.signup-brand .bolt,.login-brand .bolt,.bolt{background:linear-gradient(150deg,var(--orange-light),var(--orange-dark))!important}
-.eyebrow,.section-head a,.section-head span{color:var(--orange)!important}
-.accent-btn,.cta,.primary-btn,.primary-button,.open-source{color:#fff!important;background:linear-gradient(90deg,var(--orange-dark),var(--orange-light))!important;border-color:transparent!important;box-shadow:0 10px 26px rgba(249,115,22,.24)!important}
-input:focus,select:focus,textarea:focus,.field input:focus,.field select:focus{border-color:var(--orange)!important;box-shadow:0 0 0 3px rgba(249,115,22,.12)!important}
-input[type="checkbox"]{accent-color:var(--orange)!important}
-.bottom-nav .active{background:rgba(249,115,22,.16)!important;color:var(--orange)!important}
-html[data-theme="light"] .cta,html[data-theme="light"] .primary-btn,html[data-theme="light"] .primary-button,html[data-theme="light"] .accent-btn,html[data-theme="light"] .open-source{color:#fff!important;background:linear-gradient(90deg,var(--orange-dark),var(--orange-light))!important}
-html[data-theme="light"] .section-head a,html[data-theme="light"] .section-head>span,html[data-theme="light"] .section-head span{color:var(--orange-dark)!important}
-html[data-theme="light"] .eyebrow,html[data-theme="light"] .value{color:var(--orange)!important}
-html[data-theme="light"] .login-page .signup-copy a,html[data-theme="light"] .signup-page .login-copy a,html[data-theme="light"] .login-brand strong,html[data-theme="light"] .signup-brand strong{color:var(--orange)!important}
-html[data-theme="light"] .splash-screen .logo-speed{color:var(--orange)!important}
+/* Entry screens stay dark even when the rest of the app is in Light mode. */
+html[data-theme="light"] .splash-screen,
+html[data-theme="light"] .splash-screen * ,
+html[data-theme="light"] .login-page,
+html[data-theme="light"] .login-page *,
+html[data-theme="light"] .signup-page,
+html[data-theme="light"] .signup-page *{
+  color-scheme:dark!important;
+}
+html[data-theme="light"] .splash-screen,
+html[data-theme="light"] .login-page,
+html[data-theme="light"] .signup-page{
+  background:#050914!important;
+  color:#f4f7fb!important;
+}
+html[data-theme="light"] .login-shell,
+html[data-theme="light"] .signup-shell{
+  background:rgba(11,18,32,.96)!important;
+  color:#f4f7fb!important;
+  border-color:rgba(255,255,255,.10)!important;
+  box-shadow:0 20px 60px rgba(0,0,0,.35)!important;
+}
+html[data-theme="light"] .login-page h1,
+html[data-theme="light"] .signup-page h1,
+html[data-theme="light"] .login-page label,
+html[data-theme="light"] .signup-page label,
+html[data-theme="light"] .login-page .subtitle,
+html[data-theme="light"] .signup-page .subtitle,
+html[data-theme="light"] .login-page .signup-copy,
+html[data-theme="light"] .signup-page .login-copy,
+html[data-theme="light"] .login-page .form-message,
+html[data-theme="light"] .signup-page .form-message{
+  color:#f4f7fb!important;
+}
+html[data-theme="light"] .login-page input,
+html[data-theme="light"] .signup-page input{
+  background:#0b1220!important;
+  color:#f4f7fb!important;
+  border-color:#26344a!important;
+  color-scheme:dark!important;
+}
+html[data-theme="light"] .login-page input::placeholder,
+html[data-theme="light"] .signup-page input::placeholder{
+  color:#74839a!important;
+}
+html[data-theme="light"] .login-page .icon-button,
+html[data-theme="light"] .signup-page .icon-button{
+  background:#111b2c!important;
+  color:#b9c5d6!important;
+  border-color:#26344a!important;
+}
+html[data-theme="light"] .login-page .signup-copy a,
+html[data-theme="light"] .signup-page .login-copy a,
+html[data-theme="light"] .login-brand strong,
+html[data-theme="light"] .signup-brand strong{
+  color:#58e7a5!important;
+}
+html[data-theme="light"] .splash-screen .logo-indo,
+html[data-theme="light"] .splash-screen .tagline,
+html[data-theme="light"] .splash-screen .intro-block,
+html[data-theme="light"] .splash-screen #loading-text{
+  color:#f4f7fb!important;
+}
+html[data-theme="light"] .splash-screen .logo-speed{color:#58e7a5!important}
