@@ -1,0 +1,63 @@
+/* Final Home layout contract. Keep page full-width; center only the dashboard content. */
+html,body{width:100%;max-width:none;min-width:320px;margin:0;padding:0}
+main.home-page{display:block!important;width:100vw!important;max-width:none!important;min-width:320px!important;margin:0!important}
+main.home-page>.topbar,
+main.home-page>.hero,
+main.home-page>.market-status,
+main.home-page>.section-head,
+main.home-page>.movers-grid,
+main.home-page>.quick-grid,
+main.home-page>.overview-grid,
+main.home-page>.premium-card,
+main.home-page>.home-message{width:min(1180px,calc(100vw - 64px))!important;max-width:1180px!important;margin-left:auto!important;margin-right:auto!important}
+main.home-page>.topbar{padding-left:0!important;padding-right:0!important}
+main.home-page>.hero{box-sizing:border-box!important}
+main.home-page>.movers-grid{display:grid!important}
+main.home-page>.quick-grid{display:grid!important}
+main.home-page>.overview-grid{display:grid!important}
+main.home-page>.bottom-nav{width:min(920px,calc(100vw - 32px))!important;max-width:920px!important}
+
+/* Keep the visual system aligned with the demo in both themes. */
+html[data-theme="light"] main.home-page{color:var(--text)!important;background:radial-gradient(circle at 15% -5%,rgba(112,71,232,.10),transparent 30%),linear-gradient(165deg,#f7f9fc 0%,#eef3f8 56%,#f6f8fb 100%)!important}
+html[data-theme="dark"] main.home-page{color:var(--text)!important}
+html[data-theme="light"] main.home-page>.hero,
+html[data-theme="light"] main.home-page>.market-status,
+html[data-theme="light"] main.home-page .list-card,
+html[data-theme="light"] main.home-page .feature-card,
+html[data-theme="light"] main.home-page .overview-card{color:var(--text)!important}
+
+@media(max-width:1200px){
+  main.home-page>.topbar,
+  main.home-page>.hero,
+  main.home-page>.market-status,
+  main.home-page>.section-head,
+  main.home-page>.movers-grid,
+  main.home-page>.quick-grid,
+  main.home-page>.overview-grid,
+  main.home-page>.premium-card,
+  main.home-page>.home-message{width:calc(100vw - 40px)!important}
+}
+@media(max-width:700px){
+  main.home-page>.topbar,
+  main.home-page>.hero,
+  main.home-page>.market-status,
+  main.home-page>.section-head,
+  main.home-page>.movers-grid,
+  main.home-page>.quick-grid,
+  main.home-page>.overview-grid,
+  main.home-page>.premium-card,
+  main.home-page>.home-message{width:calc(100vw - 24px)!important}
+  main.home-page>.bottom-nav{width:calc(100vw - 24px)!important}
+}
+@media(max-width:380px){
+  main.home-page>.topbar,
+  main.home-page>.hero,
+  main.home-page>.market-status,
+  main.home-page>.section-head,
+  main.home-page>.movers-grid,
+  main.home-page>.quick-grid,
+  main.home-page>.overview-grid,
+  main.home-page>.premium-card,
+  main.home-page>.home-message{width:calc(100vw - 16px)!important}
+  main.home-page>.bottom-nav{width:calc(100vw - 16px)!important}
+}
