@@ -1,21 +1,70 @@
-/* Indomark shared market-data adapter. */
+/* Shared market-data adapter. Consumers receive `change` as percentage change. */
 (function(){
  const API_BASE=(window.INDOMARK_API_BASE||'').replace(/\/$/,'');
  const cacheKey=s=>`indomark_market_${String(s).toUpperCase()}`;
  const yahooSymbol=s=>`${String(s).trim().toUpperCase()}.NS`;
  const number=v=>{const n=Number(v);return Number.isFinite(n)?n:null;};
+ const percentage=(change,previous,price)=>{const explicit=number(change);if(explicit!==null)return explicit;if(number(previous)!==null&&number(previous)!==0&&number(price)!==null)return ((Number(price)-Number(previous))/Number(previous))*100;return null;};
  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
  async function fetchTimeout(url,options={},ms=9000){return Promise.race([fetch(url,options),new Promise((_,reject)=>setTimeout(()=>reject(new Error('market request timeout')),ms))]);}
- async function yahooQuote(symbol){const target=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yahooSymbol(symbol))}?range=1d&interval=1m&events=history`;for(const url of [target,`https://api.allorigins.win/raw?url=${encodeURIComponent(target)}`,`https://corsproxy.io/?url=${encodeURIComponent(target)}`]){try{const r=await fetchTimeout(url,{cache:'no-store'},9000);if(!r.ok)throw new Error(`Yahoo ${r.status}`);const j=await r.json();const m=j?.chart?.result?.[0]?.meta||{};const price=number(m.regularMarketPrice??m.previousClose);if(price===null)throw new Error('Yahoo no price');const previous=number(m.previousClose);const change=previous===null?null:price-previous;return {price,previous,change,pChange:previous===null||previous===0?null:(change/previous)*100,open:number(m.regularMarketOpen),high:number(m.regularMarketDayHigh),low:number(m.regularMarketDayLow),volume:number(m.regularMarketVolume),source:'Yahoo Finance',updatedAt:Date.now()};}catch(e){}}
- throw new Error('Yahoo unavailable');}
- async function getLiveQuote(symbol){const key=String(symbol).trim().toUpperCase();try{const r=await fetchTimeout(`${API_BASE}/api/quote?symbol=${encodeURIComponent(key)}&t=${Date.now()}`,{cache:'no-store'},9000);if(!r.ok)throw new Error(`Market backend ${r.status}`);const d=await r.json();if(number(d.price)===null)throw new Error('Market backend no price');return {symbol:key,price:number(d.price),previous:number(d.previous),change:number(d.change),pChange:number(d.pChange??d.change),open:number(d.open),high:number(d.high),low:number(d.low),volume:number(d.volume),source:d.source||'Market backend',updatedAt:number(d.updatedAt)||Date.now()};}catch(e){const q=await yahooQuote(key);return {symbol:key,...q};}}
- async function getFastQuotes(list){const unique=[...new Set((Array.isArray(list)?list:[]).map(s=>String(s).trim().toUpperCase()).filter(Boolean))];if(!unique.length)return [];try{const r=await fetchTimeout(`${API_BASE}/api/quotes?symbols=${encodeURIComponent(unique.join(','))}&t=${Date.now()}`,{cache:'no-store'},12000);if(!r.ok)throw new Error(`Market batch ${r.status}`);const body=await r.json();const quotes=Array.isArray(body?.quotes)?body.quotes:[];for(const q of quotes){if(number(q?.price)!==null)localStorage.setItem(cacheKey(q.symbol),JSON.stringify(q));}if(quotes.length)return quotes;}catch(e){}const results=[];for(const symbol of unique){try{results.push(await getLiveQuote(symbol));}catch(e){}await sleep(1100);}return results;}
- async function getTrending(){const r=await fetchTimeout(`${API_BASE}/api/trending?t=${Date.now()}`,{cache:'no-store'},10000);if(!r.ok)throw new Error(`Market trending ${r.status}`);const body=await r.json();const gainers=Array.isArray(body?.gainers)?body.gainers:[];const losers=Array.isArray(body?.losers)?body.losers:[];if(!gainers.length&&!losers.length)throw new Error('No trending data');return {gainers,losers,source:body.source||'Market backend',updatedAt:number(body.updatedAt)||Date.now()};}
+ async function yahooQuote(symbol){
+  const target=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yahooSymbol(symbol))}?range=1d&interval=1m&events=history`;
+  for(const url of [target,`https://api.allorigins.win/raw?url=${encodeURIComponent(target)}`,`https://corsproxy.io/?url=${encodeURIComponent(target)}`]){
+   try{
+    const r=await fetchTimeout(url,{cache:'no-store'},9000);if(!r.ok)throw new Error(`Yahoo ${r.status}`);
+    const j=await r.json();const m=j?.chart?.result?.[0]?.meta||{};const price=number(m.regularMarketPrice??m.previousClose);if(price===null)throw new Error('Yahoo no price');
+    const previous=number(m.previousClose);const absoluteChange=previous===null?null:price-previous;const pChange=previous===null||previous===0?null:(absoluteChange/previous)*100;
+    return {symbol:String(symbol).trim().toUpperCase(),price,previous,change:pChange,pChange,absoluteChange,open:number(m.regularMarketOpen),high:number(m.regularMarketDayHigh),low:number(m.regularMarketDayLow),volume:number(m.regularMarketVolume),source:'Yahoo Finance',updatedAt:Date.now()};
+   }catch(e){}
+  }
+  throw new Error('Yahoo unavailable');
+ }
+ function normalizeQuoteRow(q){
+  if(!q||!q.symbol)return null;
+  const price=number(q.price);const previous=number(q.previous);const explicitPercent=number(q.pChange);const rawChange=number(q.change);
+  const pChange=explicitPercent!==null?explicitPercent:(price!==null&&previous!==null&&previous!==0?((price-previous)/previous)*100:null);
+  return {...q,price,previous,change:pChange,pChange,absoluteChange:rawChange!==null?rawChange:(price!==null&&previous!==null?price-previous:null)};
+ }
+ async function getLiveQuote(symbol){
+  const key=String(symbol).trim().toUpperCase();
+  try{
+   const r=await fetchTimeout(`${API_BASE}/api/quote?symbol=${encodeURIComponent(key)}&t=${Date.now()}`,{cache:'no-store'},9000);if(!r.ok)throw new Error(`Market backend ${r.status}`);
+   const d=normalizeQuoteRow(await r.json());if(!d||d.price===null)throw new Error('Market backend no price');return {symbol:key,...d};
+  }catch(e){return await yahooQuote(key);}
+ }
+ async function getFastQuotes(list){
+  const unique=[...new Set((Array.isArray(list)?list:[]).map(s=>String(s).trim().toUpperCase()).filter(Boolean))];if(!unique.length)return [];
+  try{
+   const r=await fetchTimeout(`${API_BASE}/api/quotes?symbols=${encodeURIComponent(unique.join(','))}&t=${Date.now()}`,{cache:'no-store'},12000);if(!r.ok)throw new Error(`Market batch ${r.status}`);
+   const body=await r.json();const rawQuotes=Array.isArray(body?.quotes)?body.quotes:[];const quotes=rawQuotes.map(normalizeQuoteRow).filter(Boolean);
+   for(const q of quotes){if(q.price!==null)localStorage.setItem(cacheKey(q.symbol),JSON.stringify(q));}
+   if(quotes.length)return quotes;
+  }catch(e){}
+  const results=[];for(const symbol of unique){try{results.push(await getLiveQuote(symbol));}catch(e){}await sleep(1100);}return results;
+ }
+ async function getTrending(){
+  const r=await fetchTimeout(`${API_BASE}/api/trending?t=${Date.now()}`,{cache:'no-store'},10000);if(!r.ok)throw new Error(`Market trending ${r.status}`);
+  const body=await r.json();const gainers=Array.isArray(body?.gainers)?body.gainers:[];const losers=Array.isArray(body?.losers)?body.losers:[];
+  if(!gainers.length&&!losers.length)throw new Error('No trending data');return {gainers,losers,source:body.source||'Market backend',updatedAt:number(body.updatedAt)||Date.now()};
+ }
  async function getFastQuote(symbol){const rows=await getFastQuotes([symbol]);if(rows[0])return rows[0];throw new Error(`Market data unavailable for ${String(symbol).toUpperCase()}`);}
- function startLive(symbolsList,onUpdate,interval=15000){const list=()=>[...new Set((Array.isArray(symbolsList)?symbolsList:(typeof symbolsList==='function'?symbolsList():[])).map(s=>String(s).trim().toUpperCase()).filter(Boolean))];let stopped=false,timer=null,running=false;const schedule=d=>{if(!stopped)timer=setTimeout(tick,d)};const tick=async()=>{if(stopped||running)return;const symbols=list();if(!symbols.length)return schedule(interval);running=true;try{const rows=await getFastQuotes(symbols);rows.forEach(v=>{try{onUpdate?.(v)}catch(e){}})}finally{running=false;schedule(interval)}};tick();return()=>{stopped=true;if(timer)clearTimeout(timer)}}
- function cached(symbol){try{const d=JSON.parse(localStorage.getItem(cacheKey(symbol)));return d&&number(d.price)!==null?d:null}catch{return null;}}
+ function startLive(symbolsList,onUpdate,interval=15000){
+  const list=()=>[...new Set((Array.isArray(symbolsList)?symbolsList:(typeof symbolsList==='function'?symbolsList():[])).map(s=>String(s).trim().toUpperCase()).filter(Boolean))];
+  let stopped=false,timer=null,running=false;const schedule=d=>{if(!stopped)timer=setTimeout(tick,d)};
+  const tick=async()=>{if(stopped||running)return;const symbols=list();if(!symbols.length)return schedule(interval);running=true;try{const rows=await getFastQuotes(symbols);rows.forEach(v=>{try{onUpdate?.(v)}catch(e){}})}finally{running=false;schedule(interval)}};
+  tick();return()=>{stopped=true;if(timer)clearTimeout(timer)};
+ }
+ function cached(symbol){try{const d=JSON.parse(localStorage.getItem(cacheKey(symbol)));return d&&number(d.price)!==null?normalizeQuoteRow(d):null}catch{return null;}}
  async function historyJson(symbol){const target=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yahooSymbol(symbol))}?range=1y&interval=1d&events=history&includeAdjustedClose=true`;const r=await fetchTimeout(target,{cache:'no-store'},9000);if(!r.ok)throw new Error(`History ${r.status}`);return r.json();}
- async function getHistory(symbol){const j=await historyJson(symbol);const r=j?.chart?.result?.[0];if(!r)throw new Error('No history');const q=r.indicators?.quote?.[0]||{};const closes=(q.close||[]).filter(Number.isFinite),opens=(q.open||[]).filter(Number.isFinite),highs=(q.high||[]).filter(Number.isFinite),lows=(q.low||[]).filter(Number.isFinite),volumes=(q.volume||[]).filter(Number.isFinite);const series=closes.map((v,i)=>({close:v,open:opens[i],high:highs[i],low:lows[i],volume:volumes[i]}));const sma=n=>{const a=series.slice(-n);return a.length?a.reduce((s,x)=>s+x.close,0)/a.length:null};let gains=[],losses=[];for(let i=1;i<closes.length;i++){const d=closes[i]-closes[i-1];gains.push(Math.max(d,0));losses.push(Math.max(-d,0));}const ag=gains.slice(-14).reduce((a,b)=>a+b,0)/14,al=losses.slice(-14).reduce((a,b)=>a+b,0)/14,rsi=al===0?100:100-(100/(1+ag/al)),y=closes.length>252?closes[closes.length-253]:closes[0];return {series,sma20:sma(20),sma50:sma(50),sma200:sma(200),rsi,yearReturn:y?((closes.at(-1)-y)/y)*100:0};}
+ async function getHistory(symbol){
+  const j=await historyJson(symbol);const r=j?.chart?.result?.[0];if(!r)throw new Error('No history');const q=r.indicators?.quote?.[0]||{};
+  const closes=(q.close||[]).filter(Number.isFinite),opens=(q.open||[]).filter(Number.isFinite),highs=(q.high||[]).filter(Number.isFinite),lows=(q.low||[]).filter(Number.isFinite),volumes=(q.volume||[]).filter(Number.isFinite);
+  const series=closes.map((v,i)=>({close:v,open:opens[i],high:highs[i],low:lows[i],volume:volumes[i]}));
+  const sma=n=>{const a=series.slice(-n);return a.length?a.reduce((s,x)=>s+x.close,0)/a.length:null};
+  let gains=[],losses=[];for(let i=1;i<closes.length;i++){const d=closes[i]-closes[i-1];gains.push(Math.max(d,0));losses.push(Math.max(-d,0));}
+  const ag=gains.slice(-14).reduce((a,b)=>a+b,0)/14,al=losses.slice(-14).reduce((a,b)=>a+b,0)/14,rsi=al===0?100:100-(100/(1+ag/al)),y=closes.length>252?closes[closes.length-253]:closes[0];
+  return {series,sma20:sma(20),sma50:sma(50),sma200:sma(200),rsi,yearReturn:y?((closes.at(-1)-y)/y)*100:0};
+ }
  async function getQuote(symbol){const fast=await getFastQuote(symbol);const base={...fast};getHistory(symbol).then(h=>localStorage.setItem(cacheKey(symbol),JSON.stringify({...cached(symbol)||fast,...h}))).catch(()=>{});return base;}
  window.IndomarkMarket={getQuote,getFastQuote,getFastQuotes,getTrending,cached,getLiveQuote,getHistory,startLive};
 })();
