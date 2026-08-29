@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded',()=>{
- const KEY='indospeed_alerts';
+ const KEY='indomark_alerts';
  const $=id=>document.getElementById(id);
  const read=()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(v)?v:[]}catch{return[]}};
  const write=v=>localStorage.setItem(KEY,JSON.stringify(v));

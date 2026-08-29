@@ -11,12 +11,12 @@
   function ensureBrandIcon(){const head=document.head;if(!head)return;let icon=head.querySelector('link[data-indomark-favicon]');if(!icon){icon=document.createElement('link');icon.rel='icon';icon.type='image/svg+xml';icon.dataset.indomarkFavicon='true';head.appendChild(icon)}icon.href=FAVICON;let shortcut=head.querySelector('link[data-indomark-shortcut-icon]');if(!shortcut){shortcut=document.createElement('link');shortcut.rel='shortcut icon';shortcut.type='image/svg+xml';shortcut.dataset.indomarkShortcutIcon='true';head.appendChild(shortcut)}shortcut.href=FAVICON;let apple=head.querySelector('link[data-indomark-apple-icon]');if(!apple){apple=document.createElement('link');apple.rel='apple-touch-icon';apple.dataset.indomarkAppleIcon='true';head.appendChild(apple)}apple.href=FAVICON}
   function normalizeBrandText(){
     const replaceInNode=node=>{
-      if(node.nodeType===Node.TEXT_NODE){if(node.nodeValue&&node.nodeValue.includes('IndoSpeed'))node.nodeValue=node.nodeValue.replace(/IndoSpeed/g,'Indomark');return}
+      if(node.nodeType===Node.TEXT_NODE){if(node.nodeValue&&node.nodeValue.includes('Indomark'))node.nodeValue=node.nodeValue.replace(/Indomark/g,'Indomark');return}
       if(node.nodeType===Node.ELEMENT_NODE&&node.tagName==='SCRIPT')return;
       node.childNodes&&Array.from(node.childNodes).forEach(replaceInNode);
     };
     if(document.body)replaceInNode(document.body);
-    if(document.title)document.title=document.title.replace(/IndoSpeed/g,'Indomark');
+    if(document.title)document.title=document.title.replace(/Indomark/g,'Indomark');
   }
   function applyTheme(theme){const next=theme==='light'?'light':'dark';ensureGlobalCss();ensureBrandCss();ensureBrandIcon();normalizeBrandText();const root=document.documentElement;root.dataset.theme=next;root.style.colorScheme=next;localStorage.setItem(KEY,next)}
   function getAccountStatus(){return localStorage.getItem(ACCOUNT_STATUS_KEY)==='inactive'?'inactive':'active'}

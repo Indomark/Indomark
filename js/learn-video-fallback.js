@@ -1,10 +1,10 @@
 (() => {
   const params = new URLSearchParams(location.search);
-  const language = params.get('lang') || localStorage.getItem('indospeed_learn_language_v2') || 'en';
+  const language = params.get('lang') || localStorage.getItem('indomark_learn_language_v2') || 'en';
   const course = params.get('course') || 'varsity';
   const teacher = params.get('teacher') || '';
   const part = Math.max(1, Math.min(10, Number(params.get('part') || 1)));
-  const STATE_KEY = 'indospeed_learn_course_v9';
+  const STATE_KEY = 'indomark_learn_course_v9';
 
   const channels = {
     en: { investopedia: 'Investopedia', groww: 'Groww' },
@@ -31,7 +31,7 @@
   const query = encodeURIComponent(`${teacherName} Course 1 Part ${part} stock market ${language}`);
   const searchUrl = `https://www.youtube.com/results?search_query=${query}`;
 
-  window.INDOSPEED_LEARN_VIDEO = {
+  window.INDOMARK_LEARN_VIDEO = {
     language,
     course,
     teacher,
@@ -55,30 +55,30 @@
     if (!frame || !videoId) return;
     const origin = encodeURIComponent(location.origin);
     frame.innerHTML = `<iframe id="learnYoutubePlayer" src="https://www.youtube-nocookie.com/embed/${videoId}?enablejsapi=1&origin=${origin}&rel=0&modestbranding=1&playsinline=1" title="${teacherName} Part ${part}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
-    window.INDOSPEED_LEARN_VIDEO.iframe = frame.querySelector('iframe');
+    window.INDOMARK_LEARN_VIDEO.iframe = frame.querySelector('iframe');
   }
 
   function attachPlayer() {
     if (!videoId || !window.YT || !window.YT.Player) return false;
     const iframe = document.getElementById('learnYoutubePlayer');
-    if (!iframe || window.INDOSPEED_LEARN_VIDEO.player) return true;
+    if (!iframe || window.INDOMARK_LEARN_VIDEO.player) return true;
     try {
-      window.INDOSPEED_LEARN_VIDEO.player = new YT.Player(iframe, {
+      window.INDOMARK_LEARN_VIDEO.player = new YT.Player(iframe, {
         events: {
           onReady: () => {
-            window.INDOSPEED_LEARN_VIDEO.ready = true;
-            window.INDOSPEED_LEARN_VIDEO.duration = Number(window.INDOSPEED_LEARN_VIDEO.player.getDuration() || 0);
-            document.dispatchEvent(new CustomEvent('indospeed:video-ready'));
+            window.INDOMARK_LEARN_VIDEO.ready = true;
+            window.INDOMARK_LEARN_VIDEO.duration = Number(window.INDOMARK_LEARN_VIDEO.player.getDuration() || 0);
+            document.dispatchEvent(new CustomEvent('indomark:video-ready'));
           },
           onStateChange: event => {
-            window.INDOSPEED_LEARN_VIDEO.state = event.data;
-            document.dispatchEvent(new CustomEvent('indospeed:video-state', { detail: { state: event.data } }));
+            window.INDOMARK_LEARN_VIDEO.state = event.data;
+            document.dispatchEvent(new CustomEvent('indomark:video-state', { detail: { state: event.data } }));
           },
           onError: () => {
-            window.INDOSPEED_LEARN_VIDEO.verified = false;
-            window.INDOSPEED_LEARN_VIDEO.videoId = '';
+            window.INDOMARK_LEARN_VIDEO.verified = false;
+            window.INDOMARK_LEARN_VIDEO.videoId = '';
             fallback();
-            document.dispatchEvent(new CustomEvent('indospeed:video-error'));
+            document.dispatchEvent(new CustomEvent('indomark:video-error'));
           }
         }
       });

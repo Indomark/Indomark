@@ -120,6 +120,6 @@
     const videos = category ? VISTARA_KANNADA_VIDEOS.filter(v => v.category === category && v.verified !== false && v.videoId) : VISTARA_KANNADA_VIDEOS.slice();
     return videos.sort((a,b)=>(a.level??9999)-(b.level??9999)||(a.order??9999)-(b.order??9999));
   }
-  window.INDOSPEED_VISTARA_KANNADA_VIDEOS = VISTARA_KANNADA_VIDEOS;
-  window.getIndoSpeedVistaraVideos = getVistaraVideos;
+  window.INDOMARK_VISTARA_KANNADA_VIDEOS = VISTARA_KANNADA_VIDEOS;
+  window.getIndomarkVistaraVideos = getVistaraVideos;
 })();

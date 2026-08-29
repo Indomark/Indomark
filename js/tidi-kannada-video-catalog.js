@@ -75,6 +75,6 @@
     return videos.sort((a, b) => (a.level ?? 9999) - (b.level ?? 9999) || (a.order ?? 9999) - (b.order ?? 9999));
   }
 
-  window.INDOSPEED_TIDI_KANNADA_VIDEOS = TIDI_KANNADA_VIDEOS;
-  window.getIndoSpeedTidiVideos = getTidiVideos;
+  window.INDOMARK_TIDI_KANNADA_VIDEOS = TIDI_KANNADA_VIDEOS;
+  window.getIndomarkTidiVideos = getTidiVideos;
 })();

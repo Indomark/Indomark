@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded',()=>{
  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
  const message=text=>set('profileMessage',text);
  set('profileName',name);set('profileEmail',email||'Not signed in');set('profileAvatar',initials);
- try{const paper=Number(localStorage.getItem('indomark_paper_balance_v2')??localStorage.getItem('indospeed_paper_balance_v2'));set('paperBalance',Number.isFinite(paper)?`₹${paper.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}`:'₹1,000.00')}catch{set('paperBalance','₹1,000.00')}
- try{const watch=JSON.parse(localStorage.getItem('indomark_watchlist')||localStorage.getItem('indospeed_watchlist')||'[]');set('watchCount',Array.isArray(watch)?watch.length:'0')}catch{set('watchCount','0')}
+ try{const paper=Number(localStorage.getItem('indomark_paper_balance_v2')??localStorage.getItem('indomark_paper_balance_v2'));set('paperBalance',Number.isFinite(paper)?`₹${paper.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}`:'₹1,000.00')}catch{set('paperBalance','₹1,000.00')}
+ try{const watch=JSON.parse(localStorage.getItem('indomark_watchlist')||localStorage.getItem('indomark_watchlist')||'[]');set('watchCount',Array.isArray(watch)?watch.length:'0')}catch{set('watchCount','0')}
  const statusKey='indomark_account_status_v1';
  let status=(user?.active===false||localStorage.getItem(statusKey)==='inactive')?'inactive':'active';
  const statusValue=document.getElementById('memberStatusValue');

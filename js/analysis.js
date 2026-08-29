@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded',async()=>{
- const symbol=localStorage.getItem('indospeed_selected_stock')||'RELIANCE';
+ const symbol=localStorage.getItem('indomark_selected_stock')||'RELIANCE';
  const names={RELIANCE:'Reliance Industries',TCS:'Tata Consultancy Services',INFY:'Infosys',HDFCBANK:'HDFC Bank',ICICIBANK:'ICICI Bank'};
  const $=id=>document.getElementById(id);
  const set=(id,v)=>{const el=$(id);if(el)el.textContent=v};
@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded',async()=>{
  $('backBtn')?.addEventListener('click',()=>history.back());
  const renderBars=data=>{const box=$('miniBars');if(!box||!data.series?.length)return;const a=data.series.slice(-20).map(x=>x.close);const min=Math.min(...a),max=Math.max(...a);box.innerHTML=a.map(v=>`<i style="height:${Math.max(12,((v-min)/(max-min||1))*82+12)}%"></i>`).join('')};
  try{
-  if(!window.IndoSpeedMarket)throw new Error('Market data service unavailable');
-  const data=window.IndoSpeedMarket.cached(symbol)||await window.IndoSpeedMarket.getQuote(symbol);
+  if(!window.IndomarkMarket)throw new Error('Market data service unavailable');
+  const data=window.IndomarkMarket.cached(symbol)||await window.IndomarkMarket.getQuote(symbol);
   const trend=data.yearReturn>=0?'Positive':'Negative';
   const technical=Number.isFinite(data.sma50)?(data.price>data.sma50?'Bullish':'Bearish'):'Unavailable';
   const momentum=Number.isFinite(data.rsi)?(data.rsi>=55?'Strong':data.rsi<=45?'Weak':'Neutral'):'Unavailable';

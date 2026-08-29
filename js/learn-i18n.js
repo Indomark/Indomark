@@ -1,5 +1,5 @@
 (() => {
-  const KEY = 'indospeed_learn_language_v2';
+  const KEY = 'indomark_learn_language_v2';
   const LANGS = ['en','kn','hi','ta','mr','te','ml','gu','bn','or'];
   const LANG_LABELS = {
     en:'English', kn:'ಕನ್ನಡ', hi:'हिन्दी', ta:'தமிழ்', mr:'मराठी',

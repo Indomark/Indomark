@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded',()=>{
   const STARTING_BALANCE=1000;
   const STORAGE_VERSION='v2';
-  const prefix='indospeed_paper_';
-  const selectedKey='indospeed_practice_stock_v1';
+  const prefix='indomark_paper_';
+  const selectedKey='indomark_practice_stock_v1';
   let symbol=(localStorage.getItem(selectedKey)||'').trim().toUpperCase();
   let price=null;
   let previous=null;
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   async function loadQuote(){
     if(!symbol){render();return;}
-    const api=window.IndoSpeedMarket;
+    const api=window.IndomarkMarket;
     if(!api?.getQuote){message('Market data service is unavailable right now.');render();return;}
     try{
       const cached=api.cached?.(symbol);

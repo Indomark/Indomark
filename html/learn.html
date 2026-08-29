@@ -6,14 +6,14 @@
 <meta name="theme-color" content="#050914">
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
-<script>(function(){const theme=localStorage.getItem('indospeed_settings_theme')||'dark';document.documentElement.dataset.theme=theme==='light'?'light':'dark';document.documentElement.style.colorScheme=theme==='light'?'light':'dark';})();</script>
+<script>(function(){const theme=localStorage.getItem('indomark_settings_theme')||'dark';document.documentElement.dataset.theme=theme==='light'?'light':'dark';document.documentElement.style.colorScheme=theme==='light'?'light':'dark';})();</script>
 <script src="../js/settings.js?v=10"></script>
 <link rel="stylesheet" href="../css/app-theme.css?v=12">
 <link rel="stylesheet" href="../css/global-theme.css?v=7">
 <script src="../js/learn-language.js?v=8"></script>
 <script src="../js/learn-i18n.js?v=8"></script>
 <script src="../js/market-data.js?v=13"></script>
-<title>IndoSpeed — Learn</title>
+<title>Indomark — Learn</title>
 <style>
 *{box-sizing:border-box}
 .learn-page{width:100%;min-height:100vh;min-height:100svh;padding:18px 12px 104px;background:radial-gradient(circle at 18% 0%,rgba(112,71,232,.16),transparent 30%),linear-gradient(160deg,#040711 0%,#08111d 58%,#050814 100%);color:var(--text);overflow-x:hidden;-webkit-text-size-adjust:100%;font-family:Inter,Arial,Helvetica,sans-serif}
@@ -56,7 +56,7 @@ html[data-theme="dark"] .hero-copy p:last-child,html[data-theme="dark"] .continu
 <script src="../js/paper.js?v=13"></script>
 <script>
 (function(){
- const key='indospeed_practice_stock_v1';
+ const key='indomark_practice_stock_v1';
  const input=document.getElementById('symbolInput');
  const select=document.getElementById('selectStockBtn');
  const state=document.getElementById('selectStockState');
@@ -78,6 +78,6 @@ html[data-theme="dark"] .hero-copy p:last-child,html[data-theme="dark"] .continu
  practiceTab.addEventListener('click',()=>{history.replaceState(null,'',location.pathname+location.search+'#practice');show('practice');});
  window.addEventListener('hashchange',syncFromHash);syncFromHash();
 })();
-(function(){const KEY='indospeed_settings_theme';const apply=()=>{const t=localStorage.getItem(KEY)||'dark';document.documentElement.dataset.theme=t==='light'?'light':'dark';document.documentElement.style.colorScheme=t==='light'?'light':'dark';};apply();window.addEventListener('storage',e=>{if(e.key===KEY)apply();});window.addEventListener('pageshow',apply);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')apply();});})();
+(function(){const KEY='indomark_settings_theme';const apply=()=>{const t=localStorage.getItem(KEY)||'dark';document.documentElement.dataset.theme=t==='light'?'light':'dark';document.documentElement.style.colorScheme=t==='light'?'light':'dark';};apply();window.addEventListener('storage',e=>{if(e.key===KEY)apply();});window.addEventListener('pageshow',apply);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')apply();});})();
 </script>
 </body></html>

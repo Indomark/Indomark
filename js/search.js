@@ -15,7 +15,7 @@ const empty=document.querySelector('#empty');
 const count=document.querySelector('#resultCount');
 const tabs=[...document.querySelectorAll('.tab')];
 const clear=document.querySelector('.clear-btn');
-const CACHE_KEY='indospeed_nse_stock_master';
+const CACHE_KEY='indomark_nse_stock_master';
 const CACHE_TTL=6*60*60*1000;
 function iconFor(symbol){return (symbol||'S').replace(/[^A-Z]/g,'').slice(0,1)||'S';}
 function normalizeRow(row){
@@ -78,12 +78,12 @@ function setPrice(symbol,data){
  changeEl.classList.toggle('positive',change>=0);changeEl.classList.toggle('negative',change<0);
 }
 function showCachedPrices(list){
- for(const stock of list){const cached=window.IndoSpeedMarket?.cached(stock.symbol);if(cached)setPrice(stock.symbol,cached);}
+ for(const stock of list){const cached=window.IndomarkMarket?.cached(stock.symbol);if(cached)setPrice(stock.symbol,cached);}
 }
 async function fastQuote(stock){
  try{
   const data=await Promise.race([
-   window.IndoSpeedMarket?.getFastQuote(stock.symbol),
+   window.IndomarkMarket?.getFastQuote(stock.symbol),
    new Promise((_,reject)=>setTimeout(()=>reject(new Error('quote timeout')),2500))
   ]);
   if(data)setPrice(stock.symbol,data);
@@ -98,8 +98,8 @@ function hydrateVisiblePrices(list){
 function selectStock(symbol){
  const normalized=String(symbol||'').trim().toUpperCase();
  if(!normalized)return;
- localStorage.setItem('indospeed_selected_stock',normalized);
- localStorage.setItem('indospeed_practice_stock_v1',normalized);
+ localStorage.setItem('indomark_selected_stock',normalized);
+ localStorage.setItem('indomark_practice_stock_v1',normalized);
  location.href='stock.html';
 }
 function render(){
