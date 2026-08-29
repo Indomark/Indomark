@@ -30,3 +30,10 @@ html[data-theme="light"] .bolt,html[data-theme="light"] .brand-bolt{background-i
 html[data-theme="light"] .positive,html[data-theme="light"] .value{color:#159b62!important}
 html[data-theme="light"] .negative{color:#dc3f59!important}
 @media(max-width:640px){.page-wrap{width:calc(100% - 24px)}}
+
+/* Desktop edge-to-edge shell. Keep mobile spacing unchanged. */
+@media(min-width:701px){
+ .page-wrap{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important}
+ .home-page{--home-max:100%!important}
+ .home-page>.topbar,.home-page>.hero,.home-page>.market-status,.home-page>.section-head,.home-page>.movers-grid,.home-page>.quick-grid,.home-page>.overview-grid,.home-page>.premium-card,.home-page>.home-message{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important}
+}
