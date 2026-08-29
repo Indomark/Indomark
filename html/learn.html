@@ -39,30 +39,34 @@
 <section class="section-head"><h2>Continue Learning</h2><a class="view-all" href="course-progress.html">View all</a></section>
 <section class="continue-card"><div class="thumb"><span class="play" aria-hidden="true"></span></div><div><h3 style="margin:0;font-size:13px">Continue your verified course</h3><p>Open your saved course position and continue from the next unlocked lesson.</p><div class="bar"><span id="learnContinueBar"></span></div></div><a class="continue-cta" href="course-progress.html">Continue</a></section>
 </div><nav class="bottom-nav" aria-label="Main navigation"><a href="home.html"><span class="icon">⌂</span>Home</a><a href="watchlist.html"><span class="icon">☆</span>Watchlist</a><a href="portfolio.html"><span class="icon">▣</span>Portfolio</a><a class="active" href="learn.html"><span class="icon">◫</span>Learn</a><a href="profile.html"><span class="icon">◉</span>Profile</a></nav></main>
+<script src="../js/learn-course-catalog.js?v=6"></script>
 <script>
 (function(){
   const STATE_KEY='indomark_learn_course_v9';
   const KEY='indomark_learn_language_v2';
   const defaultTeacher={en:'investopedia',kn:'wavetrader',hi:'pranjal',ta:'businessman',mr:'growwmr',te:'growwte',ml:'growwml',gu:'growwgu',bn:'growwbn',or:'searchor'};
-  function boot(){
-    let state={};
-    try{state=JSON.parse(localStorage.getItem(STATE_KEY)||'{}')||{};}catch{state={};}
-    const lang=localStorage.getItem(KEY)||'en';
-    const teacher=localStorage.getItem(`indomark_teacher_${lang}`)||defaultTeacher[lang]||'';
-    let done=Object.entries(state).filter(([key,val])=>key.startsWith(`${lang}:varsity:${teacher}:`)&&val&&val.quiz===true).length;
-    const progress=document.getElementById('learnProgressPercent');
-    const completed=document.getElementById('learnCompleted');
-    const inProgress=document.getElementById('learnInProgress');
-    const locked=document.getElementById('learnLocked');
-    const bar=document.getElementById('learnContinueBar');
-    if(completed)completed.textContent=String(done);
-    if(progress)progress.textContent='0%';
-    if(inProgress)inProgress.textContent=done>0?'1':'0';
-    if(locked)locked.textContent='0';
-    if(bar)bar.style.width='0%';
-    if(progress)progress.setAttribute('aria-label',done>0?`Course progress ${done} completed part${done===1?'':'s'}`:'Course progress 0 percent');
-  }
-  boot();
+  let state={};
+  try{state=JSON.parse(localStorage.getItem(STATE_KEY)||'{}')||{};}catch{state={};}
+  const lang=localStorage.getItem(KEY)||'en';
+  const teacher=localStorage.getItem(`indomark_teacher_${lang}`)||defaultTeacher[lang]||'';
+  const catalog=window.INDOMARK_LEARN_CATALOG?.getCatalog(lang,teacher,'varsity');
+  const parts=catalog?.parts||[];
+  const done=parts.map(x=>Boolean((state[`${lang}:varsity:${teacher}:${x.n}`]||{}).quiz));
+  const completed=done.filter(Boolean).length;
+  const total=parts.length;
+  const percent=total?Math.round(completed/total*100):0;
+  const started=done.some(Boolean)?1:0;
+  const locked=total?Math.max(total-completed-started,0):0;
+  const p=document.getElementById('learnProgressPercent');
+  const c=document.getElementById('learnCompleted');
+  const i=document.getElementById('learnInProgress');
+  const l=document.getElementById('learnLocked');
+  const bar=document.getElementById('learnContinueBar');
+  if(p){p.textContent=percent+'%';p.parentElement.style.background=`conic-gradient(#22c55e 0 ${percent}%,rgba(148,163,184,.15) ${percent}% 100%)`;p.parentElement.setAttribute('aria-label',`Course progress ${percent} percent`);}
+  if(c)c.textContent=String(completed);
+  if(i)i.textContent=String(started);
+  if(l)l.textContent=String(locked);
+  if(bar)bar.style.width=percent+'%';
 })();
 document.getElementById('notificationButton')?.addEventListener('click',()=>window.location.assign('notifications.html'));
 </script>
