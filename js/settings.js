@@ -3,13 +3,15 @@
   const LEGACY_KEY='indospeed_settings_theme';
   const ACCOUNT_STATUS_KEY='indomark_account_status_v1';
   const GLOBAL_CSS='../css/global-theme.css?v=10';
+  const BRAND_CSS='../css/brand-option-08.css?v=18';
   const FAVICON='../assets/indomark-favicon.svg?v=7';
   const ALLOWED_WHEN_INACTIVE=new Set(['profile.html','login.html','signup.html','index.html','']);
   function getStoredTheme(){const current=localStorage.getItem(KEY);if(current==='light'||current==='dark')return current;const legacy=localStorage.getItem(LEGACY_KEY);return legacy==='light'?'light':'dark'}
   function ensureGlobalCss(){if(document.querySelector('link[data-indomark-theme]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href=GLOBAL_CSS;link.dataset.indomarkTheme='true';document.head.appendChild(link)}
+  function ensureBrandCss(){if(document.querySelector('link[data-indomark-brand]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href=BRAND_CSS;link.dataset.indomarkBrand='true';document.head.appendChild(link)}
   function ensureBrandIcon(){const head=document.head;if(!head)return;let icon=head.querySelector('link[data-indomark-favicon]');if(!icon){icon=document.createElement('link');icon.rel='icon';icon.type='image/svg+xml';icon.dataset.indomarkFavicon='true';head.appendChild(icon)}icon.href=FAVICON;let shortcut=head.querySelector('link[data-indomark-shortcut-icon]');if(!shortcut){shortcut=document.createElement('link');shortcut.rel='shortcut icon';shortcut.type='image/svg+xml';shortcut.dataset.indomarkShortcutIcon='true';head.appendChild(shortcut)}shortcut.href=FAVICON;let apple=head.querySelector('link[data-indomark-apple-icon]');if(!apple){apple=document.createElement('link');apple.rel='apple-touch-icon';apple.dataset.indomarkAppleIcon='true';head.appendChild(apple)}apple.href=FAVICON}
   function normalizeTitle(){if(document.title&&document.title.includes('IndoSpeed'))document.title=document.title.replace(/IndoSpeed/g,'Indomark')}
-  function applyTheme(theme){const next=theme==='light'?'light':'dark';ensureGlobalCss();ensureBrandIcon();normalizeTitle();const root=document.documentElement;root.dataset.theme=next;root.style.colorScheme=next;localStorage.setItem(KEY,next);localStorage.setItem(LEGACY_KEY,next)}
+  function applyTheme(theme){const next=theme==='light'?'light':'dark';ensureGlobalCss();ensureBrandCss();ensureBrandIcon();normalizeTitle();const root=document.documentElement;root.dataset.theme=next;root.style.colorScheme=next;localStorage.setItem(KEY,next);localStorage.setItem(LEGACY_KEY,next)}
   function getAccountStatus(){return localStorage.getItem(ACCOUNT_STATUS_KEY)==='inactive'?'inactive':'active'}
   function currentPage(){return(location.pathname.split('/').pop()||'').toLowerCase()}
   function isAllowedPage(){return ALLOWED_WHEN_INACTIVE.has(currentPage())}
