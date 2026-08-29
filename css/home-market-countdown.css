@@ -1,1 +1,26 @@
-.market-status .status-right{display:grid!important;grid-template-columns:auto auto!important;align-items:baseline!important;justify-content:end!important;column-gap:10px!important;row-gap:6px!important;min-width:0!important}.market-status .status-right span{white-space:nowrap!important;color:#fff!important;font-size:28px!important;line-height:1.08!important;font-weight:800!important}.market-status .status-right strong{white-space:nowrap!important;color:#58e7a5!important;font-size:28px!important;line-height:1.08!important;font-weight:800!important;letter-spacing:.5px!important}.market-status .status-right small{grid-column:1 / -1!important;justify-self:end!important;white-space:nowrap!important;color:#fff!important}@media(max-width:700px){.market-status{gap:12px!important}.market-status .status-left{flex:1 1 42%!important;min-width:0!important}.market-status .status-right{flex:1 1 58%!important;width:auto!important;min-width:0!important;grid-template-columns:1fr!important;justify-items:end!important;row-gap:3px!important}.market-status .status-right span{font-size:14px!important;line-height:1.15!important;white-space:nowrap!important}.market-status .status-right strong{font-size:20px!important;line-height:1.08!important;white-space:nowrap!important}.market-status .status-right small{font-size:7.5px!important;white-space:normal!important;max-width:170px!important;text-align:right!important;line-height:1.25!important}}@media(max-width:430px){.market-status{padding:14px 12px!important;gap:9px!important}.market-status .status-left{flex-basis:40%!important}.market-status .status-right{flex-basis:60%!important}.market-status .status-right span{font-size:12px!important}.market-status .status-right strong{font-size:17px!important;letter-spacing:.25px!important}.market-status .status-right small{font-size:7px!important;max-width:145px!important}}@media(max-width:360px){.market-status{gap:7px!important}.market-status .status-right span{font-size:11px!important}.market-status .status-right strong{font-size:15px!important}.market-status .status-right small{font-size:6.5px!important;max-width:125px!important}}
+/* Final responsive market-status layout. Desktop keeps the compact two-side design. Mobile uses two clean rows so the card never squeezes or overflows. */
+.market-status .status-right{display:grid!important;grid-template-columns:auto auto!important;align-items:baseline!important;justify-content:end!important;column-gap:10px!important;row-gap:6px!important;min-width:0!important;width:auto!important}
+.market-status .status-right span{white-space:nowrap!important;color:#fff!important;font-size:28px!important;line-height:1.08!important;font-weight:800!important}
+.market-status .status-right strong{white-space:nowrap!important;color:#58e7a5!important;font-size:28px!important;line-height:1.08!important;font-weight:800!important;letter-spacing:.5px!important}
+.market-status .status-right small{grid-column:1 / -1!important;justify-self:end!important;white-space:nowrap!important;color:#fff!important}
+
+@media(max-width:700px){
+  .market-status{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important;padding:14px 14px 16px!important;align-items:start!important}
+  .market-status .status-left{width:100%!important;min-width:0!important;display:grid!important;gap:4px!important}
+  .market-status .status-right{width:100%!important;min-width:0!important;display:grid!important;grid-template-columns:auto 1fr!important;align-items:baseline!important;justify-content:start!important;column-gap:8px!important;row-gap:4px!important;text-align:left!important}
+  .market-status .status-right span{font-size:12px!important;line-height:1.15!important;white-space:nowrap!important;justify-self:start!important}
+  .market-status .status-right strong{font-size:20px!important;line-height:1.05!important;white-space:nowrap!important;justify-self:start!important}
+  .market-status .status-right small{grid-column:1 / -1!important;justify-self:start!important;max-width:100%!important;font-size:8px!important;line-height:1.25!important;white-space:normal!important;text-align:left!important}
+  .market-status .status-kicker{font-size:8px!important}
+  .market-status .status-left strong{font-size:17px!important;line-height:1.15!important}
+  .market-status .status-left small{font-size:8px!important;line-height:1.25!important;white-space:normal!important}
+}
+
+@media(max-width:380px){
+  .market-status{gap:8px!important;padding:13px 12px 14px!important}
+  .market-status .status-right{column-gap:6px!important}
+  .market-status .status-right span{font-size:11px!important}
+  .market-status .status-right strong{font-size:17px!important}
+  .market-status .status-right small{font-size:7px!important}
+  .market-status .status-left strong{font-size:16px!important}
+}
