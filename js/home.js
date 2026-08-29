@@ -1,5 +1,5 @@
 (function(){
- const BUILD='20260829-7';
+ const BUILD='20260829-8';
  const url=new URL(window.location.href);
  if(!url.searchParams.has('v')){
   url.searchParams.set('v',BUILD);
@@ -17,9 +17,23 @@ document.addEventListener('DOMContentLoaded',()=>{
  const pad=n=>String(n).padStart(2,'0');
  const tz='Asia/Kolkata';
 
+ // NSE 2026 equity-market holidays. Weekends are handled separately.
+ const NSE_HOLIDAYS_2026=new Set([
+  '2026-01-26','2026-03-03','2026-03-26','2026-03-31','2026-04-03',
+  '2026-04-14','2026-05-01','2026-05-28','2026-06-26','2026-09-14',
+  '2026-10-02','2026-10-20','2026-11-10','2026-11-24','2026-12-25'
+ ]);
+
+ function dateKey(p){return `${p.year}-${pad(p.month)}-${pad(p.day)}`;}
+ function weekdayNum(p){return new Date(Date.UTC(p.year,p.month-1,p.day)).getUTCDay();}
+ function isTradingDay(p){
+  const d=weekdayNum(p);
+  return d>=1&&d<=5&&!NSE_HOLIDAYS_2026.has(dateKey(p));
+ }
+
  function indiaParts(date=new Date()){
   const parts=new Intl.DateTimeFormat('en-IN',{
-   timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'
+   timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit',weekday:'long',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'
   }).formatToParts(date);
   const get=k=>parts.find(p=>p.type===k)?.value;
   return {
@@ -29,9 +43,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   };
  }
 
- function wallMs(p){
-  return Date.UTC(p.year,p.month-1,p.day,p.hour,p.minute,p.second);
- }
+ function wallMs(p){return Date.UTC(p.year,p.month-1,p.day,p.hour,p.minute,p.second);}
 
  function addDays(p,days){
   const d=new Date(Date.UTC(p.year,p.month-1,p.day));
@@ -42,9 +54,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  function nextTradingDate(base){
   let cursor={year:base.year,month:base.month,day:base.day};
   while(true){
-   const d=new Date(Date.UTC(cursor.year,cursor.month-1,cursor.day));
-   const weekday=d.getUTCDay();
-   if(weekday>=1&&weekday<=5)return cursor;
+   if(isTradingDay(cursor))return cursor;
    cursor=addDays(cursor,1);
   }
  }
@@ -60,13 +70,17 @@ document.addEventListener('DOMContentLoaded',()=>{
   return {year:base.year,month:base.month,day:base.day,hour,minute,second:0};
  }
 
+ function tradingLabel(p,prefix){
+  return `${prefix}: ${p.weekday || new Intl.DateTimeFormat('en-IN',{timeZone:tz,weekday:'long'}).format(new Date(Date.UTC(p.year,p.month-1,p.day)))} · ${pad(p.day)} ${new Intl.DateTimeFormat('en-IN',{timeZone:tz,month:'short'}).format(new Date(Date.UTC(p.year,p.month-1,p.day)))} ${p.year} · 9:15 AM IST`;
+ }
+
  function updateCountdown(now=new Date()){
   const p=indiaParts(now);
   const minutes=p.hour*60+p.minute+(p.second/60);
-  const weekdayNum=new Date(Date.UTC(p.year,p.month-1,p.day)).getUTCDay();
-  const isWeekday=weekdayNum>=1&&weekdayNum<=5;
-  const openMinutes=9*60+15, closeMinutes=15*60+30;
-  const isOpen=isWeekday&&minutes>=openMinutes&&minutes<closeMinutes;
+  const currentDay={year:p.year,month:p.month,day:p.day};
+  const isTrading=isTradingDay(currentDay);
+  const openMinutes=9*60+15,closeMinutes=15*60+30;
+  const isOpen=isTrading&&minutes>=openMinutes&&minutes<closeMinutes;
   const dot=document.getElementById('statusDot');
   dot?.classList.remove('open','closed');
 
@@ -81,14 +95,20 @@ document.addEventListener('DOMContentLoaded',()=>{
    return;
   }
 
-  const next=isWeekday&&minutes<openMinutes
-   ? targetFor(p,9,15)
-   : {...nextTradingDate(addDays(p,1)),hour:9,minute:15,second:0};
+  const beforeOpen=isTrading&&minutes<openMinutes;
+  const next=beforeOpen
+   ? {...currentDay,hour:9,minute:15,second:0,weekday:p.weekday}
+   : (()=>{
+      const d=nextTradingDate(addDays(p,1));
+      const dt=new Date(Date.UTC(d.year,d.month-1,d.day));
+      return {...d,hour:9,minute:15,second:0,weekday:new Intl.DateTimeFormat('en-IN',{timeZone:tz,weekday:'long'}).format(dt)};
+     })();
+
   set('marketStatus','Market Closed');
   set('marketGreeting','Next NSE session countdown is live');
   set('marketNext','NSE regular session: 9:15 AM–3:30 PM IST');
   set('marketCountdown',formatDuration(wallMs(next)-wallMs(p)));
-  set('marketCloseLabel',`Opens at 9:15 AM IST${isWeekday&&minutes<openMinutes?' today':' on the next trading day'}`);
+  set('marketCloseLabel',tradingLabel(next,beforeOpen?'Trading today':'Next trading day'));
   dot?.classList.add('closed');
  }
 
