@@ -2,9 +2,23 @@
   const KEY='indomark_settings_theme';
   const ACCOUNT_STATUS_KEY='indomark_account_status_v1';
   const GLOBAL_CSS='../css/global-theme.css?v=3';
+  const FAVICON='../assets/indomark-favicon.svg?v=3';
   const ALLOWED_WHEN_INACTIVE=new Set(['profile.html','login.html','signup.html','index.html','']);
   function ensureGlobalCss(){if(document.querySelector('link[data-indomark-theme]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href=GLOBAL_CSS;link.dataset.indomarkTheme='true';document.head.appendChild(link)}
-  function applyTheme(theme){ensureGlobalCss();const root=document.documentElement;root.dataset.theme=theme==='light'?'light':'dark';root.style.colorScheme=theme==='light'?'light':'dark'}
+  function ensureBrandIcon(){
+    const head=document.head;
+    if(!head)return;
+    let icon=head.querySelector('link[data-indomark-favicon]');
+    if(!icon){icon=document.createElement('link');icon.rel='icon';icon.type='image/svg+xml';icon.dataset.indomarkFavicon='true';head.appendChild(icon)}
+    icon.href=FAVICON;
+    let shortcut=head.querySelector('link[data-indomark-shortcut-icon]');
+    if(!shortcut){shortcut=document.createElement('link');shortcut.rel='shortcut icon';shortcut.type='image/svg+xml';shortcut.dataset.indomarkShortcutIcon='true';head.appendChild(shortcut)}
+    shortcut.href=FAVICON;
+    let apple=head.querySelector('link[data-indomark-apple-icon]');
+    if(!apple){apple=document.createElement('link');apple.rel='apple-touch-icon';apple.dataset.indomarkAppleIcon='true';head.appendChild(apple)}
+    apple.href=FAVICON;
+  }
+  function applyTheme(theme){ensureGlobalCss();ensureBrandIcon();const root=document.documentElement;root.dataset.theme=theme==='light'?'light':'dark';root.style.colorScheme=theme==='light'?'light':'dark'}
   function getAccountStatus(){return localStorage.getItem(ACCOUNT_STATUS_KEY)==='inactive'?'inactive':'active'}
   function currentPage(){return(location.pathname.split('/').pop()||'').toLowerCase()}
   function isAllowedPage(){return ALLOWED_WHEN_INACTIVE.has(currentPage())}
@@ -14,5 +28,5 @@
   function updateAccountStatus(status){const next=status==='inactive'?'inactive':'active';localStorage.setItem(ACCOUNT_STATUS_KEY,next);if(next==='inactive')lockInactivePage();else removeInactiveLock();window.dispatchEvent(new CustomEvent('indomark-account-status-change',{detail:{status:next}}));return next}
   applyTheme(localStorage.getItem(KEY)||'dark');
   window.IndomarkSettings={getTheme:()=>localStorage.getItem(KEY)||'dark',setTheme:theme=>{const next=theme==='light'?'light':'dark';localStorage.setItem(KEY,next);applyTheme(next);return next},applyTheme,getAccountStatus,setAccountStatus:updateAccountStatus,isAccountActive:()=>getAccountStatus()==='active'};
-  const check=()=>{if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();window.addEventListener('storage',event=>{if(event.key===ACCOUNT_STATUS_KEY)check()});
+  const check=()=>{ensureBrandIcon();if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();window.addEventListener('storage',event=>{if(event.key===ACCOUNT_STATUS_KEY)check()});
 })();
