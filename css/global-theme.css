@@ -27,14 +27,15 @@ html[data-theme="light"] .section-head a,html[data-theme="light"] .section-head>
 html[data-theme="light"] .status-dot{box-shadow:0 0 12px rgba(246,189,59,.35)}
 html[data-theme="light"] .bolt{filter:none}
 html[data-theme="light"] .settings-page select option{background:#fff!important;color:#152033!important}
-/* Brand colors: keep IndoSpeed identity stable in both themes. */
+/* Indomark final brand identity. */
 .brand,.signup-brand,.login-brand{color:var(--text)!important}
 .brand>span,.signup-brand>span,.login-brand>span{color:var(--text)!important}
 .brand>strong,.signup-brand>strong,.login-brand>strong{color:var(--text)!important}
-.brand>span>strong,.signup-brand>span>strong,.login-brand>span>strong{color:var(--green)!important}
-.brand strong,.signup-brand strong,.login-brand strong{color:var(--green)!important}
+.brand>span>strong,.signup-brand>span>strong,.login-brand>span>strong{color:#A855F7!important}
+.brand strong,.signup-brand strong,.login-brand strong{color:#A855F7!important}
 html[data-theme="light"] .brand>span,html[data-theme="light"] .signup-brand>span,html[data-theme="light"] .login-brand>span,html[data-theme="light"] .brand>strong,html[data-theme="light"] .signup-brand>strong,html[data-theme="light"] .login-brand>strong{color:var(--text)!important}
-html[data-theme="light"] .brand>span>strong,html[data-theme="light"] .signup-brand>span>strong,html[data-theme="light"] .login-brand>span>strong{color:var(--green)!important}
+html[data-theme="light"] .brand>span>strong,html[data-theme="light"] .signup-brand>span>strong,html[data-theme="light"] .login-brand strong{color:#A855F7!important}
+html[data-theme="light"] .bolt,html[data-theme="light"] .brand-bolt{filter:none!important;background-image:url('../assets/indomark-favicon.svg?v=4')!important}
 
 /* Entry screens stay dark even when the rest of the app is in Light mode. */
 html[data-theme="light"] .splash-screen,
@@ -91,7 +92,7 @@ html[data-theme="light"] .login-page .signup-copy a,
 html[data-theme="light"] .signup-page .login-copy a,
 html[data-theme="light"] .login-brand strong,
 html[data-theme="light"] .signup-brand strong{
-  color:#58e7a5!important;
+  color:#A855F7!important;
 }
 html[data-theme="light"] .splash-screen .logo-indo,
 html[data-theme="light"] .splash-screen .tagline,
@@ -99,4 +100,4 @@ html[data-theme="light"] .splash-screen .intro-block,
 html[data-theme="light"] .splash-screen #loading-text{
   color:#f4f7fb!important;
 }
-html[data-theme="light"] .splash-screen .logo-speed{color:#58e7a5!important}
+html[data-theme="light"] .splash-screen .logo-speed{color:#A855F7!important}
