@@ -27,6 +27,7 @@ html[data-theme="light"] .section-head a,html[data-theme="light"] .section-head>
 html[data-theme="light"] .status-dot{box-shadow:0 0 12px rgba(246,189,59,.35)}
 html[data-theme="light"] .bolt{filter:none}
 html[data-theme="light"] .settings-page select option{background:#fff!important;color:#152033!important}
+
 /* Indomark final brand identity — Compass Star. */
 .brand,.signup-brand,.login-brand,.learn-brand{color:#F7F8FA!important}
 .brand>span,.signup-brand>span,.login-brand>span,.learn-brand strong{color:#F7F8FA!important}
@@ -112,3 +113,58 @@ html[data-theme="light"] .splash-screen .logo-speed{color:#f4f7fb!important}
 /* Final logo system. */
 html body .bolt,html body .brand-bolt{background-image:url('../assets/indomark-compass-dark.svg?v=1')!important;background-position:center!important;background-repeat:no-repeat!important;background-size:contain!important}
 html[data-theme="light"] body .bolt,html[data-theme="light"] body .brand-bolt{background-image:url('../assets/indomark-compass-light.svg?v=1')!important}
+
+/* Shared app-header brand contract: Home's brand is the source of truth. */
+html body .brand,
+html body .signup-brand,
+html body .login-brand,
+html body .learn-brand{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  font-size:36px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:-1.2px!important;
+  white-space:nowrap!important;
+}
+html body .brand .bolt,
+html body .signup-brand .bolt,
+html body .login-brand .bolt,
+html body .learn-brand .bolt,
+html body .brand .brand-bolt,
+html body .signup-brand .brand-bolt,
+html body .login-brand .brand-bolt,
+html body .learn-brand .brand-bolt{
+  width:30px!important;
+  height:30px!important;
+  flex:0 0 30px!important;
+}
+@media(max-width:640px){
+  html body .brand,
+  html body .signup-brand,
+  html body .login-brand,
+  html body .learn-brand{font-size:36px!important;gap:10px!important}
+  html body .brand .bolt,
+  html body .signup-brand .bolt,
+  html body .login-brand .bolt,
+  html body .learn-brand .bolt,
+  html body .brand .brand-bolt,
+  html body .signup-brand .brand-bolt,
+  html body .login-brand .brand-bolt,
+  html body .learn-brand .brand-bolt{width:30px!important;height:30px!important;flex-basis:30px!important}
+}
+@media(max-width:360px){
+  html body .brand,
+  html body .signup-brand,
+  html body .login-brand,
+  html body .learn-brand{font-size:36px!important;gap:9px!important}
+  html body .brand .bolt,
+  html body .signup-brand .bolt,
+  html body .login-brand .bolt,
+  html body .learn-brand .bolt,
+  html body .brand .brand-bolt,
+  html body .signup-brand .brand-bolt,
+  html body .login-brand .brand-bolt,
+  html body .learn-brand .brand-bolt{width:28px!important;height:28px!important;flex-basis:28px!important}
+}
