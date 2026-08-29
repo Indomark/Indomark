@@ -39,7 +39,7 @@ html[data-theme="light"] .settings-page select option{background:#fff!important;
 .bolt,.brand-bolt{display:inline-block!important;background:transparent url('../assets/indomark-final-mark.svg?v=6') center/contain no-repeat!important;clip-path:none!important;filter:none!important}
 html[data-theme="light"] .brand,html[data-theme="light"] .signup-brand,html[data-theme="light"] .login-brand,html[data-theme="light"] .learn-brand{color:#0F1B38!important}
 html[data-theme="light"] .brand>span,html[data-theme="light"] .signup-brand>span,html[data-theme="light"] .login-brand>span,html[data-theme="light"] .learn-brand strong{color:#0F1B38!important}
-html[data-theme="light"] .brand>strong,.html[data-theme="light"] .signup-brand>strong,html[data-theme="light"] .login-brand>strong{color:#0F1B38!important}
+html[data-theme="light"] .brand>strong,html[data-theme="light"] .signup-brand>strong,html[data-theme="light"] .login-brand>strong{color:#0F1B38!important}
 html[data-theme="light"] .brand>span>strong,html[data-theme="light"] .signup-brand>span>strong,html[data-theme="light"] .login-brand>span>strong{color:#6D28D9!important}
 html[data-theme="light"] .brand strong,html[data-theme="light"] .signup-brand strong,html[data-theme="light"] .login-brand strong{color:#6D28D9!important}
 html[data-theme="light"] .brand>strong::after{color:#0F1B38!important}
