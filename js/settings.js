@@ -30,61 +30,24 @@
         const iframe=playerBox.querySelector('iframe#activePlayer');
         const cover=playerBox.querySelector('.cover');
         if(!iframe||!cover||cover.dataset.adBridge==='1')return;
-        cover.dataset.adBridge='1';
-        cover.style.pointerEvents='none';
-        const shield=document.createElement('div');
-        shield.setAttribute('aria-hidden','true');
-        shield.style.position='absolute';
-        shield.style.inset='0';
-        shield.style.zIndex='1';
-        shield.style.background='transparent';
-        shield.style.clipPath='polygon(0 0,100% 0,100% 76%,72% 76%,72% 100%,0 100%)';
-        shield.style.pointerEvents='auto';
-        shield.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();},true);
-        cover.insertBefore(shield,cover.firstChild);
-        iframe.style.pointerEvents='auto';
-        const button=cover.querySelector('#playBtn');
-        if(button)button.style.pointerEvents='auto';
+        cover.dataset.adBridge='1';cover.style.pointerEvents='none';
+        const shield=document.createElement('div');shield.setAttribute('aria-hidden','true');shield.style.position='absolute';shield.style.inset='0';shield.style.zIndex='1';shield.style.background='transparent';shield.style.clipPath='polygon(0 0,100% 0,100% 76%,72% 76%,72% 100%,0 100%)';shield.style.pointerEvents='auto';shield.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();},true);cover.insertBefore(shield,cover.firstChild);iframe.style.pointerEvents='auto';const button=cover.querySelector('#playBtn');if(button)button.style.pointerEvents='auto';
       });
     };
-    apply();
-    const observer=new MutationObserver(apply);
-    const start=()=>{if(document.body)observer.observe(document.body,{childList:true,subtree:true});};
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+    apply();const observer=new MutationObserver(apply);const start=()=>{if(document.body)observer.observe(document.body,{childList:true,subtree:true});};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
   }
   function installVideoNumberingFix(){
     if(currentPage()!=='learn-videos.html')return;
     const apply=()=>{
       document.querySelectorAll('.level-block').forEach(block=>{
         const kicker=block.querySelector('.kicker');
-        if(kicker){
-          const m=kicker.textContent.match(/LEVEL\s+(\d+)/i);
-          if(m)kicker.textContent='LEVEL '+m[1];
-        }
+        if(kicker){const m=kicker.textContent.match(/LEVEL\s+(\d+)/i);if(m)kicker.textContent='LEVEL '+(Number(m[1])+1);}
         const cards=block.querySelectorAll('.video-card');
-        cards.forEach((card,index)=>{
-          const meta=card.querySelector('.meta-line');
-          if(!meta)return;
-          const strong=meta.querySelector('strong');
-          if(!strong)return;
-          const lm=strong.textContent.match(/LEVEL\s+(\d+)/i);
-          const level=lm?lm[1]:'';
-          strong.textContent='LEVEL '+level;
-          const parts=meta.textContent.split('·');
-          meta.textContent='';
-          meta.appendChild(strong);
-          const sep=document.createTextNode(' · VIDEO '+(index+1)+' OF '+cards.length);
-          meta.appendChild(sep);
-        });
+        cards.forEach((card,index)=>{const meta=card.querySelector('.meta-line');if(!meta)return;const strong=meta.querySelector('strong');if(!strong)return;const lm=strong.textContent.match(/LEVEL\s+(\d+)/i);const level=lm?Number(lm[1])+1:'';strong.textContent='LEVEL '+level;meta.textContent='';meta.appendChild(strong);meta.appendChild(document.createTextNode(' · VIDEO '+(index+1)+' OF '+cards.length));});
       });
     };
-    apply();
-    const observer=new MutationObserver(apply);
-    const start=()=>{if(document.body)observer.observe(document.body,{childList:true,subtree:true});};
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+    apply();const observer=new MutationObserver(apply);const start=()=>{if(document.body)observer.observe(document.body,{childList:true,subtree:true});};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
   }
-  applyTheme(getStoredTheme());
-  installVideoAdSkipBridge();
-  installVideoNumberingFix();
+  applyTheme(getStoredTheme());installVideoAdSkipBridge();installVideoNumberingFix();
   window.IndomarkSettings={getTheme:getStoredTheme,getResolvedTheme:()=>resolveTheme(getStoredTheme()),setTheme:theme=>{const next=normalizeThemePreference(theme);applyTheme(next);return next},applyTheme,resolveTheme,getAccountStatus,setAccountStatus:updateAccountStatus,isAccountActive:()=>getAccountStatus()==='active'};const check=()=>{applyTheme(getStoredTheme());if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();const media=window.matchMedia?window.matchMedia('(prefers-color-scheme: light)'):null;if(media){const onSystemChange=()=>{if(getStoredTheme()==='system')applyTheme('system')};media.addEventListener?media.addEventListener('change',onSystemChange):media.addListener&&media.addListener(onSystemChange)}window.addEventListener('storage',event=>{if(event.key===ACCOUNT_STATUS_KEY||event.key===KEY)check()});
 })();
