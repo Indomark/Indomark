@@ -41,9 +41,44 @@
       if(!unlocked){
         card.addEventListener('click',e=>e.preventDefault());
         const badge=card.querySelector('.hub-level');
-        if(badge) badge.textContent=(badge.textContent||'').replace(/LEVEL\\s+/i,'') ? '🔒 LEVEL '+(badge.textContent.match(/\\d+/)||[''])[0] : '🔒';
+        if(badge) badge.textContent=(badge.textContent||'').replace(/LEVEL\s+/i,'') ? '🔒 LEVEL '+(badge.textContent.match(/\d+/)||[''])[0] : '🔒';
       }
     });
+  }
+
+  function readLastLearningContext(){
+    try{
+      const raw=localStorage.getItem('indomark_last_learning_context_v1');
+      const ctx=raw?JSON.parse(raw):null;
+      if(ctx&&ctx.lang&&ctx.teacher&&ctx.category) return ctx;
+    }catch(_){ }
+    return null;
+  }
+
+  function fallbackLearningContext(){
+    try{
+      const lang=localStorage.getItem('indomark_learn_language_v2')||'en';
+      const teacher=localStorage.getItem(`indomark_teacher_${lang}`)||'';
+      const category=localStorage.getItem('indomark_learn_category_v1')||'Stock Market Basics';
+      if(lang&&teacher&&category) return {lang,teacher,category};
+    }catch(_){ }
+    return null;
+  }
+
+  function wireContinueLearning(){
+    const button=document.querySelector('.continue-cta');
+    if(!button) return;
+    const context=readLastLearningContext()||fallbackLearningContext();
+    if(context){
+      const u=new URL('learn-videos.html',location.href);
+      u.searchParams.set('lang',context.lang);
+      u.searchParams.set('teacher',context.teacher);
+      u.searchParams.set('category',context.category);
+      if(context.videoId) u.searchParams.set('resume',context.videoId);
+      button.href=u.toString();
+    }else{
+      button.href='learn-videos.html';
+    }
   }
 
   const boot=()=>{
@@ -54,57 +89,7 @@
       s.onload=wireLevelGate;
       document.head.appendChild(s);
     }
+    wireContinueLearning();
   };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
-
-  function loadScript(src){
-    return new Promise((resolve,reject)=>{
-      if(document.querySelector(`script[src="${src}"]`)) return resolve();
-      const s=document.createElement('script');
-      s.src=src;
-      s.onload=resolve;
-      s.onerror=reject;
-      document.head.appendChild(s);
-    });
-  }
-
-  async function syncLearnProgress(){
-    if(!document.getElementById('learnProgressPercent')) return;
-    try{
-      await loadScript('../js/vistara-kannada-video-catalog.js?v=20260830-19');
-      await loadScript('../js/angel-investments-kannada-video-catalog.js?v=20260830-19');
-      if(!window.INDOMARK_LEARN_LEVEL_GATE){
-        await loadScript('../js/learn-level-gating.js?v=1');
-      }
-      const gate=window.INDOMARK_LEARN_LEVEL_GATE;
-      if(!gate) return;
-      const categories=['Stock Market Basics','Technical Analysis','Fundamental Analysis','Risk Management','Investor Psychology'];
-      let progressTotal=0,completedLevels=0,unlockedLevels=0,inProgress=0;
-      categories.forEach(category=>{
-        const s=gate.getStatus(category);
-        const required=Number(s.required)||0;
-        const completed=Math.min(Number(s.completed)||0,required);
-        const ratio=required?Math.max(0,Math.min(1,completed/required)):0;
-        progressTotal+=ratio;
-        if(s.unlocked) unlockedLevels+=1;
-        if(required&&completed>=required) completedLevels+=1;
-        else if(s.unlocked&&completed>0) inProgress=1;
-      });
-      if(!inProgress && unlockedLevels>completedLevels) inProgress=1;
-      const percent=Math.round((progressTotal/categories.length)*100);
-      const p=document.getElementById('learnProgressPercent');
-      const c=document.getElementById('learnCompleted');
-      const i=document.getElementById('learnInProgress');
-      const l=document.getElementById('learnLocked');
-      const bar=document.getElementById('learnContinueBar');
-      if(p){p.textContent=percent+'%';p.parentElement.style.background=`conic-gradient(#22c55e 0 ${percent}%,rgba(148,163,184,.15) ${percent}% 100%)`;p.parentElement.setAttribute('aria-label',`Course progress ${percent} percent`);}
-      if(c)c.textContent=String(completedLevels);
-      if(i)i.textContent=String(inProgress);
-      if(l)l.textContent=String(Math.max(categories.length-unlockedLevels,0));
-      if(bar)bar.style.width=percent+'%';
-    }catch(_){/* preserve existing page behavior when optional progress scripts are unavailable */}
-  }
-
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(syncLearnProgress,0),{once:true});
-  else setTimeout(syncLearnProgress,0);
 })();
