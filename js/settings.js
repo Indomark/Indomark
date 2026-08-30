@@ -52,7 +52,39 @@
     const start=()=>{if(document.body)observer.observe(document.body,{childList:true,subtree:true});};
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
   }
+  function installVideoNumberingFix(){
+    if(currentPage()!=='learn-videos.html')return;
+    const apply=()=>{
+      document.querySelectorAll('.level-block').forEach(block=>{
+        const kicker=block.querySelector('.kicker');
+        if(kicker){
+          const m=kicker.textContent.match(/LEVEL\s+(\d+)/i);
+          if(m)kicker.textContent='LEVEL '+m[1];
+        }
+        const cards=block.querySelectorAll('.video-card');
+        cards.forEach((card,index)=>{
+          const meta=card.querySelector('.meta-line');
+          if(!meta)return;
+          const strong=meta.querySelector('strong');
+          if(!strong)return;
+          const lm=strong.textContent.match(/LEVEL\s+(\d+)/i);
+          const level=lm?lm[1]:'';
+          strong.textContent='LEVEL '+level;
+          const parts=meta.textContent.split('·');
+          meta.textContent='';
+          meta.appendChild(strong);
+          const sep=document.createTextNode(' · VIDEO '+(index+1)+' OF '+cards.length);
+          meta.appendChild(sep);
+        });
+      });
+    };
+    apply();
+    const observer=new MutationObserver(apply);
+    const start=()=>{if(document.body)observer.observe(document.body,{childList:true,subtree:true});};
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+  }
   applyTheme(getStoredTheme());
   installVideoAdSkipBridge();
+  installVideoNumberingFix();
   window.IndomarkSettings={getTheme:getStoredTheme,getResolvedTheme:()=>resolveTheme(getStoredTheme()),setTheme:theme=>{const next=normalizeThemePreference(theme);applyTheme(next);return next},applyTheme,resolveTheme,getAccountStatus,setAccountStatus:updateAccountStatus,isAccountActive:()=>getAccountStatus()==='active'};const check=()=>{applyTheme(getStoredTheme());if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();const media=window.matchMedia?window.matchMedia('(prefers-color-scheme: light)'):null;if(media){const onSystemChange=()=>{if(getStoredTheme()==='system')applyTheme('system')};media.addEventListener?media.addEventListener('change',onSystemChange):media.addListener&&media.addListener(onSystemChange)}window.addEventListener('storage',event=>{if(event.key===ACCOUNT_STATUS_KEY||event.key===KEY)check()});
 })();
