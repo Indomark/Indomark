@@ -1,136 +1,23 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="cache-control" content="no-store">
-<meta name="theme-color" content="#050914">
-<script src="../js/settings.js?v=11"></script>
-<script src="../js/vistara-kannada-video-catalog.js?v=20260830-13"></script>
-<script src="../js/angel-investments-kannada-video-catalog.js?v=20260830-13"></script>
-<link rel="stylesheet" href="../css/app-theme.css?v=20260830-13">
-<link rel="stylesheet" href="../css/global-theme.css?v=20260830-13">
-<title>Indomark — Videos</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
-.page{min-height:100dvh;padding:16px 12px 90px}.wrap{width:min(1000px,100%);margin:auto}
-.top{display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:10px;color:var(--text);font-size:30px;font-weight:900;line-height:1;letter-spacing:-1.7px;white-space:nowrap}.bolt{width:30px;height:30px;flex:0 0 30px;background:transparent url('../assets/indomark-compass-dark.svg?v=13') center/contain no-repeat}.back{width:40px;height:40px;border:1px solid var(--line);border-radius:11px;background:var(--panel);color:var(--text);display:grid;place-items:center;text-decoration:none;font-size:18px}
-.hero{margin:18px 0 14px}.eyebrow{margin:0;color:var(--green);font-size:9px;font-weight:900;letter-spacing:1px}.hero h1{margin:5px 0 0;font-size:25px;color:var(--green)}.hero p{margin:6px 0 0;color:var(--muted);font-size:11px}.context{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{padding:7px 9px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:9px;color:var(--text)}
-.grid{display:grid;gap:12px;margin-top:12px}.level-block{display:grid;gap:8px}.level-head{padding:12px 13px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(180deg,var(--panel-2),var(--panel))}.level-head .kicker{color:var(--green);font-size:8px;font-weight:900;letter-spacing:1px;text-transform:uppercase}.level-head h2{margin:4px 0 0;font-size:16px}.level-head p{margin:5px 0 0;color:var(--muted);font-size:10px;line-height:1.45}
-.video-card{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}.player{position:relative;aspect-ratio:16/9;background:#050914}.player iframe{width:100%;height:100%;border:0;display:block;pointer-events:none}.shield{position:absolute;inset:0;z-index:5;cursor:pointer}.play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;background:rgba(0,0,0,.58);color:#fff;display:grid;place-items:center;font-size:22px}.resume{position:absolute;left:10px;bottom:10px;z-index:6;padding:5px 8px;border-radius:7px;background:rgba(0,0,0,.58);color:#fff;font-size:8px;font-weight:800;pointer-events:none}
-.locked{aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;background:var(--panel-2);color:var(--muted);text-align:center;padding:20px}.locked .lock{font-size:28px}.locked b{font-size:12px;color:var(--text)}.locked small{font-size:9px;line-height:1.4;max-width:290px}.body{padding:11px}.body b{display:block;font-size:12px;line-height:1.35}.body .what{margin-top:7px;padding-top:8px;border-top:1px solid var(--line-soft);font-size:10px;line-height:1.45}.body .what strong{color:var(--green)}.body small{display:block;margin-top:5px;color:var(--muted);font-size:9px}.state{display:inline-block;margin-top:7px;padding:4px 6px;border-radius:999px;font-size:8px;font-weight:900}.state.active{background:rgba(88,231,165,.12);color:var(--green)}.state.locked{background:rgba(148,163,184,.12);color:var(--muted)}.state.done{background:rgba(88,231,165,.16);color:var(--green)}.empty{padding:20px;border:1px dashed var(--line);border-radius:13px;color:var(--muted);font-size:11px;text-align:center}
-@media(max-width:640px){.page{padding-left:10px;padding-right:10px}.brand{font-size:36px;gap:8px}.bolt{width:28px;height:28px;flex-basis:28px}}@media(max-width:360px){.brand{font-size:36px;gap:7px}.bolt{width:26px;height:26px;flex-basis:26px}}
-</style>
-</head>
-<body>
-<main class="page"><div class="wrap">
-<header class="top"><div class="brand"><span class="bolt" aria-hidden="true"></span><span>Indo<strong>mark</strong></span></div><a class="back" id="back" href="learn-channel-v2.html" aria-label="Back">←</a></header>
-<section class="hero"><p class="eyebrow">STEP 4 OF 4</p><h1>Videos</h1><p>Complete each video from start to finish to unlock the next one.</p><div class="context"><span class="chip" id="languageChip">Language</span><span class="chip" id="channelChip">Channel</span><span class="chip" id="categoryChip">Category</span></div></section>
-<section class="grid" id="list"></section>
-</div></main>
-<script>
-(function(){
-'use strict';
-var params=new URLSearchParams(location.search);
-var lang=params.get('lang')||localStorage.getItem('indomark_learn_language_v2')||'kn';
-var teacher=params.get('teacher')||localStorage.getItem('indomark_teacher_'+lang)||'vistara';
-var rawCategory=params.get('category')||localStorage.getItem('indomark_learn_category_v1')||'Stock Market Basics';
-var categoryMap={basics:'Stock Market Basics',technical:'Technical Analysis',fundamental:'Fundamental Analysis',risk:'Risk Management',psychology:'Investor Psychology',education:'Investor Education'};
-var category=categoryMap[String(rawCategory).trim().toLowerCase()]||String(rawCategory).trim()||'Stock Market Basics';
-
-localStorage.setItem('indomark_learn_language_v2',lang);
-localStorage.setItem('indomark_learn_category_v1',category);
-localStorage.setItem('indomark_teacher_'+lang,teacher);
-
-document.getElementById('languageChip').textContent='Language: '+(lang==='kn'?'ಕನ್ನಡ':lang);
-document.getElementById('channelChip').textContent='Channel: '+(teacher==='vistara'?'Vistara Money Plus':teacher==='angel'?'Angel Investments':teacher);
-document.getElementById('categoryChip').textContent='Category: '+category;
-document.getElementById('back').href='learn-channel-v2.html?lang='+encodeURIComponent(lang)+'&category='+encodeURIComponent(category);
-
-var removedIds={LLGkm3TTcCg:true};
-var fallback=[
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta http-equiv="cache-control" content="no-store"><meta name="theme-color" content="#050914"><script src="../js/settings.js?v=11"></script><script src="../js/vistara-kannada-video-catalog.js?v=20260830-13"></script><script src="../js/angel-investments-kannada-video-catalog.js?v=20260830-13"></script><link rel="stylesheet" href="../css/app-theme.css?v=20260830-13"><link rel="stylesheet" href="../css/global-theme.css?v=20260830-13"><title>Indomark — Videos</title><style>*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}.page{min-height:100dvh;padding:16px 12px 90px}.wrap{width:min(1000px,100%);margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:10px;color:var(--text);font-size:30px;font-weight:900;line-height:1;letter-spacing:-1.7px;white-space:nowrap}.bolt{width:30px;height:30px;flex:0 0 30px;background:url('../assets/indomark-compass-dark.svg?v=13') center/contain no-repeat}.back{width:40px;height:40px;border:1px solid var(--line);border-radius:11px;background:var(--panel);color:var(--text);display:grid;place-items:center;text-decoration:none;font-size:18px}.hero{margin:18px 0 14px}.eyebrow{margin:0;color:var(--green);font-size:9px;font-weight:900;letter-spacing:1px}.hero h1{margin:5px 0 0;font-size:25px;color:var(--green)}.hero p{margin:6px 0 0;color:var(--muted);font-size:11px}.context{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{padding:7px 9px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:9px;color:var(--text)}.grid{display:grid;gap:12px;margin-top:12px}.level-block{display:grid;gap:8px}.level-head{padding:12px 13px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(180deg,var(--panel-2),var(--panel))}.level-head .kicker{color:var(--green);font-size:8px;font-weight:900;letter-spacing:1px;text-transform:uppercase}.level-head h2{margin:4px 0 0;font-size:16px}.level-head p{margin:5px 0 0;color:var(--muted);font-size:10px;line-height:1.45}.video-card{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}.player{position:relative;aspect-ratio:16/9;background:#050914}.player iframe{width:100%;height:100%;border:0;display:block}.cover{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:transparent}.cover button{width:64px;height:64px;border:0;border-radius:50%;background:rgba(0,0,0,.62);color:#fff;font-size:22px;cursor:pointer}.resume{position:absolute;left:10px;bottom:10px;z-index:4;padding:5px 8px;border-radius:7px;background:rgba(0,0,0,.58);color:#fff;font-size:8px;font-weight:800;pointer-events:none}.locked{aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;background:var(--panel-2);color:var(--muted);text-align:center;padding:20px}.locked .lock{font-size:28px}.locked b{font-size:12px;color:var(--text)}.locked small{font-size:9px;line-height:1.4;max-width:290px}.body{padding:11px}.body b{display:block;font-size:12px;line-height:1.35}.body .what{margin-top:7px;padding-top:8px;border-top:1px solid var(--line-soft);font-size:10px;line-height:1.45}.body .what strong{color:var(--green)}.body small{display:block;margin-top:5px;color:var(--muted);font-size:9px}.state{display:inline-block;margin-top:7px;padding:4px 6px;border-radius:999px;font-size:8px;font-weight:900}.state.active{background:rgba(88,231,165,.12);color:var(--green)}.state.locked{background:rgba(148,163,184,.12);color:var(--muted)}.state.done{background:rgba(88,231,165,.16);color:var(--green)}.empty{padding:20px;border:1px dashed var(--line);border-radius:13px;color:var(--muted);font-size:11px;text-align:center}@media(max-width:640px){.page{padding-left:10px;padding-right:10px}.brand{font-size:36px;gap:8px}.bolt{width:28px;height:28px;flex-basis:28px}}@media(max-width:360px){.brand{font-size:36px;gap:7px}.bolt{width:26px;height:26px;flex-basis:26px}}</style></head><body><main class="page"><div class="wrap"><header class="top"><div class="brand"><span class="bolt" aria-hidden="true"></span><span>Indo<strong>mark</strong></span></div><a class="back" id="back" href="learn-channel-v2.html" aria-label="Back">←</a></header><section class="hero"><p class="eyebrow">STEP 4 OF 4</p><h1>Videos</h1><p>Complete each video from start to finish to unlock the next one.</p><div class="context"><span class="chip" id="languageChip">Language</span><span class="chip" id="channelChip">Channel</span><span class="chip" id="categoryChip">Category</span></div></section><section class="grid" id="list"></section></div></main><script>(function(){'use strict';
+var qs=new URLSearchParams(location.search),lang=qs.get('lang')||localStorage.getItem('indomark_learn_language_v2')||'kn',teacher=qs.get('teacher')||localStorage.getItem('indomark_teacher_'+lang)||'vistara',raw=qs.get('category')||localStorage.getItem('indomark_learn_category_v1')||'Stock Market Basics';
+var cmap={basics:'Stock Market Basics',technical:'Technical Analysis',fundamental:'Fundamental Analysis',risk:'Risk Management',psychology:'Investor Psychology',education:'Investor Education'},category=cmap[String(raw).trim().toLowerCase()]||String(raw).trim()||'Stock Market Basics';
+localStorage.setItem('indomark_learn_language_v2',lang);localStorage.setItem('indomark_teacher_'+lang,teacher);localStorage.setItem('indomark_learn_category_v1',category);
+document.getElementById('languageChip').textContent='Language: '+(lang==='kn'?'ಕನ್ನಡ':lang);document.getElementById('channelChip').textContent='Channel: '+(teacher==='vistara'?'Vistara Money Plus':teacher==='angel'?'Angel Investments':teacher);document.getElementById('categoryChip').textContent='Category: '+category;document.getElementById('back').href='learn-channel-v2.html?lang='+encodeURIComponent(lang)+'&category='+encodeURIComponent(category);
+var removed={LLGkm3TTcCg:true},fallback=[
 {order:1,level:0,title:'ಏನಿದು Stock Market ? Stock Market ಹುಟ್ಟಿದ್ದು ಹೇಗೆ ? | History Of Stock Market',videoId:'g6kNBA-J7qI',description:'Stock market history ಮತ್ತು basic context.',source:'Vistara Money Plus'},
 {order:2,level:0,title:'Stock Market Basics For beginners | ಷೇರು ಮಾರುಕಟ್ಟೆ ಹೂಡಿಕೆ ಬಗ್ಗೆ ಕಂಪ್ಲೀಟ್ ಮಾಹಿತಿ |',videoId:'UucJL1nqejw',description:'Investment, trading, Demat account, broker, Nifty ಮತ್ತು Sensex basics.',source:'Vistara Money Plus'},
 {order:3,level:1,title:'Different Types Of Investment In Stock Market | ಹೂಡಿಕೆಯ ಪ್ರಮುಖ ವಿಧಗಳ ಸಮಗ್ರ ವಿವರ',videoId:'oBwtLi4tHfM',description:'Different investment types ಮತ್ತು approaches.',source:'Vistara Money Plus'},
 {order:4,level:2,title:'ಷೇರನ್ನು ಖರೀದಿಸುವ ಮುಂಚೆ ಇದನ್ನು ತಪ್ಪದೆ ಮಾಡಿ.! | Stock Market Investment In Kannada | Share Market',videoId:'jJSIm32W49Y',description:'Share ಖರೀದಿಸುವ ಮೊದಲು ಮಾಡಬೇಕಾದ practical checks.',source:'Vistara Money Plus'},
-{order:5,level:2,title:'What Is Trading And How To Trade For Beginners In Kannada | How To Earn More Money In Trading',videoId:'_KHXlzU1f-M',description:'Trading basics ಮತ್ತು beginner mechanics.',source:'Vistara Money Plus'}
-];
-
-function loadCatalog(){
-var result=[];
-try{
-if(lang==='kn'&&teacher==='vistara'&&typeof window.getIndomarkVistaraVideos==='function') result=window.getIndomarkVistaraVideos(category);
-else if(lang==='kn'&&teacher==='angel'&&typeof window.getIndomarkAngelInvestmentsVideos==='function') result=window.getIndomarkAngelInvestmentsVideos(category);
-}catch(err){result=[];}
-if(!Array.isArray(result))result=[];
-if(!result.length&&lang==='kn'&&teacher==='vistara'&&category==='Stock Market Basics')result=fallback.slice();
-var seen={};
-return result.filter(function(v){
-if(!v||!v.videoId||removedIds[v.videoId]||seen[v.videoId])return false;
-if(v.verified===false)return false;
-if(v.category&&v.category!==category)return false;
-seen[v.videoId]=true;return true;
-}).sort(function(a,b){return(Number(a.order)||999999)-(Number(b.order)||999999);});
-}
-
-var videos=loadCatalog();
-var list=document.getElementById('list');
-function esc(value){return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\\"/g,'&quot;').replace(/'/g,'&#39;');}
+{order:5,level:2,title:'What Is Trading And How To Trade For Beginners In Kannada | How To Earn More Money In Trading',videoId:'_KHXlzU1f-M',description:'Trading basics ಮತ್ತು beginner mechanics.',source:'Vistara Money Plus'}];
+function catalog(){var a=[];try{if(lang==='kn'&&teacher==='vistara'&&typeof window.getIndomarkVistaraVideos==='function')a=window.getIndomarkVistaraVideos(category);else if(lang==='kn'&&teacher==='angel'&&typeof window.getIndomarkAngelInvestmentsVideos==='function')a=window.getIndomarkAngelInvestmentsVideos(category);}catch(e){}if(!Array.isArray(a)||!a.length){if(lang==='kn'&&teacher==='vistara'&&category==='Stock Market Basics')a=fallback.slice();else a=[];}var seen={};return a.filter(function(v){if(!v||!v.videoId||removed[v.videoId]||seen[v.videoId]||v.verified===false)return false;if(v.category&&v.category!==category)return false;seen[v.videoId]=true;return true;}).sort(function(a,b){return(Number(a.order)||999999)-(Number(b.order)||999999);});}
+var videos=catalog(),list=document.getElementById('list');function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;');}
 if(!videos.length){list.innerHTML='<div class="empty">ಈ channel/categoryಗೆ verified videos ಲಭ್ಯವಿಲ್ಲ.</div>';return;}
-
-var storageKey='indomark_learning_v10|'+lang+'|'+teacher+'|'+category;
-var state={done:{},pos:{}};
-try{var stored=JSON.parse(localStorage.getItem(storageKey)||'{}');if(stored&&stored.done)state.done=stored.done;if(stored&&stored.pos)state.pos=stored.pos;}catch(e){}
-function saveState(){try{localStorage.setItem(storageKey,JSON.stringify(state));}catch(e){}}
-function firstUnlocked(){for(var i=0;i<videos.length;i++){if(!state.done[videos[i].videoId])return i;}return -1;}
-function isUnlocked(index){return index===firstUnlocked()||!!state.done[videos[index].videoId];}
-function ytUrl(id){return'https://www.youtube.com/embed/'+encodeURIComponent(id)+'?enablejsapi=1&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1';}
-function levelName(level){var map={0:'Foundation',1:'Beginner Basics',2:'Core Concepts',3:'Technical Analysis',4:'Trading / Intraday',5:'F&O / Options / Futures'};return map[level]||('Level '+level);}
-
-var player=null,timer=null,currentIndex=-1,lastTime=0,blockSeek=false;
-function stopTracking(){if(timer){clearInterval(timer);timer=null;}player=null;currentIndex=-1;lastTime=0;blockSeek=false;}
-function render(){
-stopTracking();
-var unlocked=firstUnlocked(),groups={};
-videos.forEach(function(v,i){var level=Number.isFinite(Number(v.level))?Number(v.level):9999;if(!groups[level])groups[level]=[];groups[level].push({v:v,i:i});});
-var html='';
-Object.keys(groups).sort(function(a,b){return Number(a)-Number(b);}).forEach(function(level){
-html+='<section class="level-block"><div class="level-head"><div class="kicker">'+esc(levelName(Number(level)))+'</div><h2>Level '+esc(level)+'</h2><p>Finish the videos in order to continue.</p></div>';
-groups[level].forEach(function(item){
-var v=item.v,i=item.i,done=!!state.done[v.videoId],open=(i===unlocked),pos=Number(state.pos[v.videoId]||0),media='';
-if(done){media='<div class="player"><iframe src="'+ytUrl(v.videoId)+'" title="'+esc(v.title)+'" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe></div>';}
-else if(open){media='<div class="player"><iframe id="activePlayer" src="'+ytUrl(v.videoId)+'" title="'+esc(v.title)+'" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe><div class="shield" id="videoShield"><span class="play">▶</span></div>'+(pos?'<div class="resume">Resume '+Math.floor(pos/60)+':'+String(Math.floor(pos%60)).padStart(2,'0')+'</div>':'')+'</div>';}
-else{media='<div class="locked"><div class="lock">🔒</div><b>Video locked</b><small>Complete the previous video fully, without skipping, to unlock this one.</small></div>';}
-html+='<article class="video-card">'+media+'<div class="body"><b>'+esc(v.title)+'</b>'+(v.description?'<div class="what"><strong>ಈ videoನಲ್ಲಿ ಏನು ಇದೆ?</strong><br>'+esc(v.description)+'</div>':'')+'<small>'+esc(v.source||teacher)+'</small><span class="state '+(done?'done':open?'active':'locked')+'">'+(done?'✓ Completed':open?'● Continue watching':'🔒 Locked')+'</span></div></article>';
-});html+='</section>';});
-list.innerHTML=html;
-if(unlocked>=0)attachPlayer(unlocked);
-}
-function attachPlayer(index){
-var iframe=document.getElementById('activePlayer');var shield=document.getElementById('videoShield');if(!iframe)return;
-function boot(){if(!window.YT||!window.YT.Player)return;try{
-currentIndex=index;
-player=new YT.Player('activePlayer',{events:{onReady:function(event){var p=Number(state.pos[videos[index].videoId]||0);if(p>0){try{event.target.seekTo(p,true);}catch(e){}}lastTime=p;},onStateChange:function(event){
-if(event.data===YT.PlayerState.ENDED){
-var duration=Number(event.target.getDuration()||0),now=Number(event.target.getCurrentTime()||0);if(duration>0&&now>=duration-2){delete state.pos[videos[index].videoId];state.done[videos[index].videoId]=true;saveState();render();}}
-}}});
-timer=setInterval(function(){if(!player||document.hidden)return;try{
-var now=Number(player.getCurrentTime()||0),playState=player.getPlayerState();
-if(playState!==YT.PlayerState.PLAYING)return;
-var delta=now-lastTime;
-if(lastTime>0&&delta>2.2){blockSeek=true;var resume=Number(state.pos[videos[index].videoId]||0);player.seekTo(resume,true);setTimeout(function(){blockSeek=false;},150);return;}
-if(!blockSeek&&delta>=0&&delta<=2.2){state.pos[videos[index].videoId]=now;if(Math.floor(now)%3===0)saveState();}
-lastTime=now;
-}catch(e){}}
-},500);
-if(shield){shield.addEventListener('click',function(){try{if(player){var s=player.getPlayerState();if(s===YT.PlayerState.PLAYING)player.pauseVideo();else player.playVideo();}}catch(e){}});}
-}catch(e){} }
-function load(){if(window.YT&&window.YT.Player){boot();return;}if(!document.querySelector('script[data-indomark-yt]')){var s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.async=true;s.dataset.indomarkYt='1';document.head.appendChild(s);}var tries=0;var wait=setInterval(function(){tries++;if(window.YT&&window.YT.Player){clearInterval(wait);boot();}else if(tries>40){clearInterval(wait);}},250);}
-load();
-}
-render();
-})();
-</script>
-</body>
-</html>
+var key='indomark_video_lock_v1|'+lang+'|'+teacher+'|'+category,state={done:{},pos:{}};try{var old=JSON.parse(localStorage.getItem(key)||'{}');if(old&&old.done)state.done=old.done;if(old&&old.pos)state.pos=old.pos;}catch(e){}function save(){try{localStorage.setItem(key,JSON.stringify(state));}catch(e){}}
+function openIndex(){for(var i=0;i<videos.length;i++){if(!state.done[videos[i].videoId])return i;}return -1;}
+var players={},apiReady=false,active=-1,playTimer=null,last=0,badSeek=false;
+function url(id){return'https://www.youtube.com/embed/'+encodeURIComponent(id)+'?enablejsapi=1&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1';}
+function stopTimer(){if(playTimer){clearInterval(playTimer);playTimer=null;}last=0;badSeek=false;}
+function render(){stopTimer();var unlocked=openIndex(),groups={};videos.forEach(function(v,i){var l=Number.isFinite(Number(v.level))?Number(v.level):9999;if(!groups[l])groups[l]=[];groups[l].push({v:v,i:i});});var html='';Object.keys(groups).sort(function(a,b){return Number(a)-Number(b)}).forEach(function(level){html+='<section class="level-block"><div class="level-head"><div class="kicker">Level '+esc(level)+'</div><h2>'+esc(({0:'Foundation',1:'Beginner Basics',2:'Core Concepts',3:'Technical Analysis',4:'Trading / Intraday',5:'F&O / Options / Futures'})[level]||'Verified Videos')+'</h2><p>Finish the videos in sequence.</p></div>';groups[level].forEach(function(x){var v=x.v,i=x.i,done=!!state.done[v.videoId],isOpen=i===unlocked,pos=Number(state.pos[v.videoId]||0),media;if(done){media='<div class="player"><iframe src="'+url(v.videoId)+'" title="'+esc(v.title)+'" allow="encrypted-media;picture-in-picture"></iframe></div>';}else if(isOpen){media='<div class="player"><iframe id="activePlayer" src="'+url(v.videoId)+'" title="'+esc(v.title)+'" allow="encrypted-media;picture-in-picture"></iframe><div class="cover" id="cover"><button id="playBtn" type="button">▶</button></div>'+(pos?'<div class="resume">Resume '+Math.floor(pos/60)+':'+String(Math.floor(pos%60)).padStart(2,'0')+'</div>':'')+'</div>';}else{media='<div class="locked"><div class="lock">🔒</div><b>Video locked</b><small>Complete the previous video fully, without skipping, to unlock this one.</small></div>';}html+='<article class="video-card">'+media+'<div class="body"><b>'+esc(v.title)+'</b>'+(v.description?'<div class="what"><strong>ಈ videoನಲ್ಲಿ ಏನು ಇದೆ?</strong><br>'+esc(v.description)+'</div>':'')+'<small>'+esc(v.source||teacher)+'</small><span class="state '+(done?'done':isOpen?'active':'locked')+'">'+(done?'✓ Completed':isOpen?'● Continue watching':'🔒 Locked')+'</span></div></article>';});html+='</section>';});list.innerHTML=html;attach(unlocked);}
+function attach(i){if(i<0)return;var frame=document.getElementById('activePlayer'),cover=document.getElementById('cover'),button=document.getElementById('playBtn');if(!frame)return;active=i;var boot=function(){if(!window.YT||!window.YT.Player)return;try{players[i]=new YT.Player('activePlayer',{events:{onReady:function(ev){var p=Number(state.pos[videos[i].videoId]||0);if(p>0)try{ev.target.seekTo(p,true)}catch(e){}last=p;},onStateChange:function(ev){if(ev.data===YT.PlayerState.PLAYING){if(!playTimer)playTimer=setInterval(function(){if(!players[i]||document.hidden)return;try{var now=Number(players[i].getCurrentTime()||0),delta=now-last;if(last>0&&delta>1.8){badSeek=true;players[i].seekTo(last,true);}else if(delta>=0&&delta<=1.8){state.pos[videos[i].videoId]=now;save();}last=now;}catch(e){}},500);}else if(ev.data===YT.PlayerState.ENDED){if(playTimer){clearInterval(playTimer);playTimer=null;}var d=Number(ev.target.getDuration()||0),p=Number(ev.target.getCurrentTime()||0),saved=Number(state.pos[videos[i].videoId]||0);if(!badSeek&&d>0&&p>=d-2){state.done[videos[i].videoId]=true;delete state.pos[videos[i].videoId];save();render();}}}}});}catch(e){}};function loadApi(){if(window.YT&&window.YT.Player){apiReady=true;boot();return;}if(!document.querySelector('script[data-indomark-yt]')){var s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.async=true;s.dataset.indomarkYt='1';document.head.appendChild(s);}var n=0,w=setInterval(function(){n++;if(window.YT&&window.YT.Player){clearInterval(w);apiReady=true;boot();}else if(n>40)clearInterval(w);},250);}loadApi();if(button)button.addEventListener('click',function(){try{if(!players[i])return;var ps=players[i].getPlayerState();if(ps===YT.PlayerState.PLAYING){players[i].pauseVideo();button.textContent='▶';}else{players[i].playVideo();button.textContent='❚❚';}}catch(e){}});}
+window.addEventListener('pagehide',save);document.addEventListener('visibilitychange',function(){if(document.hidden)save();});render();
+})();</script></body></html>
