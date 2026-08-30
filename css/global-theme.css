@@ -58,3 +58,4 @@ html[data-theme="light"] .negative{color:#dc3f59!important}
 
 /* Learn: remove only the Course Progress header's View progress link. Keep the View Progress button inside the card. */
 .learn-page .section-head:nth-of-type(4) .view-all{display:none!important}
+.learn-page .section-head:has(+ .progress-card) > .view-all{display:none!important}
