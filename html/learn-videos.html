@@ -33,6 +33,7 @@ var teacher=q.get('teacher')||localStorage.getItem('indomark_teacher_'+lang)||'v
 var raw=q.get('category')||localStorage.getItem('indomark_learn_category_v1')||'Stock Market Basics';
 var map={basics:'Stock Market Basics',technical:'Technical Analysis',fundamental:'Fundamental Analysis',risk:'Risk Management',psychology:'Investor Psychology',education:'Investor Education'};
 var category=map[String(raw).trim().toLowerCase()]||String(raw).trim()||'Stock Market Basics';
+var hubLevels={'Stock Market Basics':1,'Technical Analysis':2,'Fundamental Analysis':3,'Risk Management':4,'Investor Psychology':5};
 document.getElementById('langChip').textContent='Language: '+(lang==='kn'?'ಕನ್ನಡ':lang);
 document.getElementById('teacherChip').textContent='Channel: '+(teacher==='vistara'?'Vistara Money Plus':teacher==='angel'?'Angel Investments':teacher);
 document.getElementById('catChip').textContent='Category: '+category;
@@ -69,23 +70,20 @@ function stopTracker(){if(timer){clearInterval(timer);timer=null;}activePlayer=n
 function updateSummary(levels){var done=videos.filter(function(v){return isDone(v.videoId);}).length;document.getElementById('totalCount').textContent=videos.length;document.getElementById('levelCount').textContent=levels.length;document.getElementById('completedCount').textContent=done;document.getElementById('remainingCount').textContent=videos.length-done;}
 function render(){
 stopTracker();
-var unlock=firstLockedIndex(),groups={},levels=[];
-videos.forEach(function(v,i){var level=Number.isFinite(Number(v.level))?Number(v.level):9999;if(!groups[level]){groups[level]=[];levels.push(level);}groups[level].push({v:v,i:i});});
-var names={0:'Foundation',1:'Beginner Basics',2:'Core Concepts',3:'Technical Analysis',4:'Trading / Intraday',5:'F&O / Options / Futures',9999:'Verified Videos'};
+var unlock=firstLockedIndex(),group={level:hubLevels[category]||1,items:[]};
+videos.forEach(function(v,i){group.items.push({v:v,i:i});});
+var levels=[group.level];
+var displayLevel=group.level;
 updateSummary(levels);
-var html='';
-levels.sort(function(a,b){return a-b;}).forEach(function(level){
-var items=groups[level],levelDone=items.filter(function(x){return isDone(x.v.videoId);}).length;
-var displayLevel=level===9999?level:level+1;
-html+='<section class="level-block"><div class="level-head"><div class="level-top"><div class="kicker">LEVEL '+esc(displayLevel)+'</div><div class="level-total">'+items.length+' videos · '+levelDone+' completed</div></div><h2>Level '+esc(displayLevel)+'</h2><p>Finish the videos in order.</p></div>';
-items.forEach(function(x,localIndex){
+var html='<section class="level-block"><div class="level-head"><div class="level-top"><div class="kicker">LEVEL '+esc(displayLevel)+'</div><div class="level-total">'+group.items.length+' videos · '+group.items.filter(function(x){return isDone(x.v.videoId);}).length+' completed</div></div><h2>Level '+esc(displayLevel)+'</h2><p>Finish the videos in order.</p></div>';
+group.items.forEach(function(x,localIndex){
 var v=x.v,i=x.i,done=isDone(v.videoId),playable=done||i===unlock,pos=Math.max(0,Number(progress.position[v.videoId]||0));
 var media;
 if(playable){media='<div class="player"><iframe data-video-index="'+i+'" src="'+yt(v.videoId)+'" title="'+esc(v.title)+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"></iframe></div>';}
 else{media='<div class="locked"><div class="lock">🔒</div><b>Video locked</b><small>Complete the previous video fully to unlock this one.</small></div>';}
 html+='<article class="video-card">'+media+'<div class="body"><b>'+esc(v.title)+'</b><div class="meta-line"><strong>LEVEL '+esc(displayLevel)+'</strong> · VIDEO '+esc(localIndex+1)+'</div>'+(v.description?'<div class="what"><strong>ಈ videoನಲ್ಲಿ ಏನು ಇದೆ?</strong><br>'+esc(v.description)+'</div>':'')+'<small>'+esc(v.source||teacher)+'</small><span class="state '+(done?'done':playable?'active':'locked-state')+'">'+(done?'✓ Completed':playable?'● Continue watching':'🔒 Locked')+'</span>'+(playable&&pos&&!done?'<small>Saved position: '+Math.floor(pos/60)+':'+String(Math.floor(pos%60)).padStart(2,'0')+'</small>':'')+'</div></article>';
 });
-html+='</section>';});
+html+='</section>';
 list.innerHTML=html;
 attachPlayers();
 }
