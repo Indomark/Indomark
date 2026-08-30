@@ -57,5 +57,6 @@ html[data-theme="light"] .negative{color:#dc3f59!important}
 }
 
 /* Learn: remove only the Course Progress header's View progress link. Keep the View Progress button inside the card. */
-.learn-page .section-head:nth-of-type(4) .view-all{display:none!important}
-.learn-page .section-head:has(+ .progress-card) > .view-all{display:none!important}
+.learn-page .section-head:nth-of-type(4) .view-all,
+.learn-page section.section-head:nth-of-type(4) > a.view-all[href="course-progress.html"],
+.learn-page section.section-head:has(+ section.progress-card) > a.view-all[href="course-progress.html"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;width:0!important;min-width:0!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important}
