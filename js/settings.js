@@ -23,5 +23,36 @@
   function removeInactiveLock(){document.documentElement.classList.remove('account-inactive');document.getElementById('accountInactiveOverlay')?.remove()}
   function lockInactivePage(){if(isAllowedPage()){removeInactiveLock();return}installInactiveStyles();document.documentElement.classList.add('account-inactive');if(document.getElementById('accountInactiveOverlay'))return;const overlay=document.createElement('div');overlay.id='accountInactiveOverlay';overlay.setAttribute('role','alertdialog');overlay.setAttribute('aria-modal','true');overlay.innerHTML='<div class="account-inactive-box"><h2>Account inactive</h2><p>Your account is currently inactive. App features are unavailable until you activate your account again.</p><a href="profile.html" class="account-inactive-link">Go to Profile</a></div>';const mount=()=>{if(!document.body)return false;document.body.appendChild(overlay);return true};if(!mount())document.addEventListener('DOMContentLoaded',mount,{once:true});}
   function updateAccountStatus(status){const next=status==='inactive'?'inactive':'active';localStorage.setItem(ACCOUNT_STATUS_KEY,next);if(next==='inactive')lockInactivePage();else removeInactiveLock();window.dispatchEvent(new CustomEvent('indomark-account-status-change',{detail:{status:next}}));return next;}
-  applyTheme(getStoredTheme());window.IndomarkSettings={getTheme:getStoredTheme,getResolvedTheme:()=>resolveTheme(getStoredTheme()),setTheme:theme=>{const next=normalizeThemePreference(theme);applyTheme(next);return next},applyTheme,resolveTheme,getAccountStatus,setAccountStatus:updateAccountStatus,isAccountActive:()=>getAccountStatus()==='active'};const check=()=>{applyTheme(getStoredTheme());if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();const media=window.matchMedia?window.matchMedia('(prefers-color-scheme: light)'):null;if(media){const onSystemChange=()=>{if(getStoredTheme()==='system')applyTheme('system')};media.addEventListener?media.addEventListener('change',onSystemChange):media.addListener&&media.addListener(onSystemChange)}window.addEventListener('storage',event=>{if(event.key===ACCOUNT_STATUS_KEY||event.key===KEY)check()});
+  function installVideoAdSkipBridge(){
+    if(currentPage()!=='learn-videos.html')return;
+    const apply=()=>{
+      document.querySelectorAll('.player').forEach(playerBox=>{
+        const iframe=playerBox.querySelector('iframe#activePlayer');
+        const cover=playerBox.querySelector('.cover');
+        if(!iframe||!cover||cover.dataset.adBridge==='1')return;
+        cover.dataset.adBridge='1';
+        cover.style.pointerEvents='none';
+        const shield=document.createElement('div');
+        shield.setAttribute('aria-hidden','true');
+        shield.style.position='absolute';
+        shield.style.inset='0';
+        shield.style.zIndex='1';
+        shield.style.background='transparent';
+        shield.style.clipPath='polygon(0 0,100% 0,100% 76%,72% 76%,72% 100%,0 100%)';
+        shield.style.pointerEvents='auto';
+        shield.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();},true);
+        cover.insertBefore(shield,cover.firstChild);
+        iframe.style.pointerEvents='auto';
+        const button=cover.querySelector('#playBtn');
+        if(button)button.style.pointerEvents='auto';
+      });
+    };
+    apply();
+    const observer=new MutationObserver(apply);
+    const start=()=>{if(document.body)observer.observe(document.body,{childList:true,subtree:true});};
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+  }
+  applyTheme(getStoredTheme());
+  installVideoAdSkipBridge();
+  window.IndomarkSettings={getTheme:getStoredTheme,getResolvedTheme:()=>resolveTheme(getStoredTheme()),setTheme:theme=>{const next=normalizeThemePreference(theme);applyTheme(next);return next},applyTheme,resolveTheme,getAccountStatus,setAccountStatus:updateAccountStatus,isAccountActive:()=>getAccountStatus()==='active'};const check=()=>{applyTheme(getStoredTheme());if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();const media=window.matchMedia?window.matchMedia('(prefers-color-scheme: light)'):null;if(media){const onSystemChange=()=>{if(getStoredTheme()==='system')applyTheme('system')};media.addEventListener?media.addEventListener('change',onSystemChange):media.addListener&&media.addListener(onSystemChange)}window.addEventListener('storage',event=>{if(event.key===ACCOUNT_STATUS_KEY||event.key===KEY)check()});
 })();
