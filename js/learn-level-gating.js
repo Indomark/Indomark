@@ -16,7 +16,7 @@
   function read(category){try{return JSON.parse(localStorage.getItem(storeKey(category))||'{"completed":{},"required":0}')||{completed:{},required:0};}catch(_){return {completed:{},required:0};}}
   function write(category,state){try{localStorage.setItem(storeKey(category),JSON.stringify({completed:state.completed||{},required:Number(state.required)||0}));}catch(_){} }
   function sourceVideos(lang,teacher,category){const cat=normalizeCategory(category);let list=[];try{if(lang==='kn'&&teacher==='vistara'&&typeof window.getIndomarkVistaraVideos==='function')list=window.getIndomarkVistaraVideos(cat)||[];else if(lang==='kn'&&teacher==='angel'&&typeof window.getIndomarkAngelInvestmentsVideos==='function')list=window.getIndomarkAngelInvestmentsVideos(cat)||[];}catch(_){list=[];}return(Array.isArray(list)?list:[]).filter(v=>v&&v.videoId&&v.verified!==false&&!BAD_VIDEO_IDS.has(v.videoId)&&(!v.category||v.category===cat)).slice().sort((a,b)=>(Number(a.order)||999999)-(Number(b.order)||999999));}
-  function catalogSources(category){const cat=normalizeCategory(category);const out=[];const c=window.INDOMARK_LEARN_CATALOG?.CATALOG||{};Object.keys(c).forEach(key=>{if(!key.endsWith(':varsity'))return;const parts=c[key]?.parts||[];if(!parts.length)return;out.push({lang:key.split(':')[0]||'',teacher:key.split(':')[1]||'',category:cat,videos:parts.filter(v=>v&&v.videoId&&!BAD_VIDEO_IDS.has(v.videoId)).slice().sort((a,b)=>(Number(a.n)||999999)-(Number(b.n)||999999))});});['vistara','angel'].forEach(t=>{const vids=sourceVideos('kn',t,cat);if(vids.length)out.push({lang:'kn',teacher:t,category:cat,videos:vids});});return out;}
+  function catalogSources(category){const cat=normalizeCategory(category);const out=[];const c=window.INDOMARK_LEARN_CATALOG?.CATALOG||{};Object.keys(c).forEach(key=>{if(!key.endsWith(':varsity'))return;const parts=c[key]?.parts||[];if(!parts.length)return;const sourceCategory=parts[0]?.category||'Stock Market Basics';if(sourceCategory!==cat)return;out.push({lang:key.split(':')[0]||'',teacher:key.split(':')[1]||'',category:cat,videos:parts.filter(v=>v&&v.videoId&&!BAD_VIDEO_IDS.has(v.videoId)).slice().sort((a,b)=>(Number(a.n)||999999)-(Number(b.n)||999999))});});['vistara','angel'].forEach(t=>{const vids=sourceVideos('kn',t,cat);if(vids.length)out.push({lang:'kn',teacher:t,category:cat,videos:vids});});return out;}
   function requiredCount(category){const cat=normalizeCategory(category);const own=read(cat).required||0;let max=Math.max(own,DEFAULT_REQUIRED[cat]||0);catalogSources(cat).forEach(s=>{max=Math.max(max,s.videos.length);});return max;}
   function setRequired(category,count){const cat=normalizeCategory(category);const state=read(cat);state.required=Math.max(Number(state.required)||0,Number(count)||0);write(cat,state);return state.required||requiredCount(cat);}
   function syncProgressRecord(category,videos,completed){const cat=normalizeCategory(category);const state=read(cat);(videos||[]).forEach((v,i)=>{if(completed&&completed[v.videoId])state.completed[String(i+1)]=true;});state.required=Math.max(Number(state.required)||0,(videos||[]).length,requiredCount(cat));write(cat,state);return state;}
@@ -26,5 +26,42 @@
   function markCompleted(category,number){const cat=normalizeCategory(category);const state=syncLegacyProgress(cat);state.completed[String(number)]=true;state.required=Math.max(Number(state.required)||0,requiredCount(cat));write(cat,state);return state;}
   function isLevelUnlocked(category){const cat=normalizeCategory(category);const level=LEVEL_BY_CATEGORY[cat];if(!level||level===1)return true;const prev=CATEGORY_BY_LEVEL[level-1];const required=requiredCount(prev);return required>0&&completedCount(prev)>=required;}
   function getStatus(category){const cat=normalizeCategory(category);return{unlocked:isLevelUnlocked(cat),required:requiredCount(cat),completed:completedCount(cat),level:LEVEL_BY_CATEGORY[cat]||0};}
-  window.INDOMARK_LEARN_LEVEL_GATE={LEVEL_BY_CATEGORY,CATEGORY_BY_LEVEL,normalizeCategory,sourceVideos,catalogSources,requiredCount,setRequired,syncProgressRecord,syncLegacyProgress,completedCount,isSlotCompleted,markCompleted,isLevelUnlocked,getStatus};
+
+  // The Learn page circle is a level milestone indicator, not a video-count percentage:
+  // Level 1 complete/unlocks Level 2 => 20%, Level 3 => 40%, Level 4 => 60%, Level 5 => 80%.
+  // Only the final 20% requires finishing every Level-5 video in one language/channel.
+  function isFinalLevelComplete(){
+    const sources=catalogSources('Investor Psychology');
+    if(!sources.length)return false;
+    return sources.some(source=>{
+      const key='indomark_learning_progress_v3|'+source.lang+'|'+source.teacher+'|Investor Psychology';
+      let saved={};
+      try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{};}catch(_){saved={};}
+      const completed=saved.completed||{};
+      return source.videos.length>0 && source.videos.every(v=>!!completed[v.videoId]);
+    });
+  }
+  function getLearnCirclePercent(){
+    let percent=0;
+    if(isLevelUnlocked('Technical Analysis'))percent=20;
+    if(isLevelUnlocked('Fundamental Analysis'))percent=40;
+    if(isLevelUnlocked('Risk Management'))percent=60;
+    if(isLevelUnlocked('Investor Psychology'))percent=80;
+    if(isFinalLevelComplete())percent=100;
+    return percent;
+  }
+  function updateLearnCircle(){
+    const el=document.getElementById('learnProgressPercent');
+    if(!el)return;
+    const percent=getLearnCirclePercent();
+    el.textContent=percent+'%';
+    const ring=el.parentElement;
+    if(ring){ring.style.background=`conic-gradient(#22c55e 0 ${percent}%,rgba(148,163,184,.15) ${percent}% 100%)`;ring.setAttribute('aria-label',`Course progress ${percent} percent`);}
+    const bar=document.getElementById('learnContinueBar');
+    if(bar)bar.style.width=percent+'%';
+  }
+
+  window.INDOMARK_LEARN_LEVEL_GATE={LEVEL_BY_CATEGORY,CATEGORY_BY_LEVEL,normalizeCategory,sourceVideos,catalogSources,requiredCount,setRequired,syncProgressRecord,syncLegacyProgress,completedCount,isSlotCompleted,markCompleted,isLevelUnlocked,getStatus,isFinalLevelComplete,getLearnCirclePercent,updateLearnCircle};
+  const boot=()=>{try{updateLearnCircle();}catch(_){} };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
