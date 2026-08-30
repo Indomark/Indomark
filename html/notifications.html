@@ -14,9 +14,8 @@
 <link rel="stylesheet" href="../css/global-theme.css?v=17">
 <link rel="stylesheet" href="../css/secondary.css?v=8">
 <link rel="stylesheet" href="../css/indomark-page-brand.css?v=8">
-<link rel="stylesheet" href="../css/notifications.css?v=4">
+<link rel="stylesheet" href="../css/notifications.css?v=5">
 <style>
-/* Keep notification mobile layout isolated from shared legacy responsive rules. */
 @media (max-width:700px){
   .notifications-page{padding:16px 12px calc(110px + env(safe-area-inset-bottom))!important;overflow-x:hidden!important}
   .notifications-wrap{width:100%!important;max-width:none!important;margin:0!important}
@@ -25,7 +24,7 @@
   .notification-heading-group>.brand{display:flex!important;align-items:center!important;gap:8px!important;width:max-content!important;max-width:100%!important;font-size:30px!important;line-height:1!important;letter-spacing:-1px!important;white-space:nowrap!important}
   .notification-heading-group>.brand .bolt{width:28px!important;height:28px!important;flex:0 0 28px!important;background-image:url('../assets/indomark-compass-dark.svg?v=1')!important}
   html[data-theme="light"] .notification-heading-group>.brand .bolt{background-image:url('../assets/indomark-compass-light.svg?v=1')!important}
-  .notification-title-row{display:flex!important;align-items:center!important;gap:9px!important;margin-top:10px!important}
+  .notification-title-row{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;margin-top:10px!important;text-align:center!important}
   .notification-head h1{font-size:23px!important;line-height:1.1!important;letter-spacing:-.4px!important}
   .notification-head p{font-size:9px!important;line-height:1.35!important}
   .notification-filters{display:flex!important;gap:8px!important;align-items:center!important;overflow-x:auto!important;padding:13px 0 7px!important;margin:0!important}
@@ -47,7 +46,7 @@
 @media (max-width:380px){
   .notification-heading-group>.brand{font-size:28px!important}
   .notification-heading-group>.brand .bolt{width:26px!important;height:26px!important;flex-basis:26px!important}
-  .notification-title-row{gap:8px!important}
+  .notification-title-row{justify-content:center!important}
   .notification-head h1{font-size:22px!important}
   .notification-card{grid-template-columns:36px minmax(0,1fr)!important;gap:9px!important;padding:11px!important}
   .notification-icon{width:36px!important;height:36px!important}
