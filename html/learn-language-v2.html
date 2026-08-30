@@ -57,10 +57,22 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,Hel
   .lang b{font-size:13px}
   .lang small{font-size:10px}
 }
+
+/* Scoped override matching Home's specificity so shared mobile brand rules cannot shrink it. */
+.learn-language-page > .wrap > .top .brand{font-size:30px!important;line-height:1!important;gap:10px!important;letter-spacing:-1.7px!important}
+.learn-language-page > .wrap > .top .brand .bolt{width:30px!important;height:30px!important;flex:0 0 30px!important}
+@media(max-width:700px){
+  .learn-language-page > .wrap > .top .brand{font-size:36px!important;gap:8px!important}
+  .learn-language-page > .wrap > .top .brand .bolt{width:28px!important;height:28px!important;flex-basis:28px!important}
+}
+@media(max-width:380px){
+  .learn-language-page > .wrap > .top .brand{font-size:36px!important;gap:7px!important}
+  .learn-language-page > .wrap > .top .brand .bolt{width:26px!important;height:26px!important;flex-basis:26px!important}
+}
 </style>
 </head>
 <body>
-<main class="page">
+<main class="page learn-language-page">
   <div class="wrap">
     <header class="top">
       <a class="brand" href="learn.html" aria-label="Indomark Home"><span class="bolt" aria-hidden="true"></span><span>Indo<strong>mark</strong></span></a>
