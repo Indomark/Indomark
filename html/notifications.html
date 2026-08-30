@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="../css/indomark-page-brand.css?v=8">
 <link rel="stylesheet" href="../css/notifications.css?v=3">
 <style>
-/* Notification page: one deterministic mobile layout to prevent legacy responsive overrides from mixing. */
+/* Keep notification mobile layout isolated from shared legacy responsive rules. */
 @media (max-width:700px){
   .notifications-page{padding:16px 12px calc(110px + env(safe-area-inset-bottom))!important;overflow-x:hidden!important}
   .notifications-wrap{width:100%!important;max-width:none!important;margin:0!important}
@@ -30,9 +30,6 @@
   .notification-title-icon svg{width:19px!important;height:19px!important}
   .notification-head h1{font-size:23px!important;line-height:1.1!important;letter-spacing:-.4px!important}
   .notification-head p{font-size:9px!important;line-height:1.35!important}
-  .notification-actions{width:100%!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;align-items:stretch!important;padding:0!important}
-  .notification-actions .notification-btn{width:100%!important;min-width:0!important;min-height:40px!important;height:40px!important;padding:8px 6px!important;font-size:8.5px!important;line-height:1!important;white-space:nowrap!important;transform:none!important}
-  .notification-actions .notification-back{width:100%!important;height:40px!important;font-size:17px!important}
   .notification-filters{display:flex!important;gap:8px!important;align-items:center!important;overflow-x:auto!important;padding:13px 0 7px!important;margin:0!important}
   .filter-chip{flex:0 0 auto!important;padding:8px 11px!important;font-size:9px!important}
   .notification-list{display:grid!important;gap:8px!important;margin-top:5px!important}
@@ -55,8 +52,6 @@
   .notification-title-row{gap:8px!important}
   .notification-title-icon{width:38px!important;height:38px!important;flex-basis:38px!important}
   .notification-head h1{font-size:22px!important}
-  .notification-actions{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
-  .notification-actions .notification-btn{font-size:8px!important;padding-left:4px!important;padding-right:4px!important}
   .notification-card{grid-template-columns:36px minmax(0,1fr)!important;gap:9px!important;padding:11px!important}
   .notification-icon{width:36px!important;height:36px!important}
   .notification-icon svg{width:18px!important;height:18px!important}
@@ -76,11 +71,6 @@
           </span>
           <div><h1>Notifications</h1><p>Market updates and app activity</p></div>
         </div>
-      </div>
-      <div class="notification-actions">
-        <a class="notification-btn notification-back" href="home.html" aria-label="Home" title="Home">⌂</a>
-        <button id="markAllRead" class="notification-btn" type="button">Mark all as read</button>
-        <button id="clearBtn" class="notification-btn notification-clear" type="button">Clear</button>
       </div>
     </header>
 
