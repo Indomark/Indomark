@@ -93,7 +93,29 @@
     window.dispatchEvent(new CustomEvent('indomark-account-status-change',{detail:{status:next}}));
     return next;
   }
+  function installVideoPlayFallback(){
+    document.addEventListener('click',event=>{
+      const button=event.target&&event.target.closest?event.target.closest('#playBtn'):null;
+      if(!button)return;
+      event.preventDefault();
+      event.stopPropagation();
+      const iframe=document.getElementById('activePlayer');
+      if(!iframe)return;
+      const send=()=>{
+        try{
+          iframe.contentWindow.postMessage(JSON.stringify({event:'command',func:'playVideo',args:[]}), 'https://www.youtube.com');
+        }catch(e){}
+        try{
+          iframe.contentWindow.postMessage({event:'command',func:'playVideo',args:[]}, 'https://www.youtube.com');
+        }catch(e){}
+      };
+      send();
+      setTimeout(send,150);
+      setTimeout(send,400);
+    },true);
+  }
   applyTheme(getStoredTheme());
+  installVideoPlayFallback();
   window.IndomarkSettings={getTheme:getStoredTheme,getResolvedTheme:()=>resolveTheme(getStoredTheme()),setTheme:theme=>{const next=normalizeThemePreference(theme);applyTheme(next);return next},applyTheme,resolveTheme,getAccountStatus,setAccountStatus:updateAccountStatus,isAccountActive:()=>getAccountStatus()==='active'};
   const check=()=>{applyTheme(getStoredTheme());if(getAccountStatus()==='inactive')lockInactivePage();else removeInactiveLock()};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();
