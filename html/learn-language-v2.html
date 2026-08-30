@@ -7,18 +7,19 @@
 <meta name="theme-color" content="#050914">
 <script>(function(){const t=localStorage.getItem('indomark_settings_theme')||'dark';const v=t==='light'?'light':t==='system'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):'dark';document.documentElement.dataset.theme=v;document.documentElement.style.colorScheme=v;})();</script>
 <script src="../js/settings.js?v=10"></script>
-<link rel="stylesheet" href="../css/app-theme.css?v=12">
-<link rel="stylesheet" href="../css/global-theme.css?v=7">
+<link rel="stylesheet" href="../css/app-theme.css?v=26">
+<link rel="stylesheet" href="../css/global-theme.css?v=17">
 <link rel="stylesheet" href="../css/indomark-page-brand.css?v=8">
 <title>Indomark — Choose Language</title>
 <style>
-body{margin:0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,Helvetica,sans-serif}
 .page{min-height:100dvh;padding:20px 18px 90px;background:var(--bg);color:var(--text)}
 .wrap{width:min(780px,100%);margin:auto}
 .top{display:flex;justify-content:space-between;align-items:center;gap:14px}
-.brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;font-size:30px;line-height:1;font-weight:900;letter-spacing:-1.7px;white-space:nowrap}
-.brand .bolt{width:30px;height:30px;flex:0 0 30px;display:inline-block;background:transparent url('../assets/indomark-compass-dark.svg?v=1') center/contain no-repeat}
-.brand span:not(.bolt){color:var(--text)}
+.brand{display:flex;align-items:center;gap:10px;color:var(--text)!important;text-decoration:none;font-size:30px!important;line-height:1!important;font-weight:900!important;letter-spacing:-1.7px!important;white-space:nowrap}
+.brand .bolt{width:30px!important;height:30px!important;flex:0 0 30px!important;display:inline-block;background:transparent url('../assets/indomark-compass-dark.svg?v=1') center/contain no-repeat!important}
+.brand span:not(.bolt){color:var(--text)!important}
 .brand strong{font-weight:900}
 .back{width:40px;height:40px;border:1px solid var(--line);border-radius:11px;background:var(--panel);color:var(--text);display:grid;place-items:center;text-decoration:none}
 .hero{margin:24px 0 18px}
@@ -35,8 +36,8 @@ body{margin:0}
 @media(min-width:720px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:700px){
   .page{padding:16px 12px calc(100px + env(safe-area-inset-bottom))}
-  .brand{font-size:36px;gap:8px}
-  .brand .bolt{width:28px;height:28px;flex-basis:28px}
+  .brand{font-size:36px!important;gap:8px!important}
+  .brand .bolt{width:28px!important;height:28px!important;flex-basis:28px!important}
   .hero{margin-top:22px}
   .hero h1{font-size:28px}
   .hero p{font-size:13px}
@@ -47,8 +48,8 @@ body{margin:0}
 }
 @media(max-width:380px){
   .page{padding-left:8px;padding-right:8px}
-  .brand{font-size:36px;gap:7px}
-  .brand .bolt{width:26px;height:26px;flex-basis:26px}
+  .brand{font-size:36px!important;gap:7px!important}
+  .brand .bolt{width:26px!important;height:26px!important;flex-basis:26px!important}
   .hero h1{font-size:26px}
   .context{font-size:11px;padding:11px 12px}
   .grid{gap:8px}
@@ -62,7 +63,7 @@ body{margin:0}
 <main class="page">
   <div class="wrap">
     <header class="top">
-      <div class="brand" aria-label="Indomark"><span class="bolt" aria-hidden="true"></span><span>Indo<strong>mark</strong></span></div>
+      <a class="brand" href="learn.html" aria-label="Indomark Home"><span class="bolt" aria-hidden="true"></span><span>Indo<strong>mark</strong></span></a>
       <a class="back" id="back" href="learn.html" aria-label="Back">←</a>
     </header>
     <section class="hero">
