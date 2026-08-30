@@ -25,4 +25,35 @@
   };
   function getCatalog(language, teacher, course = 'varsity') { return CATALOG[`${language}:${teacher}:${course}`] || null; }
   window.INDOMARK_LEARN_CATALOG = { CATALOG, getCatalog };
+
+  function wireLevelGate(){
+    if(!window.INDOMARK_LEARN_LEVEL_GATE || !document.querySelector('.hub-card')) return;
+    const gate=window.INDOMARK_LEARN_LEVEL_GATE;
+    const cards=[...document.querySelectorAll('.hub-card')];
+    cards.forEach(card=>{
+      const href=card.getAttribute('href')||'';
+      const m=href.match(/[?&]category=([^&]+)/);
+      if(!m) return;
+      const category=gate.normalizeCategory(decodeURIComponent(m[1]));
+      const unlocked=gate.isLevelUnlocked(category);
+      card.classList.toggle('level-locked',!unlocked);
+      card.setAttribute('aria-disabled',String(!unlocked));
+      if(!unlocked){
+        card.addEventListener('click',e=>e.preventDefault());
+        const badge=card.querySelector('.hub-level');
+        if(badge) badge.textContent=(badge.textContent||'').replace(/LEVEL\s+/i,'') ? '🔒 LEVEL '+(badge.textContent.match(/\d+/)||[''])[0] : '🔒';
+      }
+    });
+  }
+
+  const boot=()=>{
+    if(window.INDOMARK_LEARN_LEVEL_GATE) wireLevelGate();
+    else {
+      const s=document.createElement('script');
+      s.src='../js/learn-level-gating.js?v=1';
+      s.onload=wireLevelGate;
+      document.head.appendChild(s);
+    }
+  };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
 })();
