@@ -9,13 +9,11 @@ document.addEventListener('DOMContentLoaded',()=>{
  ];
  const list=document.getElementById('notificationList');
  const filters=[...document.querySelectorAll('.filter-chip')];
- const markAll=document.getElementById('markAllRead');
- const clear=document.getElementById('clearBtn');
  let current='all';
  let remoteItems=[];
  let liveMode=false;
 
- function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+ function escapeHtml(v){return String(v).replace(/[&<>\"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]));}
  function icon(name){
   const paths={
    market:'<path d="M6 18V9m6 9V5m6 13v-6"/><path d="M4 18h16"/>',
@@ -45,20 +43,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   badge.hidden=!n;
  }
  filters.forEach(btn=>btn.addEventListener('click',()=>{filters.forEach(x=>x.classList.remove('active'));btn.classList.add('active');current=btn.dataset.filter||'all';render();}));
- markAll?.addEventListener('click',async()=>{
-  const items=currentItems();
-  if(liveMode && window.IndomarkNotifications){
-   try{await window.IndomarkNotifications.markAllRead(items);}catch(error){console.warn('Mark all read failed:',error);}
-  } else localSave(items.map(x=>({...x,unread:false})));
-  remoteItems=remoteItems.map(x=>({...x,unread:false})); render(); renderBadge();
- });
- clear?.addEventListener('click',()=>{
-  if(liveMode){
-   remoteItems=[]; render(); renderBadge();
-   return;
-  }
-  localSave([]);render();renderBadge();
- });
  list?.addEventListener('click',async e=>{
   const button=e.target.closest('[data-action="read"]');if(!button)return;
   const card=button.closest('[data-id]');if(!card)return;
