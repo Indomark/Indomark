@@ -55,3 +55,6 @@ html[data-theme="light"] .negative{color:#dc3f59!important}
  .learn-page .progress-card .progress-ring span{font-size:16px!important}
  .learn-page .progress-card .progress-stats{grid-template-columns:1fr!important}
 }
+
+/* Learn: remove only the Course Progress header's View progress link. Keep the View Progress button inside the card. */
+.learn-page .section-head:nth-of-type(4) .view-all{display:none!important}
